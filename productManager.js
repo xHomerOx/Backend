@@ -9,7 +9,7 @@ class ProductManager {
     addProducts = (title, description, price, thumbnail, code, stock) => { 
         
         //Chequeo que los campos sean obligatorios y que "code" no se repita, tirando el mensaje correspondiente.
-        const duplicatedCode = this.products.some((product) = product.code === code);
+        const duplicatedCode = this.products.some((product) => product.code === code);
 
         if (title && description && price && thumbnail && code && stock) {
             if (!duplicatedCode) {
