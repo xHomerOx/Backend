@@ -1,24 +1,18 @@
 //Genero clase constructora ProductManager
 class ProductManager {
-    //Agrego Productos como parámetro del constructor, creo un array vacio e instancio ese array en ese products (this.products).
-	constructor(products) {
-        products = []
-        this.products = products;
+    //Creo un array vacio.
+	constructor() {
+        this.products = [];
     };
 
     //Función Agregar productos
     addProducts = (title, description, price, thumbnail, code, stock) => { 
         
-        //Creo array para los códigos y los agrego a un Array.
-        const storedCodes = new Array();
-            
-        this.products.forEach((product) => 
-            storedCodes.push(product.code)
-        );
-
         //Chequeo que los campos sean obligatorios y que "code" no se repita, tirando el mensaje correspondiente.
+        const duplicatedCode = this.products.some((product) = product.code === code);
+
         if (title && description && price && thumbnail && code && stock) {
-            if (!storedCodes.includes(code)) {
+            if (!duplicatedCode) {
                 let id = this.products.length + 1;
                 this.products.push({id, title, description, price, thumbnail, code, stock});
 
