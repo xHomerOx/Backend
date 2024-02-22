@@ -15,12 +15,6 @@ class ProductManager {
         
         //Chequeo que los campos sean obligatorios y que "code" no se repita, tirando el mensaje correspondiente.
         const duplicatedCode = this.products.some((product) => product.code === code);
-
-        try {
-            await fs.promises.readFile(`${this.path}/products.txt`, 'utf8');
-        }catch{
-            console.log("No hay datos en el archivo");
-        }
         
         if (title && description && price && thumbnail && code && stock) {
             if (!duplicatedCode) {
@@ -62,7 +56,6 @@ class ProductManager {
     updateProduct = async (myId, myProduct) => {
         const index = this.products.findIndex((product) => product.id === myId);
         if (index >= 0) {
-            
             //Si el ID del Producto es diferente al que yo le quiero asignar muestra ERROR.
             if (myProduct.id && myProduct.id !== myId) {
                 console.log("Updating ID is forbidden!!! >(");
@@ -116,34 +109,35 @@ const newProduct2 = {
 //Funciona
 product.addProducts(newProduct);
 
-// //Trae el producto con el ID
-// product.getProductById(1);
+//Trae el producto con el ID
+product.getProductById(1);
 
-// //Actualiza Titulo y Descripcion.
-// product.updateProduct(1, { title: "Producto 2", description: "Mi producto 2" });
+//Actualiza Titulo y Descripcion.
+product.updateProduct(1, { title: "Producto 2", description: "Mi producto 2" });
 
-// //Vuelvo a llamar al Producto 1 con los datos actualizados.
-// product.getProductById(1);
+//Vuelvo a llamar al Producto 1 con los datos actualizados.
+product.getProductById(1);
 
 //No actualiza ID.
 product.updateProduct(1, { id: 3, title: "Producto 2", description: "Mi producto 2" });
+product.getProducts();
+//Se puede ver aqui.
+product.getProductById(3);
 
-// //Se puede ver aqui.
-// product.getProductById(3);
+//Borro el Producto 1
+product.deleteProduct(1);
 
-// //Borro el Producto 1
-// product.deleteProduct(1);
+//Intento Borrar Producto Inexistente
+product.deleteProduct(3);
 
-// //Intento Borrar Producto Inexistente
-// product.deleteProduct(3);
+//Traigo el Array sin ese producto.
+product.getProductById(1);
 
-// //Traigo el Array sin ese producto.
-// product.getProductById(1);
+//Nuevo Producto
+product.addProducts(newProduct2);
 
-// //Nuevo Producto
-// product.addProducts(newProduct2);
+//Borro el segundo producto.
+product.deleteProduct(2);
 
-// //Borro el segundo producto.
-// product.deleteProduct(2);
-
+//Imprimo de nuevo.
 product.getProducts();
