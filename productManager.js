@@ -1,9 +1,15 @@
+const fs = require('fs');
+
 //Genero clase constructora ProductManager
 class ProductManager {
     //Creo un array vacio.
 	constructor() {
         this.products = [];
+        this.path = './myFile';
     };
+
+    
+    // fs.writeFileSync(`${this.path}/test.txt`, "Hola mundo");
 
     //Función Agregar productos
     addProducts = (myProduct) => { 
@@ -38,8 +44,19 @@ class ProductManager {
         const myProduct = this.products.find((product) => product.id === myId);
         if (myProduct) {
             console.log(myProduct);
+
+            return myProduct;
         }else{
-            console.log("Not Found");
+            console.log(`Product with ID ${myId} Not Found`);
+        }
+    }
+
+    updateProduct = (myId, myProduct) => {
+        const index = this.products.findIndex((product) => product.id === myId);
+        if (index >= 0) {
+            this.products[index] = { ...this.products[index], ...myProduct };
+        }else{
+            console.log(`Product with ID ${myId} Not Found`);
         }
     }
 }
@@ -56,6 +73,8 @@ const newProduct = {
 };
 
 const newProduct2 = { 
+    title: 'Producto 2', 
+    description: 'Mi producto 2', 
     price: 200, 
     thumbnail: 'prod2.jpg', 
     code: 'A002', 
@@ -64,9 +83,13 @@ const newProduct2 = {
 
 //Funciona
 product.addProducts(newProduct);
-
-//No Funciona
 product.addProducts(newProduct2);
 
-//Trae los productos
-product.getProducts();
+//Trae el producto con el ID
+product.getProductById(2);
+
+//Actualiza Titulo y Descripcion.
+product.updateProduct(1, { title: "Producto 2", description: "Mi producto 2" });
+
+//Vuelvo a llamar al Producto 1 con los datos actualizados.
+product.getProductById(1);
