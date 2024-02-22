@@ -54,10 +54,23 @@ class ProductManager {
     updateProduct = (myId, myProduct) => {
         const index = this.products.findIndex((product) => product.id === myId);
         if (index >= 0) {
+            
+            //Si el ID del Producto es diferente al que yo le quiero asignar muestra ERROR.
+            if (myProduct.id && myProduct.id !== myId) {
+                console.log("Updating ID is forbidden!!! >(");
+                return;
+            }
+
+            this.products.id = myId;
             this.products[index] = { ...this.products[index], ...myProduct };
         }else{
             console.log(`Product with ID ${myId} Not Found`);
         }
+    }
+
+    deleteProduct = (myId) => {
+        this.products = this.products.filter((product) => product.id !== myId);
+        console.log(this.products);
     }
 }
 
@@ -83,13 +96,21 @@ const newProduct2 = {
 
 //Funciona
 product.addProducts(newProduct);
-product.addProducts(newProduct2);
+// product.addProducts(newProduct2);
 
-//Trae el producto con el ID
-product.getProductById(2);
+// //Trae el producto con el ID
+// product.getProductById(2);
 
 //Actualiza Titulo y Descripcion.
 product.updateProduct(1, { title: "Producto 2", description: "Mi producto 2" });
 
 //Vuelvo a llamar al Producto 1 con los datos actualizados.
+product.getProductById(1);
+
+//No actualiza ID.
+// product.updateProduct(1, { id: 3, title: "Producto 2", description: "Mi producto 2" });
+
+// product.getProductById(3);
+
+product.deleteProduct(1);
 product.getProductById(1);
