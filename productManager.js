@@ -2,7 +2,7 @@ const fs = require('fs');
 
 //Genero clase constructora ProductManager
 class ProductManager {
-    //Creo un array vacio.
+    //Creo un array vacio y agrego directorio a usar mi products.txt.
 	constructor() {
         this.products = [];
         this.path = './myFile';
@@ -16,11 +16,16 @@ class ProductManager {
         //Chequeo que los campos sean obligatorios y que "code" no se repita, tirando el mensaje correspondiente.
         const duplicatedCode = this.products.some((product) => product.code === code);
 
+        try {
+            await fs.promises.readFile(`${this.path}/products.txt`, 'utf8');
+        }catch{
+            console.log("No hay datos en el archivo");
+        }
+        
         if (title && description && price && thumbnail && code && stock) {
             if (!duplicatedCode) {
                 let id = this.products.length + 1;
                 this.products.push({id, title, description, price, thumbnail, code, stock});
-                console.log(this.products);
 
                 await fs.promises.writeFile(`${this.path}/products.txt`, JSON.stringify(this.products));
 
@@ -34,11 +39,14 @@ class ProductManager {
     };
 
     //Muestro los productos cuando llamo a este metodo mediante el objeto creado a partir del constructor.
-    getProducts = async () => {
+   getProducts = async () => {
+    try {
         let myFile = await fs.promises.readFile(`${this.path}/products.txt`, 'utf8');
         console.log(myFile);
+    } catch (error) {
+        console.error("Could not read file!!!", error);
     }
-
+}
     //Quiero ver si el id existe usando como parametro un id que yo le asigno al método.
     getProductById = (myId) => {
         const myProduct = this.products.find((product) => product.id === myId);
@@ -59,14 +67,14 @@ class ProductManager {
             if (myProduct.id && myProduct.id !== myId) {
                 console.log("Updating ID is forbidden!!! >(");
                 return;
+            }else{
+                this.products.id = myId;
+                this.products[index] = { ...this.products[index], ...myProduct };
+
+                await fs.promises.appendFile(`${this.path}/products.txt`, JSON.stringify(this.products));
             }
 
-            this.products.id = myId;
-            this.products[index] = { ...this.products[index], ...myProduct };
-
-            let myFile = await fs.promises.appendFile(`${this.path}/products.txt`, JSON.stringify(this.products));
-            console.log(myFile);
-
+            
         }else{
             console.log(`Product with ID ${myId} Not Found`);
         }
@@ -78,9 +86,7 @@ class ProductManager {
             this.products = this.products.filter((product) => product.id !== myId);
             console.log(this.products);
 
-            let myFile = await fs.promises.writeFile(`${this.path}/products.txt`, JSON.stringify(this.products));
-            console.log(myFile);
-
+            await fs.promises.writeFile(`${this.path}/products.txt`, JSON.stringify(this.products));
         }else{
             console.log("Product with this ID does not exist.")
         }
@@ -109,36 +115,35 @@ const newProduct2 = {
 
 //Funciona
 product.addProducts(newProduct);
-product.addProducts(newProduct2);
 
-//Trae el producto con el ID
-product.getProductById(1);
+// //Trae el producto con el ID
+// product.getProductById(1);
 
-product.getProducts();
+// //Actualiza Titulo y Descripcion.
+// product.updateProduct(1, { title: "Producto 2", description: "Mi producto 2" });
 
-//Actualiza Titulo y Descripcion.
-product.updateProduct(1, { title: "Producto 2", description: "Mi producto 2" });
-
-//Vuelvo a llamar al Producto 1 con los datos actualizados.
-product.getProductById(1);
+// //Vuelvo a llamar al Producto 1 con los datos actualizados.
+// product.getProductById(1);
 
 //No actualiza ID.
 product.updateProduct(1, { id: 3, title: "Producto 2", description: "Mi producto 2" });
 
-//Se puede ver aqui.
-product.getProductById(3);
+// //Se puede ver aqui.
+// product.getProductById(3);
 
-//Borro el Producto 1
-product.deleteProduct(1);
+// //Borro el Producto 1
+// product.deleteProduct(1);
 
-//Intento Borrar Producto Inexistente
-product.deleteProduct(3);
+// //Intento Borrar Producto Inexistente
+// product.deleteProduct(3);
 
-//Traigo el Array sin ese producto.
-product.getProductById(1);
+// //Traigo el Array sin ese producto.
+// product.getProductById(1);
 
-//Borro el segundo producto.
-product.deleteProduct(2);
+// //Nuevo Producto
+// product.addProducts(newProduct2);
 
-//Muestro de nuevo.
+// //Borro el segundo producto.
+// product.deleteProduct(2);
+
 product.getProducts();
