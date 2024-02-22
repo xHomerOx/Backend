@@ -78,7 +78,7 @@ class ProductManager {
             this.products = this.products.filter((product) => product.id !== myId);
             console.log(this.products);
 
-            let myFile = await fs.promises.appendFile(`${this.path}/products.txt`, JSON.stringify(this.products));
+            let myFile = await fs.promises.writeFile(`${this.path}/products.txt`, JSON.stringify(this.products));
             console.log(myFile);
 
         }else{
@@ -136,3 +136,9 @@ product.deleteProduct(3);
 
 //Traigo el Array sin ese producto.
 product.getProductById(1);
+
+//Borro el segundo producto.
+product.deleteProduct(2);
+
+//Muestro de nuevo.
+product.getProducts();
