@@ -18,7 +18,7 @@ class ProductManager {
                 let id = this.products.length + 1;
                 this.products.push({id, title, description, price, thumbnail, code, stock});
                 console.log(this.products);
-                
+
                 return this.products;
             }else{
                 console.log("El código no puede estar repetido");
@@ -64,6 +64,8 @@ const newProduct2 = {
 
 //Funciona
 product.addProducts(newProduct);
+
+//No Funciona
 product.addProducts(newProduct2);
 
 //Trae los productos
