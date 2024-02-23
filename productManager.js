@@ -6,6 +6,8 @@ class ProductManager {
 	constructor() {
         this.products = [];
         this.path = './myFile';
+
+        fs.promises.writeFile(`${this.path}/products.txt`, JSON.stringify(this.products, null, '\t'));
     };
 
     //Función Agregar productos
@@ -35,15 +37,16 @@ class ProductManager {
     //Leo el archivo y veo si realmente existe.
    getProducts = async () => {
         try {
-            let myFile = await fs.promises.readFile(`${this.path}/products.txt`, 'utf8');
-            console.log(myFile);
+            await fs.promises.readFile(`${this.path}/products.txt`, 'utf8');
         } catch (error) {
             console.error("Could not read file!!!", error);
         }
     }
 
     //Quiero ver si el id existe usando como parametro un id que yo le asigno al método.
-    getProductById = (myId) => {
+    getProductById = async (myId) => {
+        await fs.promises.readFile(`${this.path}/products.txt`, 'utf8');
+
         const myProduct = this.products.find((product) => product.id === myId);
         if (myProduct) {
             return myProduct;
@@ -53,21 +56,25 @@ class ProductManager {
     }
 
     updateProduct = async (myId, myProduct) => {
-        const index = this.products.findIndex((product) => product.id === myId);
-        if (index >= 0) {
-            
-            //Si el ID del Producto es diferente al que yo le quiero asignar muestra ERROR.
-            if (myProduct.id && myProduct.id !== myId) {
-                console.log("Updating ID is forbidden!!! >(");
-                return;
-            }else{
-                this.products.id = myId;
-                this.products[index] = { ...this.products[index], ...myProduct };
+        try {
+            const index = this.products.findIndex((product) => product.id === myId);
+            if (index >= 0) {
+                
+                //Si el ID del Producto es diferente al que yo le quiero asignar muestra ERROR.
+                if (myProduct.id && myProduct.id !== myId) {
+                    console.log("Updating ID is forbidden!!! >(");
+                    return;
+                }else{
+                    this.products.id = myId;
+                    this.products[index] = { ...this.products[index], ...myProduct };
 
-                await fs.promises.writeFile(`${this.path}/products.txt`, JSON.stringify(this.products, null, '\t'));
+                    await fs.promises.writeFile(`${this.path}/products.txt`, JSON.stringify(this.products, null, '\t'));
+                }
+            }else{
+                console.log(`Product with ID ${myId} Not Found`);
             }
-        }else{
-            console.log(`Product with ID ${myId} Not Found`);
+        }catch(error) {
+            console.error(error);
         }
     }
 
@@ -76,6 +83,7 @@ class ProductManager {
             let myFile = await fs.promises.readFile(`${this.path}/products.txt`, 'utf8');
             this.products = JSON.parse(myFile);
 
+            console.log(this.products);
             const deleteProduct = this.products.findIndex((product) => product.id === myId);
 
             if(deleteProduct >= 0) {
@@ -122,9 +130,6 @@ const newProduct3 = {
 //Funciona
 product.addProducts(newProduct);
 
-//Trae el producto con el ID
-product.getProductById(1);
-
 //Actualiza Titulo y Descripcion.
 product.updateProduct(1, { title: "Producto 3", description: "Mi producto 3" });
 
@@ -140,18 +145,10 @@ product.getProductById(3);
 
 //Nuevo Producto
 product.addProducts(newProduct2);
-
-//Borro el Producto 1
-product.deleteProduct(1);
-
-//Intento Borrar Producto Inexistente
-product.deleteProduct(3);
-
-//Traigo el Array sin ese producto.
-product.getProductById(1);
-
-//Agrego Producto 3
 product.addProducts(newProduct3);
 
-//Imprimo de nuevo.
-product.getProducts();
+console.log("Borrado")
+//Borra productos.
+product.deleteProduct(1);
+product.deleteProduct(2);
+product.deleteProduct(3);

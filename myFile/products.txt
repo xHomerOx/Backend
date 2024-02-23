@@ -16,14 +16,5 @@
 		"thumbnail": "prod2.jpg",
 		"code": "A002",
 		"stock": 20
-	},
-	{
-		"id": 3,
-		"title": "Producto 3",
-		"description": "Mi producto 3",
-		"price": 300,
-		"thumbnail": "prod3.jpg",
-		"code": "A003",
-		"stock": 30
 	}
 ]
