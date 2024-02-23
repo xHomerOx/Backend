@@ -65,8 +65,6 @@ class ProductManager {
 
                 await fs.promises.writeFile(`${this.path}/products.txt`, JSON.stringify(this.products));
             }
-
-            
         }else{
             console.log(`Product with ID ${myId} Not Found`);
         }
@@ -74,9 +72,10 @@ class ProductManager {
 
     deleteProduct = async (myId) => {
         
-        await fs.promises.readFile(`${this.path}/products.txt`, 'utf8');
+        let myFile = await fs.promises.readFile(`${this.path}/products.txt`, 'utf8');
 
         const deleteProduct = this.products.findIndex((product) => product.id === myId);
+        this.products = JSON.parse(myFile);
 
         if(deleteProduct >= 0) {
             this.products.splice(deleteProduct, 1);
@@ -107,6 +106,8 @@ const newProduct2 = {
     stock: 20
 };
 
+product.deleteProduct(2);
+
 //Funciona
 product.addProducts(newProduct);
 
@@ -130,16 +131,16 @@ product.getProductById(3);
 product.addProducts(newProduct2);
 
 // //Borro el Producto 1
-product.deleteProduct(1);
+// product.deleteProduct(1);
 
-//Intento Borrar Producto Inexistente
-product.deleteProduct(3);
+// //Intento Borrar Producto Inexistente
+// product.deleteProduct(3);
 
 //Traigo el Array sin ese producto.
 product.getProductById(1);
 
 //Borro el segundo producto.
-product.deleteProduct(2);
+// product.deleteProduct(2);
 
 //Imprimo de nuevo.
 product.getProducts();
