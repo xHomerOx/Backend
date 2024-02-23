@@ -60,20 +60,18 @@ class ProductManager {
             const index = this.products.findIndex((product) => product.id === myId);
             if (index >= 0) {
                 
-                //Si el ID del Producto es diferente al que yo le quiero asignar muestra ERROR.
+                // Si el ID del Producto es diferente al que yo le quiero asignar muestra ERROR.
                 if (myProduct.id && myProduct.id !== myId) {
                     console.log("Updating ID is forbidden!!! >(");
                     return;
-                }else{
-                    this.products.id = myId;
-                    this.products[index] = { ...this.products[index], ...myProduct };
-
+                } else {
+                    this.products[index] = { ...this.products[index], ...myProduct, id: myId };
                     await fs.promises.writeFile(`${this.path}/products.txt`, JSON.stringify(this.products, null, '\t'));
                 }
-            }else{
+            } else {
                 console.log(`Product with ID ${myId} Not Found`);
             }
-        }catch(error) {
+        } catch(error) {
             console.error(error);
         }
     }
@@ -83,11 +81,11 @@ class ProductManager {
             let myFile = await fs.promises.readFile(`${this.path}/products.txt`, 'utf8');
             this.products = JSON.parse(myFile);
 
-            console.log(this.products);
             const deleteProduct = this.products.findIndex((product) => product.id === myId);
 
             if(deleteProduct >= 0) {
                 this.products.splice(deleteProduct, 1);
+                console.log(this.products)
                 await fs.promises.writeFile(`${this.path}/products.txt`, JSON.stringify(this.products, null, '\t'));
             }else{
                 console.log("Product with this ID does not exist.")
@@ -147,8 +145,6 @@ product.getProductById(3);
 product.addProducts(newProduct2);
 product.addProducts(newProduct3);
 
-console.log("Borrado")
-//Borra productos.
 product.deleteProduct(1);
 product.deleteProduct(2);
 product.deleteProduct(3);
