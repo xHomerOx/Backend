@@ -21,7 +21,7 @@ class ProductManager {
                 let id = this.products.length + 1;
                 this.products.push({id, title, description, price, thumbnail, code, stock});
 
-                await fs.promises.writeFile(`${this.path}/products.txt`, JSON.stringify(this.products));
+                await fs.promises.writeFile(`${this.path}/products.txt`, JSON.stringify(this.products, null, '\t'));
 
                 return this.products;
             }else{
@@ -55,6 +55,7 @@ class ProductManager {
     updateProduct = async (myId, myProduct) => {
         const index = this.products.findIndex((product) => product.id === myId);
         if (index >= 0) {
+            
             //Si el ID del Producto es diferente al que yo le quiero asignar muestra ERROR.
             if (myProduct.id && myProduct.id !== myId) {
                 console.log("Updating ID is forbidden!!! >(");
@@ -63,7 +64,7 @@ class ProductManager {
                 this.products.id = myId;
                 this.products[index] = { ...this.products[index], ...myProduct };
 
-                await fs.promises.writeFile(`${this.path}/products.txt`, JSON.stringify(this.products));
+                await fs.promises.writeFile(`${this.path}/products.txt`, JSON.stringify(this.products, null, '\t'));
             }
         }else{
             console.log(`Product with ID ${myId} Not Found`);
@@ -71,17 +72,20 @@ class ProductManager {
     }
 
     deleteProduct = async (myId) => {
-        
-        let myFile = await fs.promises.readFile(`${this.path}/products.txt`, 'utf8');
+        try {
+            let myFile = await fs.promises.readFile(`${this.path}/products.txt`, 'utf8');
+            this.products = JSON.parse(myFile);
 
-        const deleteProduct = this.products.findIndex((product) => product.id === myId);
-        this.products = JSON.parse(myFile);
+            const deleteProduct = this.products.findIndex((product) => product.id === myId);
 
-        if(deleteProduct >= 0) {
-            this.products.splice(deleteProduct, 1);
-            await fs.promises.writeFile(`${this.path}/products.txt`, JSON.stringify(this.products));
-        }else{
-            console.log("Product with this ID does not exist.")
+            if(deleteProduct >= 0) {
+                this.products.splice(deleteProduct, 1);
+                await fs.promises.writeFile(`${this.path}/products.txt`, JSON.stringify(this.products, null, '\t'));
+            }else{
+                console.log("Product with this ID does not exist.")
+            }
+        }catch (error) {
+            console.error(error);
         }
     }
 }
@@ -106,7 +110,14 @@ const newProduct2 = {
     stock: 20
 };
 
-product.deleteProduct(2);
+const newProduct3 = { 
+    title: 'Producto 3', 
+    description: 'Mi producto 3', 
+    price: 300, 
+    thumbnail: 'prod3.jpg', 
+    code: 'A003', 
+    stock: 30
+};
 
 //Funciona
 product.addProducts(newProduct);
@@ -130,17 +141,17 @@ product.getProductById(3);
 //Nuevo Producto
 product.addProducts(newProduct2);
 
-// //Borro el Producto 1
-// product.deleteProduct(1);
+//Borro el Producto 1
+product.deleteProduct(1);
 
-// //Intento Borrar Producto Inexistente
-// product.deleteProduct(3);
+//Intento Borrar Producto Inexistente
+product.deleteProduct(3);
 
 //Traigo el Array sin ese producto.
 product.getProductById(1);
 
-//Borro el segundo producto.
-// product.deleteProduct(2);
+//Agrego Producto 3
+product.addProducts(newProduct3);
 
 //Imprimo de nuevo.
 product.getProducts();
