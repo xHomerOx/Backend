@@ -32,21 +32,20 @@ class ProductManager {
         }
     };
 
-    //Muestro los productos cuando llamo a este metodo mediante el objeto creado a partir del constructor.
+    //Leo el archivo y veo si realmente existe.
    getProducts = async () => {
-    try {
-        let myFile = await fs.promises.readFile(`${this.path}/products.txt`, 'utf8');
-        console.log(myFile);
-    } catch (error) {
-        console.error("Could not read file!!!", error);
+        try {
+            let myFile = await fs.promises.readFile(`${this.path}/products.txt`, 'utf8');
+            console.log(myFile);
+        } catch (error) {
+            console.error("Could not read file!!!", error);
+        }
     }
-}
+
     //Quiero ver si el id existe usando como parametro un id que yo le asigno al método.
     getProductById = (myId) => {
         const myProduct = this.products.find((product) => product.id === myId);
         if (myProduct) {
-            console.log(myProduct);
-
             return myProduct;
         }else{
             console.log(`Product with ID ${myId} Not Found`);
@@ -64,7 +63,7 @@ class ProductManager {
                 this.products.id = myId;
                 this.products[index] = { ...this.products[index], ...myProduct };
 
-                await fs.promises.appendFile(`${this.path}/products.txt`, JSON.stringify(this.products));
+                await fs.promises.writeFile(`${this.path}/products.txt`, JSON.stringify(this.products));
             }
 
             
@@ -74,11 +73,19 @@ class ProductManager {
     }
 
     deleteProduct = async (myId) => {
+        
+        let myFile = await fs.promises.readFile(`${this.path}/products.txt`, 'utf8');
+        
+        if (myFile.startsWith(',')) {
+            myFile = myFile.substring(1);
+        }
 
-        if(this.products.id) {
-            this.products = this.products.filter((product) => product.id !== myId);
-            console.log(this.products);
+        this.products = JSON.parse(myFile);
 
+        const deleteProduct = this.products.findIndex((product) => product.id === myId);
+        if(deleteProduct >= 0) {
+            this.products.splice(deleteProduct, 1);
+            
             await fs.promises.writeFile(`${this.path}/products.txt`, JSON.stringify(this.products));
         }else{
             console.log("Product with this ID does not exist.")
@@ -112,32 +119,33 @@ product.addProducts(newProduct);
 //Trae el producto con el ID
 product.getProductById(1);
 
-//Actualiza Titulo y Descripcion.
-product.updateProduct(1, { title: "Producto 2", description: "Mi producto 2" });
+// //Actualiza Titulo y Descripcion.
+// product.updateProduct(1, { title: "Producto 3", description: "Mi producto 3" });
 
-//Vuelvo a llamar al Producto 1 con los datos actualizados.
-product.getProductById(1);
+// //Vuelvo a llamar al Producto 1 con los datos actualizados.
+// product.getProductById(1);
 
-//No actualiza ID.
-product.updateProduct(1, { id: 3, title: "Producto 2", description: "Mi producto 2" });
-product.getProducts();
-//Se puede ver aqui.
-product.getProductById(3);
+// //No actualiza ID.
+// product.updateProduct(1, { id: 3, title: "Producto 3", description: "Mi producto 3" });
+// product.getProducts();
 
-//Borro el Producto 1
+// //Se puede ver aqui.
+// product.getProductById(3);
+
+// //Borro el Producto 1
 product.deleteProduct(1);
 
-//Intento Borrar Producto Inexistente
-product.deleteProduct(3);
+// // //Intento Borrar Producto Inexistente
+// // product.deleteProduct(3);
 
-//Traigo el Array sin ese producto.
-product.getProductById(1);
+// //Traigo el Array sin ese producto.
+// product.getProductById(1);
 
-//Nuevo Producto
+// //Nuevo Producto
 product.addProducts(newProduct2);
 
-//Borro el segundo producto.
+// //Borro el segundo producto.
 product.deleteProduct(2);
 
-//Imprimo de nuevo.
-product.getProducts();
+// //Imprimo de nuevo.
+// product.getProducts();
