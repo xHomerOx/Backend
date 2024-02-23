@@ -46,9 +46,9 @@ class ProductManager {
     //Quiero ver si el id existe usando como parametro un id que yo le asigno al método.
     getProductById = async (myId) => {
         await fs.promises.readFile(`${this.path}/products.txt`, 'utf8');
-
         const myProduct = this.products.find((product) => product.id === myId);
         if (myProduct) {
+            console.log(myProduct);
             return myProduct;
         }else{
             console.log(`Product with ID ${myId} Not Found`);
@@ -85,7 +85,7 @@ class ProductManager {
 
             if(deleteProduct >= 0) {
                 this.products.splice(deleteProduct, 1);
-                console.log(this.products)
+                console.log(this.products);
                 await fs.promises.writeFile(`${this.path}/products.txt`, JSON.stringify(this.products, null, '\t'));
             }else{
                 console.log("Product with this ID does not exist.")
@@ -144,6 +144,7 @@ product.getProductById(3);
 //Nuevo Producto
 product.addProducts(newProduct2);
 product.addProducts(newProduct3);
+product.getProductById(3);
 
 product.deleteProduct(1);
 product.deleteProduct(2);
