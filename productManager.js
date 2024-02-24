@@ -80,12 +80,13 @@ class ProductManager {
         try {
             let myFile = fs.readFileSync(`${this.path}/products.txt`, 'utf8');
             this.products = JSON.parse(myFile);
-            console.log(this.products);
+
+            //Busco el producto a borrar con ese mismo ID.
             const deleteProduct = this.products.findIndex((product) => product.id === myId);
 
             if(deleteProduct >= 0) {
+                //Borro el producto con Splice.
                 this.products.splice(deleteProduct, 1);
-                console.log(this.products);
                 fs.writeFileSync(`${this.path}/products.txt`, JSON.stringify(this.products, null, '\t'));
                 console.log(`Product with ${myId} deleted.`);
             }else{
