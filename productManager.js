@@ -1,13 +1,13 @@
-const fs = require('fs');
+import { writeFileSync, promises, readFileSync } from 'fs';
 
 //Genero clase constructora ProductManager
 class ProductManager {
-    //Creo un array vacio y agrego directorio a usar mi products.txt.
+    //Creo un array vacio y agrego directorio a usar mi products.json.
 	constructor() {
         this.products = [];
         this.path = './myFile';
 
-        fs.writeFileSync(`${this.path}/products.txt`, JSON.stringify(this.products, null, '\t'));
+        writeFileSync(`${this.path}/products.json`, JSON.stringify(this.products, null, '\t'));
     };
 
     //Función Agregar productos
@@ -24,7 +24,7 @@ class ProductManager {
             if (!duplicatedCode) {
                 let id = this.products.length + 1;
                 this.products.push({id, title, description, price, thumbnail, code, stock});
-                fs.writeFileSync(`${this.path}/products.txt`, JSON.stringify(this.products, null, '\t'));
+                writeFileSync(`${this.path}/products.json`, JSON.stringify(this.products, null, '\t'));
                 return this.products;
             }else{
                 console.log("El código no puede estar repetido");
@@ -37,7 +37,7 @@ class ProductManager {
     //Leo el archivo y veo si realmente existe.
     getProducts = async () => {
             try {
-                let myFile = await fs.promises.readFile(`${this.path}/products.txt`, 'utf8');
+                let myFile = await promises.readFile(`${this.path}/products.json`, 'utf8');
                 console.log(myFile);
             } catch (error) {
                 console.error("Could not read file!!!", error);
@@ -46,7 +46,7 @@ class ProductManager {
 
     //Quiero ver si el id existe usando como parametro un id que yo le asigno al método.
     getProductById = async (myId) => {
-        await fs.promises.readFile(`${this.path}/products.txt`, 'utf8');
+        await promises.readFile(`${this.path}/products.json`, 'utf8');
         const myProduct = this.products.find((product) => product.id === myId);
         if (myProduct) {
             return myProduct;
@@ -66,7 +66,7 @@ class ProductManager {
                     return;
                 } else {
                     this.products[index] = { ...this.products[index], ...myProduct, id: myId };
-                    fs.writeFileSync(`${this.path}/products.txt`, JSON.stringify(this.products, null, '\t'));
+                    writeFileSync(`${this.path}/products.json`, JSON.stringify(this.products, null, '\t'));
                 }
             } else {
                 console.log(`Product with ID ${myId} Not Found`);
@@ -78,7 +78,7 @@ class ProductManager {
 
     deleteProduct = (myId) => {
         try {
-            let myFile = fs.readFileSync(`${this.path}/products.txt`, 'utf8');
+            let myFile = readFileSync(`${this.path}/products.json`, 'utf8');
             this.products = JSON.parse(myFile);
 
             //Busco el producto a borrar con ese mismo ID.
@@ -87,7 +87,7 @@ class ProductManager {
             if(deleteProduct >= 0) {
                 //Borro el producto con Splice.
                 this.products.splice(deleteProduct, 1);
-                fs.writeFileSync(`${this.path}/products.txt`, JSON.stringify(this.products, null, '\t'));
+                writeFileSync(`${this.path}/products.json`, JSON.stringify(this.products, null, '\t'));
                 console.log(`Product with ${myId} deleted.`);
             }else{
                 console.log(`Product with ${myId} does not exist.`)
