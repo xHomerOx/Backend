@@ -1,10 +1,24 @@
 import express from 'express';
-import myProducts from './myFile/products.json' assert { type: "json" };
+import fs from 'fs';
 
 const app = express();
 
-app.get('/products', (req, res) => {
-    console.log(myProducts);
+app.use(express.urlencoded({ extended: true }));
+
+app.use(express.json());
+
+app.get('/products', async (req, res) => {
+    try{
+        const products = await fs.promises.readFile('./myFile/products.json');
+        const myObject = JSON.parse(products);
+        res.json(myObject);
+    }catch{
+        console.error(error);
+        res.status(500).send('Internal Server Error');
+    }
 });
 
-app.listen(8080, () => console.log("Server Started"));
+
+const PORT = 8080;
+
+app.listen(PORT, () => console.log("Server Started"));
