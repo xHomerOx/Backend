@@ -7,8 +7,6 @@ const app = express();
 
 app.use(express.urlencoded({ extended: true }));
 
-app.use(express.json());
-
 app.get('/products', async (req, res) => {
     try{
         const products = await myProducts.getProducts();
