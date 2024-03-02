@@ -108,6 +108,8 @@ class ProductManager {
     }
 }
 
+let product = new ProductManager();
+
 const newProduct = {
     title: 'Producto 1', 
     description: 'Mi producto 1', 
@@ -197,5 +199,16 @@ const newProduct10 = {
     code: 'A010', 
     stock: 100
 };
+
+product.addProducts(newProduct);
+product.addProducts(newProduct2);
+product.addProducts(newProduct3);
+product.addProducts(newProduct4);
+product.addProducts(newProduct5);
+product.addProducts(newProduct6);
+product.addProducts(newProduct7);
+product.addProducts(newProduct8);
+product.addProducts(newProduct9);
+product.addProducts(newProduct10);
 
 export default ProductManager;
