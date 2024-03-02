@@ -1,6 +1,7 @@
 import express from 'express';
 import ProductManager from './productManager.js';
 
+//Importo la dependencia/modulo y lo asigno a una constante.
 const myProducts = new ProductManager();
 
 const app = express();
