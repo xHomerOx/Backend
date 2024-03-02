@@ -5,6 +5,7 @@ class ProductManager {
     //Creo un array vacio y agrego directorio a usar mi products.json.
 	constructor() {
         this.path = './myFile';
+        fs.writeFileSync(`${this.path}/products.txt`, JSON.stringify(this.products, null, '\t'));
     };
 
     //Función Agregar productos
