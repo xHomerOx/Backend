@@ -9,7 +9,9 @@ app.use(express.urlencoded({ extended: true }));
 
 app.get('/products', async (req, res) => {
     try{
-        const products = await myProducts.getProducts();
+        let limit = req.query.limit;
+
+        const products = await myProducts.getProducts(limit);
         res.json(products);
     }catch(error){
         console.error(error);

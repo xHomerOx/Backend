@@ -4,7 +4,7 @@ import { writeFileSync, promises, readFileSync } from 'fs';
 class ProductManager {
     //Creo un array vacio y agrego directorio a usar mi products.json.
 	constructor() {
-        this.path = '../myFile';
+        this.path = './myFile';
     };
 
     //Función Agregar productos
@@ -32,15 +32,22 @@ class ProductManager {
     };
 
     //Leo el archivo y veo si realmente existe.
-    getProducts = async () => {
-            try {
-                let myFile = await promises.readFile(`${this.path}/products.json`, 'utf8');
-                return JSON.parse(myFile);
-            } catch (error) {
-                console.error(error);
-                throw error;
+    getProducts = async (limit) => {
+        try {
+            let myFile = await promises.readFile(`${this.path}/products.json`, 'utf8');
+            let products = JSON.parse(myFile);
+
+            if (limit) {
+                products = products.slice(0, limit);
             }
-        }
+    
+            return products;
+
+        } catch (error) {
+            console.error(error);
+            throw error;
+        }    
+    }
 
     //Quiero ver si el id existe usando como parametro un id que yo le asigno al método.
     getProductById = async (myId) => {
