@@ -7,10 +7,23 @@ const app = express();
 
 app.use(express.urlencoded({ extended: true }));
 
-app.get('/products', async (req, res) => {
+//Creo la funcion asincrona de mi saludo -- en Arial sin estilo SaSS/CSS3 ya que es lo unico que voy a mostrar --
+async function myGreetings() {
+    return '<font face="arial">Ir a "/products" para ver el listado</font>'
+}
+
+//Devuelvo mi saludo.
+app.get('/', async (req, res) => {
+    let greetings = await myGreetings();
+    res.send(greetings);
+})
+
+//Voy al Endpoint de products para ver los resultados y filtrar.
+app.get('/products/', async (req, res) => {
     try{
         let limit = req.query.limit;
 
+        //Devuelve el limite sorteado/ordenado desde el primero cuando castea la funcion.
         const products = await myProducts.getProducts(limit);
         res.json(products);
     }catch(error){
@@ -19,6 +32,20 @@ app.get('/products', async (req, res) => {
     }
 });
 
+//Llamo a getProductById y ejecuto metodo find.
+app.get('/products/:pid', async (req, res) => {
+    try{
+        //ya que req.params es un string junto a pid lo pase a entero.
+        let pid = parseInt(req.params.pid);
+
+        //Si no encuentra el ID devolvera el mensaje del metodo/function o NaN si es String.
+        const products = await myProducts.getProductById(pid);
+        res.json(products);
+    }catch(error){
+        console.error(error);
+        res.status(500).send('Internal Server Error');
+    }
+});
 
 const PORT = 8080;
 

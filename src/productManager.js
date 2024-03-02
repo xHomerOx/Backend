@@ -37,12 +37,9 @@ class ProductManager {
             let myFile = await promises.readFile(`${this.path}/products.json`, 'utf8');
             let products = JSON.parse(myFile);
 
-            if (limit) {
-                products = products.slice(0, limit);
-            }
-    
-            return products;
+            if (limit) products = products.slice(0, limit);    
 
+            return products;
         } catch (error) {
             console.error(error);
             throw error;
@@ -51,12 +48,20 @@ class ProductManager {
 
     //Quiero ver si el id existe usando como parametro un id que yo le asigno al método.
     getProductById = async (myId) => {
-        await promises.readFile(`${this.path}/products.json`, 'utf8');
-        const myProduct = this.products.find((product) => product.id === myId);
-        if (myProduct) {
-            return myProduct;
-        }else{
-            console.log(`Product with ID ${myId} Not Found`);
+        try {
+            let myFile = await promises.readFile(`${this.path}/products.json`, 'utf8');
+            let products = JSON.parse(myFile);
+
+            const myProduct = products.find((product) => product.id === myId);
+
+            if (myProduct) {
+                return myProduct;
+            }else{
+                return (`Product with ID ${myId} Not Found`);
+            }
+        } catch(error) {
+            console.error(error);
+            throw error;
         }
     }
 
