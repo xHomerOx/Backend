@@ -25,5 +25,68 @@
 		"thumbnail": "prod3.jpg",
 		"code": "A003",
 		"stock": 30
+	},
+	{
+		"id": 4,
+		"title": "Producto 4",
+		"description": "Mi producto 41",
+		"price": 400,
+		"thumbnail": "prod4.jpg",
+		"code": "A004",
+		"stock": 40
+	},
+	{
+		"id": 5,
+		"title": "Producto 5",
+		"description": "Mi producto 5",
+		"price": 500,
+		"thumbnail": "prod5.jpg",
+		"code": "A005",
+		"stock": 50
+	},
+	{
+		"id": 6,
+		"title": "Producto 6",
+		"description": "Mi producto 63",
+		"price": 600,
+		"thumbnail": "prod6.jpg",
+		"code": "A006",
+		"stock": 60
+	},
+	{
+		"id": 7,
+		"title": "Producto 7",
+		"description": "Mi producto 7",
+		"price": 700,
+		"thumbnail": "prod7.jpg",
+		"code": "A007",
+		"stock": 70
+	},
+	{
+		"id": 8,
+		"title": "Producto 8",
+		"description": "Mi producto 8",
+		"price": 800,
+		"thumbnail": "prod8.jpg",
+		"code": "A008",
+		"stock": 80
+	},
+	{
+		"id": 9,
+		"title": "Producto 9",
+		"description": "Mi producto 9",
+		"price": 900,
+		"thumbnail": "prod9.jpg",
+		"code": "A009",
+		"stock": 90
+	},
+	{
+		"id": 10,
+		"title": "Producto 10",
+		"description": "Mi producto 10",
+		"price": 900,
+		"thumbnail": "prod10.jpg",
+		"code": "A010",
+		"stock": 100
 	}
 ]

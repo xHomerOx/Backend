@@ -5,7 +5,6 @@ class ProductManager {
     //Creo un array vacio y agrego directorio a usar mi products.json.
 	constructor() {
         this.path = './myFile';
-        fs.writeFileSync(`${this.path}/products.txt`, JSON.stringify(this.products, null, '\t'));
     };
 
     //Función Agregar productos
@@ -108,108 +107,5 @@ class ProductManager {
         }
     }
 }
-
-let product = new ProductManager();
-
-const newProduct = {
-    title: 'Producto 1', 
-    description: 'Mi producto 1', 
-    price: 100, 
-    thumbnail: 'prod1.jpg', 
-    code: 'A001', 
-    stock: 10
-};
-
-const newProduct2 = { 
-    title: 'Producto 2', 
-    description: 'Mi producto 2', 
-    price: 200, 
-    thumbnail: 'prod2.jpg', 
-    code: 'A002', 
-    stock: 20
-};
-
-const newProduct3 = { 
-    title: 'Producto 3', 
-    description: 'Mi producto 3', 
-    price: 300, 
-    thumbnail: 'prod3.jpg', 
-    code: 'A003', 
-    stock: 30
-};
-
-const newProduct4 = {
-    title: 'Producto 4', 
-    description: 'Mi producto 41', 
-    price: 400, 
-    thumbnail: 'prod4.jpg', 
-    code: 'A004', 
-    stock: 40
-};
-
-const newProduct5 = { 
-    title: 'Producto 5', 
-    description: 'Mi producto 5', 
-    price: 500, 
-    thumbnail: 'prod5.jpg', 
-    code: 'A005', 
-    stock: 50
-};
-
-const newProduct6 = { 
-    title: 'Producto 6', 
-    description: 'Mi producto 63', 
-    price: 600, 
-    thumbnail: 'prod6.jpg', 
-    code: 'A006', 
-    stock: 60
-};
-
-const newProduct7 = {
-    title: 'Producto 7', 
-    description: 'Mi producto 7', 
-    price: 700, 
-    thumbnail: 'prod7.jpg', 
-    code: 'A007', 
-    stock: 70
-};
-
-const newProduct8 = { 
-    title: 'Producto 8', 
-    description: 'Mi producto 8', 
-    price: 800, 
-    thumbnail: 'prod8.jpg', 
-    code: 'A008', 
-    stock: 80
-};
-
-const newProduct9 = { 
-    title: 'Producto 9', 
-    description: 'Mi producto 9', 
-    price: 900, 
-    thumbnail: 'prod9.jpg', 
-    code: 'A009', 
-    stock: 90
-};
-
-const newProduct10 = { 
-    title: 'Producto 10', 
-    description: 'Mi producto 10', 
-    price: 900, 
-    thumbnail: 'prod10.jpg', 
-    code: 'A010', 
-    stock: 100
-};
-
-product.addProducts(newProduct);
-product.addProducts(newProduct2);
-product.addProducts(newProduct3);
-product.addProducts(newProduct4);
-product.addProducts(newProduct5);
-product.addProducts(newProduct6);
-product.addProducts(newProduct7);
-product.addProducts(newProduct8);
-product.addProducts(newProduct9);
-product.addProducts(newProduct10);
 
 export default ProductManager;
