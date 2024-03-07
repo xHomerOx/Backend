@@ -12,12 +12,19 @@ class ProductManager {
         const { title, description, price, code, status, stock, category } = myProduct;
         const duplicatedCode = this.products.some((product) => product.code === code);
         
-        if (title && description && price && code && status && stock && category ) {
+        const myStatus = true || status;
+        
+        if (title && description && price && code && myStatus && stock && category ) {
             if (!duplicatedCode) {
                 let id = this.products.length + 1;
-                let thumbnail = [] || '';
-                let status = true || myProduct.status;
+                let thumbnail = [];
                 
+                for(thumb in thumbnail) {
+                    if(thumbnail[thumb] !== '') {
+                        thumbnail.push({[thumb]: thumbnail[thumb]});
+                    }
+                }
+
                 this.products.push({id, title, description, price, thumbnail, code, status, stock, category});
                 writeFileSync(`${this.path}/products.json`, JSON.stringify(this.products, null, '\t'));
                 return this.products;
