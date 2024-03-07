@@ -20,9 +20,7 @@ class ProductManager {
                 let thumbnail = [];
                 
                 for(thumb in thumbnail) {
-                    if(thumbnail[thumb] !== '') {
-                        thumbnail.push({[thumb]: thumbnail[thumb]});
-                    }
+                    thumbnail.push({[thumb]: thumbnail[thumb]});
                 }
 
                 this.products.push({id, title, description, price, thumbnail, code, status, stock, category});
