@@ -9,16 +9,16 @@ class ProductManager {
 
     addProducts = (myProduct) => { 
 
-        const { title, description, price, thumbnail, code, stock } = myProduct;
+        const { title, description, price, code, status, stock, category } = myProduct;
         const duplicatedCode = this.products.some((product) => product.code === code);
         
-        if (title && description && price && code && stock) {
+        if (title && description && price && code && status && stock && category ) {
             if (!duplicatedCode) {
                 let id = this.products.length + 1;
-
-                let thumbnail = myProduct.thumbnail || '';
-
-                this.products.push({id, title, description, price, thumbnail, code, stock});
+                let thumbnail = [] || '';
+                let status = true || myProduct.status;
+                
+                this.products.push({id, title, description, price, thumbnail, code, status, stock, category});
                 writeFileSync(`${this.path}/products.json`, JSON.stringify(this.products, null, '\t'));
                 return this.products;
             }else{

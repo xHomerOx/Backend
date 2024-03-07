@@ -26,11 +26,11 @@ router.get('/:pid', async (req, res) => {
 
 router.post("/", async (req, res) => {
 
-    const { title, description, price, code, stock } = req.body;
+    const { title, description, price, code, status, stock, category } = req.body;
 
     await myProducts.addProducts(req.body);
 
-    if (!title || !description || !price || !code || !stock) return res.status(400).send({error: "Fill the required fields to continue..."});
+    if (typeof title !== 'string' || typeof description !== 'string' || typeof price !== 'number' || typeof code !== 'string' || typeof status !== 'boolean' || typeof stock !== 'number' || typeof category !== 'string') return res.status(400).send({error: "Fill the required fields with valid data to continue..."});
 
     res.status(201).send({message: "Product succesfully created!"});
 });
