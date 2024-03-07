@@ -88,5 +88,23 @@
 		"thumbnail": "prod10.jpg",
 		"code": "A010",
 		"stock": 100
+	},
+	{
+		"id": 11,
+		"title": "sdasdas",
+		"description": "sdasd",
+		"price": 11,
+		"thumbnail": "",
+		"code": 11211,
+		"stock": 1
+	},
+	{
+		"id": 12,
+		"title": "sdasdas",
+		"description": "sdasd",
+		"price": 11,
+		"thumbnail": "sdas.jpg",
+		"code": 1211,
+		"stock": 1
 	}
 ]

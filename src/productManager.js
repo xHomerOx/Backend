@@ -1,25 +1,23 @@
 import { writeFileSync, promises, readFileSync } from 'fs';
 
-//Genero clase constructora ProductManager
 class ProductManager {
-    //Creo un array vacio y agrego directorio a usar mi products.json.
 	constructor() {
         this.path = './myFile';
+        let myFile = readFileSync(`${this.path}/products.json`, 'utf8');
+        this.products = JSON.parse(myFile);
     };
 
-    //Función Agregar productos
     addProducts = (myProduct) => { 
 
         const { title, description, price, thumbnail, code, stock } = myProduct;
-        
-        //Chequeo que los campos sean obligatorios y que "code" no se repita, tirando el mensaje correspondiente.
         const duplicatedCode = this.products.some((product) => product.code === code);
         
-        if (title && description && price && thumbnail && code && stock) {
-
-            //Si el numero de codigo no se duplica escribir archivo con el producto.
+        if (title && description && price && code && stock) {
             if (!duplicatedCode) {
                 let id = this.products.length + 1;
+
+                let thumbnail = myProduct.thumbnail || '';
+
                 this.products.push({id, title, description, price, thumbnail, code, stock});
                 writeFileSync(`${this.path}/products.json`, JSON.stringify(this.products, null, '\t'));
                 return this.products;
