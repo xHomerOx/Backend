@@ -84,7 +84,7 @@
 		"id": 10,
 		"title": "Producto 10",
 		"description": "Mi producto 10",
-		"price": 900,
+		"price": 1000,
 		"thumbnail": "prod10.jpg",
 		"code": "A010",
 		"stock": 100
