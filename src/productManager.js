@@ -36,7 +36,6 @@ class ProductManager {
         }
     };
 
-    //Leo el archivo y veo si realmente existe.
     getProducts = async (limit) => {
         try {
             let myFile = await promises.readFile(`${this.path}/products.json`, 'utf8');
@@ -51,7 +50,6 @@ class ProductManager {
         }    
     }
 
-    //Quiero ver si el id existe usando como parametro un id que yo le asigno al método.
     getProductById = async (myId) => {
         try {
             let myFile = await promises.readFile(`${this.path}/products.json`, 'utf8');
@@ -75,9 +73,8 @@ class ProductManager {
             const index = this.products.findIndex((product) => product.id === myId);
             if (index >= 0) {
                 
-                // Si el ID del Producto es diferente al que yo le quiero asignar muestra NOT FOUND.
                 if (myProduct.id && myProduct.id !== myId) {
-                    console.log("Updating ID is forbidden!!! >("); //Prohibo el uso de modificar el ID con el IF de arriba.
+                    console.log("Updating ID is forbidden!!! >(");
                     return;
                 } else {
                     this.products[index] = { ...this.products[index], ...myProduct, id: myId };

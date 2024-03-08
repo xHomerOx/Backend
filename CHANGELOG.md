@@ -4,5 +4,9 @@ Desarrollar el servidor basado en Node.JS y express, que escuche en el puerto 80
 
 ## Started Date: 07-03-2024
 
-Routers Setup
+Routers Setup.
 Added GET and POST requests to products router.
+
+## 08-03-2024
+
+Added Thumbnail Array.
