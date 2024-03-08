@@ -1,13 +1,30 @@
 import { Router } from "express";
+import ProductManager from "../productManager.js";
+import { promises } from 'fs';
 
+const myProducts = new ProductManager();
 const router = Router();
 
-const carts = [];
+let carts = [];
+let products = [];
+
+const path = myProducts.path;
 
 router.post("/", async (req, res) => {
-    const { products } = req.body;
+    let myFile;
 
-    res.status(201).send({message: "Product succesfully created!"});
+    try {
+        myFile = await promises.readFile(`${path}/carts.json`, 'utf8');
+        carts = JSON.parse(myFile);
+    } catch (error) {
+        console.error(error);
+    }
+
+    let id = carts.length + 1;
+    
+    carts.push({id, products});
+    await promises.writeFile(`${path}/carts.json`, JSON.stringify(carts, null, '\t'));
+    return carts;
 });
 
 router.get('/', (req, res) => {
