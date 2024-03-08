@@ -9,7 +9,7 @@ class ProductManager {
 
     addProducts = (myProduct) => { 
 
-        const { title, description, price, code, status, thumbnail = myProduct.thumbnail || [], stock, category } = myProduct;
+        const { title, description, price, code, status, myThumbnail = myProduct.thumbnail || [], stock, category } = myProduct;
         const duplicatedCode = this.products.some((product) => product.code === code);
         
         const myStatus = true || status;
@@ -17,12 +17,12 @@ class ProductManager {
         if (title && description && price && code && myStatus && stock && category ) {
             if (!duplicatedCode) {
                 let id = this.products.length + 1;
+                const thumbnail = [];
+                let key = 0;
                 
-                let index = 0;
-                
-                for (const value of thumbnail) {
-                    thumbnail.push({ [index]: value });
-                    index++;
+                for (const value of myThumbnail) {
+                    thumbnail.push({ [key]: value });
+                    key++;
                 }
 
                 this.products.push({id, title, description, price, thumbnail, code, status, stock, category});
