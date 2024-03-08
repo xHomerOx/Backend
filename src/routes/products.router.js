@@ -34,4 +34,39 @@ router.post("/", async (req, res) => {
     res.status(201).send({message: "Product succesfully created!"});
 });
 
+router.put("/:pid", async (req, res) => {
+    let pid = parseInt(req.params.pid);
+    let myPid = parseInt(req.body.id);
+    
+    try{
+        if(myPid === pid || !myPid) {
+            await myProducts.updateProduct(pid, req.body);
+            res.status(201).send({message: "Product updated succesfully!"});
+        }else{
+            res.status(403).send({ message: "Updating ID is forbidden!" });
+        }
+    }catch(error){
+        console.error(error);
+        res.status(500).send('Could not update product.');
+    }
+});
+
+router.delete("/:pid", async (req, res) => {
+    let pid = parseInt(req.params.pid);
+    const myProduct = await myProducts.getProductById(pid);
+    const myPid = myProduct.id;
+
+    try{
+        if(myPid === pid) {
+            await myProducts.deleteProduct(pid);
+            res.status(201).send({message: "Product deleted succesfully!"});
+        }else{
+            res.status(403).send({ message: "Product with this ID not found!" });
+        }
+    }catch(error){
+        console.error(error);
+        res.status(500).send('Could not delete product.');
+    }
+});
+
 export default router;

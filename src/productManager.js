@@ -1,4 +1,4 @@
-import { writeFileSync, promises, readFileSync } from 'fs';
+import { promises, readFileSync } from 'fs';
 
 class ProductManager {
 	constructor() {
@@ -7,7 +7,7 @@ class ProductManager {
         this.products = JSON.parse(myFile);
     };
 
-    addProducts = (myProduct) => { 
+    addProducts = async (myProduct) => { 
 
         const { title, description, price, code, status, myThumbnail = myProduct.thumbnail || [], stock, category } = myProduct;
         const duplicatedCode = this.products.some((product) => product.code === code);
@@ -26,7 +26,7 @@ class ProductManager {
                 }
 
                 this.products.push({id, title, description, price, thumbnail, code, status, stock, category});
-                writeFileSync(`${this.path}/products.json`, JSON.stringify(this.products, null, '\t'));
+                await promises.writeFile(`${this.path}/products.json`, JSON.stringify(this.products, null, '\t'));
                 return this.products;
             }else{
                 console.log("El código no puede estar repetido");
@@ -68,7 +68,7 @@ class ProductManager {
         }
     }
 
-    updateProduct = (myId, myProduct) => {
+    updateProduct = async (myId, myProduct) => {
         try {
             const index = this.products.findIndex((product) => product.id === myId);
             if (index >= 0) {
@@ -78,7 +78,7 @@ class ProductManager {
                     return;
                 } else {
                     this.products[index] = { ...this.products[index], ...myProduct, id: myId };
-                    writeFileSync(`${this.path}/products.json`, JSON.stringify(this.products, null, '\t'));
+                    await promises.writeFile(`${this.path}/products.json`, JSON.stringify(this.products, null, '\t'));
                 }
             } else {
                 console.log(`Product with ID ${myId} Not Found`);
@@ -88,18 +88,16 @@ class ProductManager {
         }
     }
 
-    deleteProduct = (myId) => {
+    deleteProduct = async (myId) => {
         try {
-            let myFile = readFileSync(`${this.path}/products.json`, 'utf8');
+            let myFile = await promises.readFile(`${this.path}/products.json`, 'utf8');
             this.products = JSON.parse(myFile);
 
-            //Busco el producto a borrar con ese mismo ID.
             const deleteProduct = this.products.findIndex((product) => product.id === myId);
 
             if(deleteProduct >= 0) {
-                //Borro el producto con Splice.
                 this.products.splice(deleteProduct, 1);
-                writeFileSync(`${this.path}/products.json`, JSON.stringify(this.products, null, '\t'));
+                await promises.writeFile(`${this.path}/products.json`, JSON.stringify(this.products, null, '\t'));
                 console.log(`Product with ${myId} deleted.`);
             }else{
                 console.log(`Product with ${myId} does not exist.`)

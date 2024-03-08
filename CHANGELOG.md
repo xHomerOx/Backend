@@ -10,3 +10,4 @@ Added GET and POST requests to products router.
 ## 08-03-2024
 
 Added Thumbnail Array.
+Added PUT and DELETE requests to products router.
