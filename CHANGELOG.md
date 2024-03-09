@@ -7,6 +7,7 @@ Desarrollar el servidor basado en Node.JS y express, que escuche en el puerto 80
 Added Cart Array.
 Added POST and GET elements to Cart to insert and retrieve data.
 Fixed Thumbnail and Products Array to check if Array or Simple String.
+Created Products ID with Cart ID in Main Array and Products Array.
 
 ## 08-03-2024
 

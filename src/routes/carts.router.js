@@ -55,25 +55,33 @@ router.get('/:cid', async (req, res) => {
 });
 
 router.post("/:cid/product/:pid", async (req, res) => {
-    let cid = parseInt(req.params.cid);
-    console.log(cid);
-    const productName = req.body.products;
+    const product = parseInt(req.params.pid);
+    
+    let myProductsFile = await promises.readFile(`${path}/products.json`, 'utf8');
+    const myProducts = JSON.parse(myProductsFile);
+    
+    const myIdChecker = myProducts.some((item) => item.id === product);
 
-    let myFile = await promises.readFile(`${path}/products.json`, 'utf8');
-    const myProducts = JSON.parse(myFile);
+    if(myIdChecker) {
+        let myFile = await promises.readFile(`${path}/carts.json`, 'utf8');
+        const myCarts = JSON.parse(myFile);
+        let quantity = 0;
 
-    let myProduct = myProducts.map((element) => {
-        element.id === cid && element.title === productName
-    });
-            
-    let id = carts.length + 1;
-    const myCart = carts.push({id, products: myProduct});
+        if (myCarts.length !== 0) {
+            myCarts.forEach(element => {
+                const products = element.products;
+                products.push({product: product, quantity: quantity+1});
+            });
+        }else{
+            myCarts.push({ id: 1, products: [{ product: product }] });
+        }
 
-    await promises.writeFile(`${path}/carts.json`, JSON.stringify(myCart, null, '\t'));
+        await promises.writeFile(`${path}/carts.json`, JSON.stringify(myCarts, null, '\t'));
 
-    return res.status(201).send({ message: "Product successfully added to cart!" });
-
-
+        return res.status(201).send({ message: "Product successfully added to cart!" });
+    }else{
+        return res.status(400).send({ message: "Could not find product with this ID" });
+    }
 });
 
 export default router;
