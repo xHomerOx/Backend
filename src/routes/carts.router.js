@@ -7,6 +7,7 @@ const router = Router();
 
 let carts = [];
 const path = myProducts.path;
+let quantity = 0;
 
 if (!existsSync(`${path}/carts.json`)) {
     writeFileSync(`${path}/carts.json`, JSON.stringify(carts, null, '\t'));
@@ -65,15 +66,22 @@ router.post("/:cid/product/:pid", async (req, res) => {
     if(myIdChecker) {
         let myFile = await promises.readFile(`${path}/carts.json`, 'utf8');
         const myCarts = JSON.parse(myFile);
-        let quantity = 0;
 
         if (myCarts.length !== 0) {
             myCarts.forEach(element => {
                 const products = element.products;
-                products.push({product: product, quantity: quantity+1});
+                const sameProduct = myProducts.find((item) => item.id === product);
+                if(sameProduct) {
+                    const myProd = myCarts.find(item => item.id === sameProduct.id);
+                    if(myProd) {
+                        quantity = quantity+1;
+                    }
+                }else{
+                    products.push({product: product, quantity: quantity});
+                }
             });
         }else{
-            myCarts.push({ id: 1, products: [{ product: product }] });
+            myCarts.push({ id: 1, products: [{ product: product, quantity: quantity }] });
         }
 
         await promises.writeFile(`${path}/carts.json`, JSON.stringify(myCarts, null, '\t'));
