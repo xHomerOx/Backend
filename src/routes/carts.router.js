@@ -41,7 +41,6 @@ router.post("/", async (req, res) => {
 });
 
 router.get('/:cid', async (req, res) => {
-
     let cid = parseInt(req.params.cid);
     let myFile = await promises.readFile(`${path}/carts.json`, 'utf8');
     carts = JSON.parse(myFile);
@@ -56,7 +55,24 @@ router.get('/:cid', async (req, res) => {
 });
 
 router.post("/:cid/product/:pid", async (req, res) => {
-    
+    let cid = parseInt(req.params.cid);
+    console.log(cid);
+    const productName = req.body.products;
+
+    let myFile = await promises.readFile(`${path}/products.json`, 'utf8');
+    const myProducts = JSON.parse(myFile);
+
+    let myProduct = myProducts.map((element) => {
+        element.id === cid && element.title === productName
+    });
+            
+    let id = carts.length + 1;
+    const myCart = carts.push({id, products: myProduct});
+
+    await promises.writeFile(`${path}/carts.json`, JSON.stringify(myCart, null, '\t'));
+
+    return res.status(201).send({ message: "Product successfully added to cart!" });
+
 
 });
 
