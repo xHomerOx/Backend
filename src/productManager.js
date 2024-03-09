@@ -8,28 +8,26 @@ class ProductManager {
     };
 
     addProducts = async (myProduct) => { 
-
         const { title, description, price, code, status, myThumbnail = myProduct.thumbnail || [], stock, category } = myProduct;
         const duplicatedCode = this.products.some((product) => product.code === code);
-        
         const myStatus = true || status;
         
         if (title && description && price && code && myStatus && stock && category ) {
             if (!duplicatedCode) {
                 let id = this.products.length + 1;
-                const thumbnail = [];
-                let key = 0;
-                
-                for (const value of myThumbnail) {
-                    thumbnail.push({ [key]: value });
-                    key++;
-                }
+                const thumbnail = Array.isArray(myThumbnail) ? myThumbnail : [myThumbnail];
 
-                this.products.push({id, title, description, price, thumbnail, code, status, stock, category});
+                if (!Array.isArray(thumbnail)) {
+                    thumbnail = [thumbnail];
+                }
+        
+                const thumb = thumbnail.map((value, key) => ({ [key]: value }));
+
+                this.products.push({id, title, description, price, thumbnail: thumb, code, status, stock, category});
                 await promises.writeFile(`${this.path}/products.json`, JSON.stringify(this.products, null, '\t'));
                 return this.products;
             }else{
-                console.log("El código no puede estar repetido");
+                throw error;
             }
         }else{
             console.log("Todos los campos son obligatorios");
@@ -45,7 +43,6 @@ class ProductManager {
 
             return products;
         } catch (error) {
-            console.error(error);
             throw error;
         }    
     }
@@ -63,7 +60,6 @@ class ProductManager {
                 return (`Product with ID ${myId} Not Found`);
             }
         } catch(error) {
-            console.error(error);
             throw error;
         }
     }
