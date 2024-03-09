@@ -11,3 +11,8 @@ Added GET and POST requests to products router.
 
 Added Thumbnail Array.
 Added PUT and DELETE requests to products router.
+
+## 09-03-2024
+
+Added Cart Array.
+Added POST and GET elements to Cart to insert and retrieve data.
