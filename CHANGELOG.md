@@ -8,6 +8,7 @@ Fixed to Empty Cart Array in POST /.
 Fixed Cart and Product ID check.
 Fixed Quantity added with id of that Product to that Cart.
 For now the product will create only if cart exists.
+Modified Products.json status and added category.
 
 ## 09-03-2024
 
