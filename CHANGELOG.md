@@ -9,6 +9,7 @@ Fixed Cart and Product ID check.
 Fixed Quantity added with id of that Product to that Cart.
 For now the product will create only if cart exists.
 Modified Products.json status and added category.
+Added Feature to not update products with not found ID.
 
 ## 09-03-2024
 

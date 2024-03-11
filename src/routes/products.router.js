@@ -40,11 +40,15 @@ router.put("/:pid", async (req, res) => {
     let pid = parseInt(req.params.pid);
     let myPid = parseInt(req.body.id);
     
+    const myProduct = await myProducts.getProductById(pid);
+
     try{
-        if(myPid === pid || !myPid) {
+        if (!myProduct.id) {
+            res.status(403).send({ message: "ID was not found!!!" });
+        } else if (myPid === pid || !myPid) {
             await myProducts.updateProduct(pid, req.body);
             res.status(201).send({message: "Product updated succesfully!"});
-        }else{
+        } else {
             res.status(403).send({ message: "Updating ID is forbidden!" });
         }
     }catch(error){
