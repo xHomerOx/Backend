@@ -117,10 +117,7 @@ const products = [
 
 
 cartsRouter.get('/', async (_req, res) => {
-    res.render(
-        "home",
-        { title: 'Products', products }
-    )
+    res.render('home', { title: 'Products', products });
 });
 
 export default cartsRouter;
