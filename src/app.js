@@ -1,8 +1,10 @@
 import express from 'express';
+
+//Uso esto para un Layout customizado.
 import exphbs from 'express-handlebars';
 import path from 'path';
 import __dirname from './utils.js';
-import router from './routes/carts.router.js';
+import cartsRouter from './routes/carts.router.js';
 
 const app = express();
 
@@ -15,7 +17,7 @@ app.set('views', path.join(__dirname, 'views'));
 
 
 app.use(express.static(__dirname + '/public'));
-app.use("/", router);
+app.use("/", cartsRouter);
 
 const PORT = 8080;
 

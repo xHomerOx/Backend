@@ -1,6 +1,6 @@
 import { Router } from "express";
 
-const router = Router();
+const cartsRouter = Router();
 
 const products = [
     {
@@ -116,11 +116,11 @@ const products = [
 ];
 
 
-router.get('/', async (req, res) => {
+cartsRouter.get('/', async (_req, res) => {
     res.render(
         "home",
-        { products }
+        { title: 'Products', products }
     )
 });
 
-export default router;
+export default cartsRouter;
