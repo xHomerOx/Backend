@@ -1,6 +1,5 @@
 import express, { Router } from 'express';
 import __dirname from '../utils.js';
-import { socketServer } from '../app.js';
 
 //Me traigo solo el Objeto Products.
 import { products } from './carts.router.js';
@@ -15,10 +14,14 @@ viewsRouter.get('/', (_req, res) => {
 });
 
 viewsRouter.post("/", async (req, res) => {
-  const response = await myProduct.addProducts(req.body);
-  socketServer.emit(response);
+  try {
+    const response = await myProduct.addProducts(req.body);
+    socket.emit("productAdded", myProduct.products);
 
-  res.status(201).send(response);
+    res.status(201).send(response);
+  } catch (error) {
+    res.status(400).send(error.message);
+  }
 });
 
 

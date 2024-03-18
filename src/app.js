@@ -38,4 +38,8 @@ socketServer.on("connection", socket => {
     });
 });
 
+socketServer.on("productAdded", (updatedProducts) => {
+    console.log(updatedProducts);
+});
+
 export { socketServer }; 
