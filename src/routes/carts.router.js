@@ -120,4 +120,4 @@ cartsRouter.get('/', async (_req, res) => {
     res.render('home', { title: 'Products', products });
 });
 
-export default cartsRouter;
+export { cartsRouter, products };

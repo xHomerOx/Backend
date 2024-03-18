@@ -1,13 +1,11 @@
 import { Router } from 'express';
-import { join } from 'path';
-import fs from 'fs';
 import __dirname from '../utils.js';
+import { products } from './carts.router.js';
 
 const viewsRouter = Router();
-let myIndex;
 
 viewsRouter.get('/', (_req, res) => {
-  res.render('realTimeProducts');
+  res.render('realTimeProducts', { title: 'Products', products });
 });
 
 //Exporto ambos ya que tengo el Index en public.

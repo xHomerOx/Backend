@@ -4,7 +4,7 @@ import express from 'express';
 import exphbs from 'express-handlebars';
 import path from 'path';
 import __dirname from './utils.js';
-import cartsRouter from './routes/carts.router.js';
+import { cartsRouter } from './routes/carts.router.js';
 import viewsRouter from './routes/views.router.js';
 import { Server } from 'socket.io';
 
