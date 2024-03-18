@@ -37,3 +37,5 @@ socketServer.on("connection", socket => {
         console.log(data);
     });
 });
+
+export { socketServer }; 

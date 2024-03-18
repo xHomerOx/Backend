@@ -1,5 +1,7 @@
 class ProductManager {
-	constructor() {};
+	constructor() {
+        this.products = [];
+    };
 
     addProducts = async (myProduct) => { 
         const { title, description, price, code, status, myThumbnail = myProduct.thumbnail || [], stock, category } = myProduct;
