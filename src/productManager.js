@@ -1,6 +1,9 @@
+import { products } from "./routes/carts.router.js";
+
 class ProductManager {
-	constructor() {
-        this.products = [];
+	constructor(products) {
+        products = [];
+        this.products = products;
     };
 
     addProducts = async (myProduct) => { 

@@ -1,4 +1,4 @@
-import { Router } from 'express';
+import express, { Router } from 'express';
 import __dirname from '../utils.js';
 import { socketServer } from '../app.js';
 
@@ -6,15 +6,16 @@ import { socketServer } from '../app.js';
 import { products } from './carts.router.js';
 import ProductManager from '../productManager.js';
 
-const myProducts = new ProductManager();
+const myProduct = new ProductManager();
 const viewsRouter = Router();
+viewsRouter.use(express.json());
 
 viewsRouter.get('/', (_req, res) => {
   res.render('realTimeProducts', { title: 'Products', products });
 });
 
-viewsRouter.post("/", (req, res) => {
-  const response = myProducts.addProducts(req.body);
+viewsRouter.post("/", async (req, res) => {
+  const response = await myProduct.addProducts(req.body);
   socketServer.emit(response);
 
   res.status(201).send(response);
