@@ -1,12 +1,13 @@
 import { Router } from 'express';
 import { join } from 'path';
+import fs from 'fs';
+import __dirname from '../utils.js';
 
 const viewsRouter = Router();
 let myIndex;
 
-viewsRouter.get('/realtimeproducts', (_req, res) => {
-  const fs = require('fs');
-  myIndex = fs.readFileSync(join(__dirname, '../public/index.js'), 'utf8');
+viewsRouter.get('/', (_req, res) => {
+  myIndex = fs.readFileSync(join(__dirname, '/public/js/index.js'), 'utf8');
 
   res.render('realTimeProducts', { myIndex });
 });

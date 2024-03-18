@@ -25,11 +25,11 @@ app.use("/realtimeproducts", viewsRouter);
 const PORT = 8080;
 
 const httpServer = app.listen(PORT, () => {
-    console.log(`Servidor activo en http://localhost:${PORT}`);
+    console.log(`Server Started`);
 });
 
 const socketServer = new Server(httpServer);
 
 socketServer.on("connection", _socket => {
-    console.log(myIndex);
+    console.log(true);
 });
