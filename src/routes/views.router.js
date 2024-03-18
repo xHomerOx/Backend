@@ -6,7 +6,7 @@ let myIndex;
 
 viewsRouter.get('/realtimeproducts', (_req, res) => {
   const fs = require('fs');
-  const myIndex = fs.readFileSync(join(__dirname, '../public/index.js'), 'utf8');
+  myIndex = fs.readFileSync(join(__dirname, '../public/index.js'), 'utf8');
 
   res.render('realTimeProducts', { myIndex });
 });
