@@ -40,7 +40,7 @@ class ProductManager {
 
     getProductById = async (myId) => {
         try {
-            const myProduct = products.find((product) => product.id === myId);
+            const myProduct = this.products.find((product) => product.id === myId);
 
             if (myProduct) {
                 return myProduct;
