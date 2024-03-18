@@ -24,5 +24,4 @@ viewsRouter.post("/", async (req, res) => {
   }
 });
 
-
 export default viewsRouter;
