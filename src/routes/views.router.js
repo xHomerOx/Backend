@@ -4,6 +4,7 @@ import __dirname from '../utils.js';
 //Me traigo solo el Objeto Products.
 import { products } from './carts.router.js';
 import ProductManager from '../productManager.js';
+import { socketServer } from '../app.js';
 
 const myProduct = new ProductManager();
 const viewsRouter = Router();
@@ -16,7 +17,7 @@ viewsRouter.get('/', (_req, res) => {
 viewsRouter.post("/", async (req, res) => {
   try {
     const response = await myProduct.addProducts(req.body);
-    socket.emit("productAdded", myProduct.products);
+    socketServer.emit("productAdded", myProduct.products);
 
     res.status(201).send(response);
   } catch (error) {
