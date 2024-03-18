@@ -5,7 +5,7 @@ import exphbs from 'express-handlebars';
 import path from 'path';
 import __dirname from './utils.js';
 import cartsRouter from './routes/carts.router.js';
-import {viewsRouter, myIndex } from './routes/views.router.js';
+import viewsRouter from './routes/views.router.js';
 import { Server } from 'socket.io';
 
 const app = express();
@@ -17,7 +17,7 @@ app.engine('handlebars', exphbs.engine({ defaultLayout: false }));
 app.set('view engine', 'handlebars');
 app.set('views', path.join(__dirname, 'views'));
 
-app.use(express.static(__dirname + 'public'));
+app.use(express.static(path.join(__dirname, '../public')));
 
 app.use("/", cartsRouter);
 app.use("/realtimeproducts", viewsRouter);
@@ -30,6 +30,8 @@ const httpServer = app.listen(PORT, () => {
 
 const socketServer = new Server(httpServer);
 
-socketServer.on("connection", _socket => {
-    console.log(true);
+socketServer.on("connection", socket => {
+    socket.on("message", data => {
+        console.log(data);
+    });
 });

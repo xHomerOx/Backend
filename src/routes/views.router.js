@@ -7,10 +7,8 @@ const viewsRouter = Router();
 let myIndex;
 
 viewsRouter.get('/', (_req, res) => {
-  myIndex = fs.readFileSync(join(__dirname, '/public/js/index.js'), 'utf8');
-
-  res.render('realTimeProducts', { myIndex });
+  res.render('realTimeProducts');
 });
 
 //Exporto ambos ya que tengo el Index en public.
-export { viewsRouter, myIndex } ;
+export default viewsRouter;
