@@ -25,4 +25,16 @@ viewsRouter.post("/", async (req, res) => {
   }
 });
 
+viewsRouter.delete("/:id", async (req, res) => {
+  try {
+    const productId = req.params.id;
+    await myProduct.deleteProduct(parseInt(productId));
+    socketServer.emit("productDeleted", productId); 
+
+    res.status(201).send(productId);
+  } catch (error) {
+    res.status(400).send(error.message);
+  }
+});
+
 export default viewsRouter;

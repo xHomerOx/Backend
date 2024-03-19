@@ -19,9 +19,19 @@ socket.on("productAdded", (addedProducts) => {
             <p>Product Code: ${product.code}</p>
             <p>Stock: ${product.stock}</p>
             <p>Category: ${product.category}</p>
+            <button class="deleteButton" data-id="${product.id}">Delete Product</button>
         `;
         productList.appendChild(listItem);
     });
+});
+
+socket.on("productDeleted", (deletedProduct) => {
+    const productList = document.getElementById("productList");
+    const deletedListItem = document.getElementById(`${deletedProduct}`);
+    console.log(deletedProduct)
+    if (deletedListItem) {
+        productList.removeChild(deletedListItem);
+    }
 });
 
 const addProductForm = document.getElementById("addProductForm");
@@ -49,6 +59,26 @@ addProductForm.addEventListener("submit", async (event) => {
     if (response.ok) {
         console.log("Product added successfully");
     } else {
-        console.error("Error adding product");
+        console.error(error);
+    }
+});
+
+document.addEventListener("click", async (event) => {
+    if (event.target.classList.contains("deleteButton")) {
+        const productId = event.target.dataset.id;
+
+        try {
+            const response = await fetch(`/realtimeproducts/${productId}`, {
+                method: "DELETE",
+            });
+
+            if (response.ok) {
+                console.log("Product deleted successfully");
+            } else {
+                console.error("Error deleting product");
+            }
+        } catch (error) {
+            console.error(error);
+        }
     }
 });
