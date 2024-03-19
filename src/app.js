@@ -36,11 +36,6 @@ socketServer.on("connection", socket => {
     socket.on("message", data => {
         console.log(data);
     });
-
-    socket.on("productAdded", (addedProducts) => {
-        console.log(addedProducts);
-    });
-    
 });
 
 export { socketServer }; 
