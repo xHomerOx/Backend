@@ -29,7 +29,7 @@ socket.on("productAdded", (addedProducts) => {
 socket.on("productDeleted", (deletedProduct) => {
     const productList = document.getElementById("productList");
     const deletedListItem = document.getElementById(deletedProduct);
-    console.log(deletedProduct)
+
     if (deletedListItem) {
         productList.removeChild(deletedListItem);
     }
