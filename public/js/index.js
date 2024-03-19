@@ -12,6 +12,7 @@ socket.on("productAdded", (addedProducts) => {
     
     addedProducts.forEach(product => {
         const listItem = document.createElement("li");
+        listItem.id = `${product.id}`;
         listItem.innerHTML = `
             <h2>Title: ${product.title}</h2>
             <p>Description: ${product.description}</p>
@@ -27,7 +28,7 @@ socket.on("productAdded", (addedProducts) => {
 
 socket.on("productDeleted", (deletedProduct) => {
     const productList = document.getElementById("productList");
-    const deletedListItem = document.getElementById(`${deletedProduct}`);
+    const deletedListItem = document.getElementById(deletedProduct);
     console.log(deletedProduct)
     if (deletedListItem) {
         productList.removeChild(deletedListItem);
