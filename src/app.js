@@ -3,11 +3,11 @@ import express from 'express';
 //Uso esto para un Layout customizado.
 import exphbs from 'express-handlebars';
 import path from 'path';
-import __dirname from './utils.js';
+import __dirname from './utils/utils.js';
 
 //Me traigo solo el Router de Carts, por eso lo puse entre llaves.
-import { cartsRouter } from './routes/carts.router.js';
-import viewsRouter from './routes/views.router.js';
+import { cartsRouter } from './routes/cartsRoute.js';
+import viewsRouter from './routes/viewsRoute.js';
 import { Server } from 'socket.io';
 
 const app = express();

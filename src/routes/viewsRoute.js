@@ -1,9 +1,9 @@
 import express, { Router } from 'express';
-import __dirname from '../utils.js';
+import __dirname from '../utils/utils.js';
 
 //Me traigo solo el Objeto Products.
 import { products } from './carts.router.js';
-import ProductManager from '../productManager.js';
+import ProductManager from '../dao/productManagerFS.js';
 import { socketServer } from '../app.js';
 
 const myProduct = new ProductManager();
