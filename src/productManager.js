@@ -1,11 +1,9 @@
-import { promises, readFileSync } from 'fs';
+import { products } from "./routes/carts.router.js";
 
 class ProductManager {
 	constructor() {
-        this.path = './myFile';
-        let myFile = readFileSync(`${this.path}/products.json`, 'utf8');
-        this.products = JSON.parse(myFile);
-    };
+        this.products = products;
+    }
 
     addProducts = async (myProduct) => { 
         const { title, description, price, code, status, myThumbnail = myProduct.thumbnail || [], stock, category } = myProduct;
@@ -24,7 +22,7 @@ class ProductManager {
                 const thumb = thumbnail.map((value, key) => ({ [key]: value }));
 
                 this.products.push({id, title, description, price, thumbnail: thumb, code, status, stock, category});
-                await promises.writeFile(`${this.path}/products.json`, JSON.stringify(this.products, null, '\t'));
+            
                 return this.products;
             }else{
                 throw error;
@@ -36,9 +34,6 @@ class ProductManager {
 
     getProducts = async (limit) => {
         try {
-            let myFile = await promises.readFile(`${this.path}/products.json`, 'utf8');
-            let products = JSON.parse(myFile);
-
             if (limit) products = products.slice(0, limit);    
 
             return products;
@@ -49,10 +44,7 @@ class ProductManager {
 
     getProductById = async (myId) => {
         try {
-            let myFile = await promises.readFile(`${this.path}/products.json`, 'utf8');
-            let products = JSON.parse(myFile);
-
-            const myProduct = products.find((product) => product.id === myId);
+            const myProduct = this.products.find((product) => product.id === myId);
 
             if (myProduct) {
                 return myProduct;
@@ -74,7 +66,6 @@ class ProductManager {
                     return;
                 } else {
                     this.products[index] = { ...this.products[index], ...myProduct, id: myId };
-                    await promises.writeFile(`${this.path}/products.json`, JSON.stringify(this.products, null, '\t'));
                 }
             } else {
                 console.log(`Product with ID ${myId} Not Found`);
@@ -86,14 +77,10 @@ class ProductManager {
 
     deleteProduct = async (myId) => {
         try {
-            let myFile = await promises.readFile(`${this.path}/products.json`, 'utf8');
-            this.products = JSON.parse(myFile);
-
             const deleteProduct = this.products.findIndex((product) => product.id === myId);
 
             if(deleteProduct >= 0) {
                 this.products.splice(deleteProduct, 1);
-                await promises.writeFile(`${this.path}/products.json`, JSON.stringify(this.products, null, '\t'));
                 console.log(`Product with ${myId} deleted.`);
             }else{
                 console.log(`Product with ${myId} does not exist.`)

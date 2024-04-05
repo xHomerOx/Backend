@@ -1,25 +1,41 @@
 import express from 'express';
-import productsRouter from './routes/products.router.js'
-import cartsRouter from './routes/carts.router.js'
+
+//Uso esto para un Layout customizado.
+import exphbs from 'express-handlebars';
+import path from 'path';
+import __dirname from './utils.js';
+
+//Me traigo solo el Router de Carts, por eso lo puse entre llaves.
+import { cartsRouter } from './routes/carts.router.js';
+import viewsRouter from './routes/views.router.js';
+import { Server } from 'socket.io';
 
 const app = express();
 
-app.use(express.json());
-app.use(express.urlencoded({extended: true}));
-app.use(express.static("public"));
+//Para que solo renderice la vista Home y no el Layout por defecto de Handlebars.
+app.engine('handlebars', exphbs.engine({ defaultLayout: false }));
 
-app.use("/api/products", productsRouter);
-app.use("/api/carts", cartsRouter);
+//Configuro motor y estructura del Proyecto.
+app.set('view engine', 'handlebars');
+app.set('views', path.join(__dirname, 'views'));
 
-async function myGreetings() {
-    return '<font face="arial">Ir a "/products" para ver el listado</font>'
-}
+app.use(express.static(path.join(__dirname, '../public')));
 
-app.get('/', async (_req, res) => {
-    let greetings = await myGreetings();
-    res.send(greetings);
-})
+app.use("/", cartsRouter);
+app.use("/realtimeproducts", viewsRouter);
 
 const PORT = 8080;
 
-app.listen(PORT, () => console.log("Server Started"));
+const httpServer = app.listen(PORT, () => {
+    console.log(`Server Started`);
+});
+
+const socketServer = new Server(httpServer);
+
+socketServer.on("connection", socket => {
+    socket.on("message", data => {
+        console.log(data);
+    });
+});
+
+export { socketServer }; 
