@@ -1,17 +1,15 @@
 import express, { Router } from 'express';
 import __dirname from '../utils/utils.js';
-
-//Me traigo solo el Objeto Products.
-import { products } from './carts.router.js';
 import ProductManager from '../dao/productManagerFS.js';
 import { socketServer } from '../app.js';
 
-const myProduct = new ProductManager();
+const myProduct = new ProductManager('public');
 const viewsRouter = Router();
 viewsRouter.use(express.json());
 
-viewsRouter.get('/', (_req, res) => {
-  res.render('realTimeProducts', { title: 'Products', products });
+viewsRouter.get('/', async (_req, res) => {
+  const products = await myProduct.getProducts();
+  res.render('realTimeProductsView', { title: 'Products', products: products });
 });
 
 viewsRouter.post("/", async (req, res) => {

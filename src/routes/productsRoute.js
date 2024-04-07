@@ -1,14 +1,14 @@
 import { Router } from "express";
 import ProductManager from "../dao/productManagerFS.js";
 
-const myProducts = new ProductManager();
+const myProducts = new ProductManager('public');
 const router = Router();
 
 
 router.get('/', async (req, res) => {
     let limit = req.query.limit;
     const products = await myProducts.getProducts(limit);
-
+    
     res.send(products);
 });
 

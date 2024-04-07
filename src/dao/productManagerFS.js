@@ -1,8 +1,8 @@
-import { promises } from 'fs';
+import fs from 'fs';
 
 class ProductManager {
-	constructor() {
-        this.path = '../../public';
+	constructor(path) {
+        this.path = path;
     };
 
     addProducts = async (myProduct) => { 
@@ -15,7 +15,7 @@ class ProductManager {
             if (!duplicatedCode) {
                 let id = this.products.length + 1;
                 this.products.push({id, title, description, price, thumbnail, code, stock});
-                await promises.writeFile(`${this.path}/products.json`, JSON.stringify(this.products, null, '\t'));
+                await fs.promises.writeFile(`${this.path}/products.json`, JSON.stringify(this.products, null, '\t'));
                 return this.products;
             }else{
                 console.log("El código no puede estar repetido");
@@ -27,7 +27,7 @@ class ProductManager {
 
     getProducts = async (limit) => {
         try {
-            let myFile = await promises.readFile(`${this.path}/products.json`, 'utf8');
+            let myFile = await fs.promises.readFile(`${this.path}/products.json`, 'utf8');
             let products = JSON.parse(myFile);
 
             if (limit) products = products.slice(0, limit);    
@@ -41,7 +41,7 @@ class ProductManager {
 
     getProductById = async (myId) => {
         try {
-            let myFile = await promises.readFile(`${this.path}/products.json`, 'utf8');
+            let myFile = await fs.promises.readFile(`${this.path}/products.json`, 'utf8');
             let products = JSON.parse(myFile);
 
             const myProduct = products.find((product) => product.id === myId);
@@ -66,7 +66,7 @@ class ProductManager {
                     return;
                 } else {
                     this.products[index] = { ...this.products[index], ...myProduct, id: myId };
-                    promises.writeFile(`${this.path}/products.json`, JSON.stringify(this.products, null, '\t'));
+                    fs.promises.writeFile(`${this.path}/products.json`, JSON.stringify(this.products, null, '\t'));
                 }
             } else {
                 console.log(`Product with ID ${myId} Not Found`);
@@ -78,14 +78,14 @@ class ProductManager {
 
     deleteProduct = async (myId) => {
         try {
-            let myFile = await promises.readFile(`${this.path}/products.json`, 'utf8');
+            let myFile = await fs.promises.readFile(`${this.path}/products.json`, 'utf8');
             this.products = JSON.parse(myFile);
 
             const deleteProduct = this.products.findIndex((product) => product.id === myId);
 
             if(deleteProduct >= 0) {
                 this.products.splice(deleteProduct, 1);
-                await promises.writeFile(`${this.path}/products.json`, JSON.stringify(this.products, null, '\t'));
+                await fs.promises.writeFile(`${this.path}/products.json`, JSON.stringify(this.products, null, '\t'));
                 console.log(`Product with ${myId} deleted.`);
             }else{
                 console.log(`Product with ${myId} does not exist.`)
