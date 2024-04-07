@@ -31,7 +31,6 @@ class ProductManager {
             if (limit) products = products.slice(0, limit);
             return products;
         } catch (error) {
-            console.error(error);
             throw error;
         }    
     }
@@ -49,7 +48,6 @@ class ProductManager {
                 return (`Product with ID ${myId} Not Found`);
             }
         } catch(error) {
-            console.error(error);
             throw error;
         }
     }
@@ -69,7 +67,7 @@ class ProductManager {
                 console.log(`Product with ID ${myId} Not Found`);
             }
         } catch(error) {
-            console.error(error);
+            throw error;
         }
     }
 
@@ -88,7 +86,7 @@ class ProductManager {
                 console.log(`Product with ${myId} does not exist.`)
             }
         }catch (error) {
-            console.error(error);
+            throw error;
         }
     }
 }
