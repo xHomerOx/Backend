@@ -1,8 +1,12 @@
 import { products } from "./routes/carts.router.js";
+import fs from "fs";
 
 class ProductManager {
 	constructor() {
-        this.products = products;
+        this.products = [];
+        this.path = '../public/';
+
+        fs.writeFileSync(`${this.path}/products.txt`, JSON.stringify(this.products, null, '\t'));
     }
 
     addProducts = async (myProduct) => { 
