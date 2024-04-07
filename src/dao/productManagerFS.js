@@ -7,11 +7,9 @@ class ProductManager {
 
     addProducts = async (myProduct) => { 
         const { title, description, price, thumbnail, code, stock } = myProduct;
-        
         const duplicatedCode = this.products.some((product) => product.code === code);
         
         if (title && description && price && thumbnail && code && stock) {
-
             if (!duplicatedCode) {
                 let id = this.products.length + 1;
                 this.products.push({id, title, description, price, thumbnail, code, stock});
@@ -30,8 +28,7 @@ class ProductManager {
             let myFile = await fs.promises.readFile(`${this.path}/products.json`, 'utf8');
             let products = JSON.parse(myFile);
 
-            if (limit) products = products.slice(0, limit);    
-
+            if (limit) products = products.slice(0, limit);
             return products;
         } catch (error) {
             console.error(error);
