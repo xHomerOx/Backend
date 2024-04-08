@@ -23,7 +23,7 @@ class ProductManager {
                     thumbnail = [thumbnail];
                 }
 
-                this.products.push({id, title, description, price, thumbnail: thumb, code, status, stock, category});
+                this.products.push({id, title, description, price, thumbnail, code, status, stock, category});
                 await fs.promises.writeFile(`${this.path}/products.json`, JSON.stringify(this.products, null, '\t'));
                 return this.products;
             }else{
