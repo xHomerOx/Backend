@@ -8,15 +8,16 @@ class CartManager {
 
     getCarts = async () => {
         try {
-            let carts;
-            let myFile = await fs.promises.readFile(`${this.path}/carts.json`, 'utf8');
-            carts = JSON.parse(myFile);
-            if (!myFile) {
-                carts = [];
-                await fs.promises.writeFile(`${this.path}/carts.json`, JSON.stringify(carts, null, '\t'));
-            }
-        }catch(error) {
-            throw error;
+          let myFile = await fs.promises.readFile(`${this.path}/carts.json`, 'utf8');
+
+          if (!myFile) {
+            carts = [];
+            await fs.promises.writeFile(`${this.path}/carts.json`, JSON.stringify(carts, null, '\t'));
+          }
+          
+          return JSON.parse(myFile);
+        } catch (error) {
+          throw error;
         }
     }
 
@@ -34,7 +35,7 @@ class CartManager {
     addCart = async () => {
         const carts = await this.getCarts();
 
-        let id = this.carts.length + 1;
+        let id = carts.length + 1;
 
         const newCart = {
             id: id,
