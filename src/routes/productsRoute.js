@@ -1,15 +1,16 @@
 import { Router } from "express";
 import { uploader } from "../utils/multerUtil.js";
-import ProductManager from "../dao/productManagerFS.js";
+// import ProductManager from "../dao/productManagerFS.js";
+import ProductManager from "../dao/productManagerDB.js";
 
-const myProducts = new ProductManager('public');
+// const myProducts = new ProductManager('public');
 const productsRouter = Router();
+const myProducts = new ProductManager();
 
 productsRouter.get('/', async (req, res) => {
-    let limit = req.query.limit;
-    const products = await myProducts.getProducts(limit);
+    const products = await myProducts.getProducts();
     
-    res.send(products);
+    res.send({status: 'success', payload: products});
 });
 
 productsRouter.get('/:pid', async (req, res) => {
@@ -17,26 +18,26 @@ productsRouter.get('/:pid', async (req, res) => {
         let pid = parseInt(req.params.pid);
         const products = await myProducts.getProductById(pid);
 
-        res.json(products);
+        res.send({status: 'success', payload: products});
     }catch(error){
-        res.status(500).send('Internal Server Error');
+        res.status(400).send({status: 'error', message: error.message});
     }
 });
 
 productsRouter.post("/", uploader.array('thumbnail', 3), async (req, res) => {
+    if (req.files) {
+        req.body.thumbnail = [];
+        req.files.forEach((file) => {
+            req.body.thumbnail.push(file.filename);
+        });
+    }
+
     try {
-        if (req.files) {
-            req.body.thumbnail = [];
-            req.files.forEach((file) => {
-                req.body.thumbnail.push(file.filename);
-            });
-        }
+        const products = await myProducts.addProducts(req.body);
 
-        await myProducts.addProducts(req.body);
-
-        res.status(201).send({message: "Product succesfully created!"});
+        res.send({status: 'success', payload: products});
     }catch(error){
-        res.status(500).send('Could not add Product!');
+        res.status(400).send({status: 'error', message: error.message});
     }
 });
 
