@@ -58,6 +58,9 @@ class ProductManager {
 
     updateProduct = async (myId, myProduct) => {
         try {
+            let myFile = await fs.promises.readFile(`${this.path}/products.json`, 'utf8');
+            this.products = JSON.parse(myFile);
+            
             const index = this.products.findIndex((product) => product.id === myId);
             if (index >= 0) {
                 if (myProduct.id && myProduct.id !== myId) {

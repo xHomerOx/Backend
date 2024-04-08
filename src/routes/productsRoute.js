@@ -40,10 +40,17 @@ productsRouter.post("/", uploader.array('thumbnail', 3), async (req, res) => {
     }
 });
 
-productsRouter.put("/:pid", async (req, res) => {
+productsRouter.put("/:pid", uploader.array('thumbnail', 3), async (req, res) => {
     let pid = parseInt(req.params.pid);
     let myPid = parseInt(req.body.id);
     
+    if (req.files) {
+        req.body.thumbnail = [];
+        req.files.forEach((file) => {
+            req.body.thumbnail.push(file.filename);
+        });
+    }
+
     const myProduct = await myProducts.getProductById(pid);
 
     try{
@@ -56,6 +63,7 @@ productsRouter.put("/:pid", async (req, res) => {
             res.status(403).send({ message: "Updating ID is forbidden!" });
         }
     }catch(error){
+        console.log(error);
         res.status(500).send('Could not update product.');
     }
 });
