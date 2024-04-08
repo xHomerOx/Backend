@@ -1,4 +1,5 @@
 import { Router } from "express";
+import { uploader } from "../utils/multerUtil.js";
 import ProductManager from "../dao/productManagerFS.js";
 
 const myProducts = new ProductManager('public');
@@ -22,9 +23,16 @@ productsRouter.get('/:pid', async (req, res) => {
     }
 });
 
-productsRouter.post("/", async (req, res) => {
+productsRouter.post("/", uploader.array('thumbnails', 3), async (req, res) => {
     try {
         await myProducts.addProducts(req.body);
+
+        if (req.files) {
+            req.body.thumbnail = [];
+            req.files.forEach((file) => {
+                req.body.thumbnail.push(file.filename);
+            });
+        }
 
         res.status(201).send({message: "Product succesfully created!"});
     }catch(error){
