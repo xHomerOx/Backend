@@ -1,18 +1,29 @@
 import fs from 'fs';
 
 class ProductManager {
-	constructor(path) {
+	constructor (path) {
         this.path = path;
     };
 
     addProducts = async (myProduct) => { 
-        const { title, description, price, thumbnail, code, stock } = myProduct;
+        let myFile = await fs.promises.readFile(`${this.path}/products.json`, 'utf8');
+        this.products = JSON.parse(myFile);
+
+        const { title, description, price, status, code, myThumbnail = myProduct.thumbnail || [], stock, category } = myProduct;
         const duplicatedCode = this.products.some((product) => product.code === code);
+        const myStatus = true || status;
         
-        if (title && description && price && thumbnail && code && stock) {
+        if (title && description && price && code && stock && myStatus && category) {
             if (!duplicatedCode) {
                 let id = this.products.length + 1;
-                this.products.push({id, title, description, price, thumbnail, code, stock});
+
+                const thumbnail = Array.isArray(myThumbnail) ? myThumbnail : [myThumbnail];
+
+                if (!Array.isArray(thumbnail)) {
+                    thumbnail = [thumbnail];
+                }
+
+                this.products.push({id, title, description, price, thumbnail: thumb, code, status, stock, category});
                 await fs.promises.writeFile(`${this.path}/products.json`, JSON.stringify(this.products, null, '\t'));
                 return this.products;
             }else{

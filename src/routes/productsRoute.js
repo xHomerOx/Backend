@@ -26,12 +26,9 @@ productsRouter.post("/", async (req, res) => {
     try {
         await myProducts.addProducts(req.body);
 
-        if (typeof title !== 'string' || typeof description !== 'string' || typeof price !== 'number' || typeof code !== 'string' || typeof status !== 'boolean' || typeof stock !== 'number' || typeof category !== 'string') return res.status(400).send({error: "Fill the required fields with valid data to continue..."});
-    
         res.status(201).send({message: "Product succesfully created!"});
     }catch(error){
-        console.log(error);
-        res.status(403).send({ message: "No Product to Add!!!" });
+        res.status(500).send('Could not add Product!');
     }
 });
 
