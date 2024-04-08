@@ -14,7 +14,7 @@ class CartManager {
             carts = [];
             await fs.promises.writeFile(`${this.path}/carts.json`, JSON.stringify(carts, null, '\t'));
           }
-          
+
           return JSON.parse(myFile);
         } catch (error) {
           throw error;
@@ -61,36 +61,40 @@ class CartManager {
     }
 
     addProduct = async (cartId, productId) => {
-        await this.productManager.getProductById(productId);
-
-        let carts = [];
-
-        if (carts.length > 0) {
-            productCheck = false;
-            for (let key in carts[cartId].products) {
-                if (carts[cartId].products[key].product == productId) {
-                    productCheck = true;
-                    carts[cartId].products[key].quantity++;
-                }
-            }
-
-            if (productCheck) {
-                productCheck.quantity++;
-            } else {
-                carts.products.push({ product: productId, quantity: 1 });
-            }
-        } else {
-            throw new Error(`Cart ${cartId} does not exist!`);
-        }
-
         try {
-            await fs.promises.writeFile(`${this.path}/carts.json`, JSON.stringify(carts, null, '\t'));
+            const carts = await this.getCarts();
+            await this.productManager.getProductById(productId);
+
+            console.log(productId);
             
-            return res.status(201).send({ message: "Product successfully created in cart!" });
+            if (carts.length > 0) {
+                if (!carts[cartId - 1]) {
+                    throw new Error(`Cart ${cartId} does not exist!`);
+                }
+
+                let productCheck = false;
+                for (const existingProduct of carts[cartId - 1].products) {
+                    if (existingProduct.product === productId) {
+                        productCheck = true;
+                        existingProduct.quantity++;
+                        break;
+                    }
+                }
+        
+                if (!productCheck) {
+                    carts[cartId - 1].products.push({ product: productId, quantity: 1 });
+                }
+
+                await fs.promises.writeFile(`${this.path}/carts.json`, JSON.stringify(carts, null, '\t'));
+        
+                return ("Product successfully created in cart!");
+            } else {
+                throw new Error('No carts found in the system.');
+            }
         } catch (error) {
-            return res.status(500).send('Could not add product to cart.');
+            throw error;
         }
-    }
+    }      
 }
 
 export default CartManager;

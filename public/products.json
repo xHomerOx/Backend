@@ -88,14 +88,5 @@
 		"thumbnail": "prod10.jpg",
 		"code": "A010",
 		"stock": 100
-	},
-	{
-		"id": 12,
-		"title": "Producto 11",
-		"description": "Mi producto 11",
-		"price": 200,
-		"thumbnail": "prod11.jpg",
-		"code": "1111",
-		"stock": 20
 	}
 ]
