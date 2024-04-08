@@ -63,33 +63,40 @@ class CartManager {
     addProduct = async (cartId, productId) => {
         try {
             const carts = await this.getCarts();
-            await this.productManager.getProductById(productId);
 
-            console.log(productId);
+            let myProductsFile = await fs.promises.readFile(`${this.path}/products.json`, 'utf8');
+            const myProducts = JSON.parse(myProductsFile);
             
-            if (carts.length > 0) {
-                if (!carts[cartId - 1]) {
-                    throw new Error(`Cart ${cartId} does not exist!`);
-                }
-
-                let productCheck = false;
-                for (const existingProduct of carts[cartId - 1].products) {
-                    if (existingProduct.product === productId) {
-                        productCheck = true;
-                        existingProduct.quantity++;
-                        break;
+            const foundProduct = myProducts.find(product => product.id === parseInt(productId));
+            
+            if (foundProduct) {
+                if (carts.length > 0) {
+                    if (!carts[cartId - 1]) {
+                        throw new Error(`Cart ${cartId} does not exist!`);
                     }
-                }
-        
-                if (!productCheck) {
-                    carts[cartId - 1].products.push({ product: productId, quantity: 1 });
-                }
 
-                await fs.promises.writeFile(`${this.path}/carts.json`, JSON.stringify(carts, null, '\t'));
-        
-                return ("Product successfully created in cart!");
+                    let productCheck = false;
+
+                    for (const existingProduct of carts[cartId - 1].products) {
+                        if (existingProduct.product === productId) {
+                            productCheck = true;
+                            existingProduct.quantity++;
+                            break;
+                        }
+                    }
+            
+                    if (!productCheck) {
+                        carts[cartId - 1].products.push({ product: productId, quantity: 1 });
+                    }
+
+                    await fs.promises.writeFile(`${this.path}/carts.json`, JSON.stringify(carts, null, '\t'));
+            
+                    return ("Product successfully created in cart!");
+                } else {
+                    throw new Error('No carts found in the system.');
+                }
             } else {
-                throw new Error('No carts found in the system.');
+                return (`Product with ID ${productId} Not Found`);
             }
         } catch (error) {
             throw error;
