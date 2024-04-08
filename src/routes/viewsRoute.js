@@ -21,6 +21,7 @@ viewsRouter.post("/realtimeproducts", async (req, res) => {
   try {
     const response = await myProduct.addProducts(req.body);
     socketServer.emit("productAdded", myProduct.products);
+
     res.status(201).send(response);
   } catch (error) {
     res.status(400).send(error.message);
