@@ -2,17 +2,16 @@ import { Router } from "express";
 import ProductManager from "../dao/productManagerFS.js";
 
 const myProducts = new ProductManager('public');
-const router = Router();
+const productsRouter = Router();
 
-
-router.get('/', async (req, res) => {
+productsRouter.get('/', async (req, res) => {
     let limit = req.query.limit;
     const products = await myProducts.getProducts(limit);
     
     res.send(products);
 });
 
-router.get('/:pid', async (req, res) => {
+productsRouter.get('/:pid', async (req, res) => {
     try{
         let pid = parseInt(req.params.pid);
         const products = await myProducts.getProductById(pid);
@@ -23,8 +22,7 @@ router.get('/:pid', async (req, res) => {
     }
 });
 
-router.post("/", async (req, res) => {
-    const { title, description, price, code, status, stock, category } = req.body;
+productsRouter.post("/", async (req, res) => {
     try {
         await myProducts.addProducts(req.body);
 
@@ -32,11 +30,12 @@ router.post("/", async (req, res) => {
     
         res.status(201).send({message: "Product succesfully created!"});
     }catch(error){
-        res.status(403).send({ message: "Code is already in use!" });
+        console.log(error);
+        res.status(403).send({ message: "No Product to Add!!!" });
     }
 });
 
-router.put("/:pid", async (req, res) => {
+productsRouter.put("/:pid", async (req, res) => {
     let pid = parseInt(req.params.pid);
     let myPid = parseInt(req.body.id);
     
@@ -56,7 +55,7 @@ router.put("/:pid", async (req, res) => {
     }
 });
 
-router.delete("/:pid", async (req, res) => {
+productsRouter.delete("/:pid", async (req, res) => {
     let pid = parseInt(req.params.pid);
     const myProduct = await myProducts.getProductById(pid);
     const myPid = myProduct.id;
@@ -73,4 +72,4 @@ router.delete("/:pid", async (req, res) => {
     }
 });
 
-export default router;
+export default productsRouter;
