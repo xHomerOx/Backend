@@ -23,16 +23,16 @@ productsRouter.get('/:pid', async (req, res) => {
     }
 });
 
-productsRouter.post("/", uploader.array('thumbnails', 3), async (req, res) => {
+productsRouter.post("/", uploader.array('thumbnail', 3), async (req, res) => {
     try {
-        await myProducts.addProducts(req.body);
-
         if (req.files) {
             req.body.thumbnail = [];
             req.files.forEach((file) => {
                 req.body.thumbnail.push(file.filename);
             });
         }
+
+        await myProducts.addProducts(req.body);
 
         res.status(201).send({message: "Product succesfully created!"});
     }catch(error){
