@@ -8,9 +8,13 @@ class CartManager {
 
     getCarts = async () => {
         try {
-            let myFile = await fs.promises.readFile(`${path}/carts.json`, 'utf8');
+            let carts;
+            let myFile = await fs.promises.readFile(`${this.path}/carts.json`, 'utf8');
             carts = JSON.parse(myFile);
-
+            if (!myFile) {
+                carts = [];
+                await fs.promises.writeFile(`${this.path}/carts.json`, JSON.stringify(carts, null, '\t'));
+            }
         }catch(error) {
             throw error;
         }
@@ -58,18 +62,14 @@ class CartManager {
     addProduct = async (cartId, productId) => {
         await this.productManager.getProductById(productId);
 
-        const carts = this.getCarts();
+        let carts = [];
 
-        const cartFilter = carts.filter((cart) => {
-            cart === cartId
-        })
-
-        if (cartFilter.length > 0) {
+        if (carts.length > 0) {
             productCheck = false;
-            for (let key in carts.products) {
-                if (carts.products[key].product == productId) {
+            for (let key in carts[cartId].products) {
+                if (carts[cartId].products[key].product == productId) {
                     productCheck = true;
-                    carts.products[key].quantity++;
+                    carts[cartId].products[key].quantity++;
                 }
             }
 
@@ -89,7 +89,6 @@ class CartManager {
         } catch (error) {
             return res.status(500).send('Could not add product to cart.');
         }
-
     }
 }
 

@@ -6,6 +6,11 @@ const myProduct = new ProductManager('public');
 const myCart = new CartManager('public', myProduct);
 const cartsRouter = Router();
 
+cartsRouter.get('/', async (req, res) => {
+    const carts = await myCart.getCarts();
+    res.send(carts);
+});
+
 cartsRouter.get('/:cid', async (req, res) => {
     try {
         const results = await myCart.getProductsFromCart(req.params.cid);
