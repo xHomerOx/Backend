@@ -1,12 +1,14 @@
 import { Router } from "express";
-import ProductManager from "../dao/productManagerFS.js";
-import CartManager from "../dao/cartManagerFS.js";
+// import ProductManager from "../dao/productManagerFS.js";
+// import CartManager from "../dao/cartManagerFS.js";
+import ProductManager from "../dao/productManagerDB.js";
+import CartManager from "../dao/cartManagerDB.js";
 
 const myProduct = new ProductManager('public');
 const myCart = new CartManager('public', myProduct);
 const cartsRouter = Router();
 
-cartsRouter.get('/', async (req, res) => {
+cartsRouter.get('/', async (_req, res) => {
     const carts = await myCart.getCarts();
     res.send(carts);
 });
