@@ -7,6 +7,7 @@ import cartsRouter from './routes/cartsRoute.js';
 import viewsRouter from './routes/viewsRoute.js';
 import { Server } from 'socket.io';
 import mongoose from 'mongoose';
+import messageModel from './dao/models/messageModel.js';
 
 const app = express();
 
@@ -44,6 +45,11 @@ socketServer.on("connection", socket => {
     socket.on("message", data => {
         messages.push(data);
         socketServer.emit("messages", messages);
+        const chatLogs = new messageModel({
+            user: data.user,
+            message: data.message
+        });
+        chatLogs.save().then(() => console.log('Messages saved'));
     });
 });
 
