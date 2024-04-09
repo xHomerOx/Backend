@@ -10,7 +10,7 @@ import mongoose from 'mongoose';
 
 const app = express();
 
-const uri = 'mongodb+srv://xHomerOx:oU4p3VvHAh11lf7s@ecommerce.ix5vqim.mongodb.net/?retryWrites=true&w=majority';
+const uri = 'mongodb+srv://xHomerOx:oU4p3VvHAh11lf7s@ecommerce.ix5vqim.mongodb.net/ecommerce?retryWrites=true&w=majority';
 mongoose.connect(uri);
 
 app.engine('handlebars', exphbs.engine({ defaultLayout: false }));

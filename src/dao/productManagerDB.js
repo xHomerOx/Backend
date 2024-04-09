@@ -19,14 +19,19 @@ class ProductManager {
     }
 
     async addProducts(product) {
-        const {title, description, code, price, stock, category, thumbnails} = product;
+        const {title, description, code, price, stock, category, thumbnail} = product;
+        const existingProduct = await productModel.findOne({ code });
 
+        if (existingProduct) {
+            throw new Error('Code could not be the same as existent one!');
+        }
         if (!title || !description || !code || !price || !stock || !category) {
             throw new Error('Cart could not be created!');
         }
 
+        
         try {
-            const result = await productModel.create({title, description, code, price, stock, category, thumbnails: thumbnails ?? []});
+            const result = await productModel.create({title, description, code, price, stock, category, thumbnail: thumbnail ?? []});
 
             return result;
         } catch (error) {
