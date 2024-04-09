@@ -17,6 +17,10 @@ viewsRouter.get('/realtimeproducts', async (_req, res) => {
   res.render('realTimeProductsView', { title: 'Products', products: products });
 });
 
+viewsRouter.get('/chatbox', async (_req, res) => {
+  res.render('chatView', { title: 'ChatView'});
+});
+
 viewsRouter.post("/realtimeproducts", async (req, res) => {
   try {
     const response = await myProduct.addProducts(req.body);

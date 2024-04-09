@@ -23,7 +23,7 @@ app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 
 app.get('/', (_req, res) => {
-    res.send('Welcome to the root path! Go to /products to see content!');
+    res.send('Welcome to the root path! Go to /products to see content! (ChatBox is in /products/chatbox)');
 });
 
 app.use('/api/products', productsRouter);
@@ -38,9 +38,12 @@ const httpServer = app.listen(PORT, () => {
 
 const socketServer = new Server(httpServer);
 
+let messages = [];
+
 socketServer.on("connection", socket => {
     socket.on("message", data => {
-        console.log(data);
+        messages.push(data);
+        socketServer.emit("messages", messages);
     });
 });
 
