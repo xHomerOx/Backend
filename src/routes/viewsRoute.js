@@ -18,6 +18,8 @@ viewsRouter.get('/', async (req, res) => {
   const stock = req.query.stock;
   const thumbnail = req.query.thumbnail;
 
+  const defaultQuery = {};
+
   const query = {
     $or: [
       { title: { $eq: title } },
@@ -29,7 +31,22 @@ viewsRouter.get('/', async (req, res) => {
     ]
   };
 
-  const products = await productModel.find(query, null, { limit, skip }).lean();
+  const myQuery = (Object.keys(req.query).length > 0) ? query : defaultQuery;
+
+  const sortOptions = {};
+
+  if (req.query.sort === 'desc') {
+    sortOptions['price'] = -1;
+  }else if (req.query.sort === 'asc') {
+    sortOptions['price'] = -1;
+  } else {
+    sortOptions['price'] = 1;
+  }
+
+
+  console.log(sortOptions['price']);
+
+  const products = await productModel.find(myQuery, null, { limit, skip }).sort(sortOptions).lean();
 
   res.render('homeView', { title: 'Products', products });
 });
