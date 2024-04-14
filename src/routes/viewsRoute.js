@@ -8,7 +8,10 @@ const viewsRouter = Router();
 
 viewsRouter.get('/', async (req, res) => {
   const limit = parseInt(req.query.limit) || 10;
-  const products = await productModel.find({}, null, { limit }).lean();
+  const page = parseInt(req.query.page) || 1;
+  const skip = (page - 1) * limit;
+  
+  const products = await productModel.find({}, null, { limit, skip }).lean();
 
   res.render('homeView', { title: 'Products', products });
 });
