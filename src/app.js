@@ -22,8 +22,6 @@ app.use(express.static(path.join(__dirname, '../../public')));
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 
-app.use('/api/products', productsRouter);
-app.use('/api/carts', cartsRouter);
 app.use('/', viewsRouter);
 
 const PORT = 8080;
