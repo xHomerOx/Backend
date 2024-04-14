@@ -10,8 +10,26 @@ viewsRouter.get('/', async (req, res) => {
   const limit = parseInt(req.query.limit) || 10;
   const page = parseInt(req.query.page) || 1;
   const skip = (page - 1) * limit;
-  
-  const products = await productModel.find({}, null, { limit, skip }).lean();
+
+  const title = req.query.title;
+  const description = req.query.description;
+  const price = req.query.price;
+  const code = req.query.code;
+  const stock = req.query.stock;
+  const thumbnail = req.query.thumbnail;
+
+  const query = {
+    $or: [
+      { title: { $eq: title } },
+      { description: { $eq: description } },
+      { price: { $eq: price } },
+      { code: { $eq: code } },
+      { stock: { $eq: stock } },
+      { thumbnail: { $eq: thumbnail } }
+    ]
+  };
+
+  const products = await productModel.find(query, null, { limit, skip }).lean();
 
   res.render('homeView', { title: 'Products', products });
 });
