@@ -79,9 +79,26 @@ cartsRouter.put('/:cid', async (req, res) => {
     try {
         const cartId = req.params.cid;
         const updatedProducts = req.body.products;
-        
+
         const results = await myCart.updateProduct(cartId, updatedProducts);
 
+        res.send({
+            status: 'success',
+            payload: results
+        });
+    } catch (error) {
+        res.status(400).send({
+            status: 'error',
+            message: error.message
+        });
+    }
+});
+
+cartsRouter.put('/:cid/products/:pid', async (req, res) => {
+    try {
+        const cartId = req.params.cid;     
+        const results = await cartModel.findById(cartId).populate('products.product');
+        
         res.send({
             status: 'success',
             payload: results
