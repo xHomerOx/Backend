@@ -42,7 +42,7 @@ class CartManager {
       const foundProduct = await productModel.findOne({_id: productId});
 
       if (foundProduct) {
-        const existingProduct = cart.products.find((cartProduct) => cartProduct.product === productId);
+        const existingProduct = cart.products.find((cartProduct) => cartProduct.product.equals(productId));
 
         if (existingProduct) {
             existingProduct.quantity++;
@@ -62,34 +62,43 @@ class CartManager {
     }
   }
 
-  async updateProduct(cartId, productId) {
-    try {
-        const result = await cartModel.updateOne(cartId, {_id: productId});
-
-        return result;
-    } catch(error) {
-        throw new Error('Error updating Product!');
-    }
-}
-
   async deleteProduct(cartId, productId) {
       try {
         const cart = await cartModel.findById(cartId);
         const deleteProduct = cart.products.findIndex(product => product.product.toString() === productId);
         
-        if(deleteProduct >= 0) {
-            cart.products.splice(deleteProduct, 1);
+        if (deleteProduct >= 0) {
+          cart.products.splice(deleteProduct, 1);
 
-            await cart.save();
-            return `Product with ${productId} deleted.`;
-        }else{
-            return `Product with ${productId} does not exist.`;
+          await cart.save();
+          return `Product with ${productId} deleted.`;
+        } else {
+          return `Product with ${productId} does not exist.`;
         }
-    }catch (error) {
+      } catch (error) {
         throw error;
-    }
+      }
+  }
+
+  async updateProduct(cartId, updatedProducts) {
+      try {
+          const cart = await cartModel.findById(cartId);
+
+          if (!cart) {
+              throw new Error(`Cart ${cartId} not found`);
+          }
+
+          cart.products = updatedProducts;
+
+          await cart.save();
+
+          return "Cart successfully updated!";
+      } catch (error) {
+          throw new Error("Error updating cart");
+      }
   }
 
 }
+
 
 export default CartManager;
