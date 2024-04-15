@@ -8,7 +8,6 @@ viewsRouter.get('/', async (req, res) => {
   try {
     const limit = parseInt(req.query.limit) || 10;
     const page = parseInt(req.query.page) || 1;
-    const skip = (page - 1) * limit;
 
     const title = req.query.title;
     const description = req.query.description;
@@ -66,44 +65,35 @@ viewsRouter.get('/', async (req, res) => {
     const sortOrder = req.query.sort === 'desc' ? -1 : 1;
     sortOptions = { price: sortOrder };
 
-    const products = await productModel.find(query, null, { limit, skip }).sort(sortOptions).lean();
-
-    const totalProducts = await productModel.countDocuments(query);
-    const totalPages = Math.ceil(totalProducts / limit);
-
-    const prev = page > 1 ? page - 1 : null;
-    const next = page < totalPages ? page + 1 : null;
-
-    let hasPrev, hasNext;
-    if (prev === null) hasPrev = false; else hasPrev = true;
-    if (next === null) hasNext = false; else hasNext = true;
+    const products = await productModel.paginate(query, { page, limit, sort: sortOptions });
 
     const currentPath = `${req.headers.host}`;
-    let prevURI = `${currentPath}/?page=${prev}`;
-    let nextURI = `${currentPath}/?page=${next}`;
+    let prevLink = `${currentPath}/?page=${products.prevPage}`;
+    let nextLink = `${currentPath}/?page=${products.nextPage}`;
 
-    if (hasPrev === false) prevURI = null;
-    if (hasNext === false) nextURI = null;
-
-    if (page > totalPages) {
-      throw new Error("Page does not exist");
+    if (products.prevPage === null) {
+      prevLink = null;
     }
-  
+
+    if (products.nextPage === null) {
+      nextLink = null;
+    }
+
     res.json({
-      status: "success",
-      payload: products,
-      totalPages: totalPages,
-      page: page,
-      prevPage: prev,
-      nextPage: next,
-      hasPrevPage: hasPrev,
-      hasNextPage: hasNext,
-      prevLink: prevURI,
-      nextLink: nextURI
-    }); 
+      status: 'success',
+      payload: products.docs,
+      totalPages: products.totalPages,
+      page: products.page,
+      prevPage: products.prevPage,
+      nextPage: products.nextPage,
+      hasPrevPage: products.hasPrevPage,
+      hasNextPage: products.hasNextPage,
+      prevLink: prevLink,
+      nextLink: nextLink
+    });
   } catch (error) {
     res.status(500).json({
-      status: "error",
+      status: 'error',
       error: error.message
     });
   }
