@@ -2,6 +2,12 @@
 
 Desarrollar el servidor basado en Node.JS y express, que escuche en el puerto 8080 y disponga de dos grupos de rutas: /products y /carts. Dichos endpoints estarán implementados con el router de express.
 
+## 15-04-2024
+
+- Added JSON Payloads and other Object Data.
+- Values works ONLY without quotes, otherwise will throw error.
+- Set TRUE or FALSE on Status because i could not change Boolean to String.
+
 ## 14-04-2024
 
 - Modified Project Structure.
