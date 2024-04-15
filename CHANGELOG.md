@@ -8,6 +8,7 @@ Desarrollar el servidor basado en Node.JS y express, que escuche en el puerto 80
 - Values works ONLY without quotes, otherwise will throw error.
 - Set TRUE or FALSE on Status because i could not change Boolean to String.
 - Used mongoose pagination for results.
+- Added PUT and DELETE Methods.
 
 ## 14-04-2024
 
