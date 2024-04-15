@@ -69,7 +69,22 @@ viewsRouter.get('/', async (req, res) => {
 
   const products = await productModel.find(query, null, { limit, skip }).sort(sortOptions).lean();
 
-  res.render('homeView', { title: 'Products', products });
+  const totalProducts = await productModel.countDocuments(query);
+  const totalPages = Math.ceil(totalProducts / limit);
+  
+  try {
+    res.json({
+      status: "success",
+      payload: products,
+      totalPages: totalPages,
+      page: page
+    }); 
+  } catch (error) {
+    res.json({
+      status: "error",
+      error: error.message
+    });
+  }
 });
 
 viewsRouter.get('/', async (_req, res) => {
