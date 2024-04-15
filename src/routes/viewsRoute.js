@@ -17,36 +17,57 @@ viewsRouter.get('/', async (req, res) => {
   const code = req.query.code;
   const stock = req.query.stock;
   const thumbnail = req.query.thumbnail;
+  const status = req.query.status;
+  const category = req.query.category;
 
-  const defaultQuery = {};
+  const query = {};
 
-  const query = {
-    $or: [
-      { title: { $eq: title } },
-      { description: { $eq: description } },
-      { price: { $eq: price } },
-      { code: { $eq: code } },
-      { stock: { $eq: stock } },
-      { thumbnail: { $eq: thumbnail } }
-    ]
-  };
-
-  const myQuery = (Object.keys(req.query).length > 0) ? query : defaultQuery;
-
-  const sortOptions = {};
-
-  if (req.query.sort === 'desc') {
-    sortOptions['price'] = -1;
-  }else if (req.query.sort === 'asc') {
-    sortOptions['price'] = -1;
-  } else {
-    sortOptions['price'] = 1;
+  if (title) {
+    query.$or = query.$or || [];
+    query.$or.push({ title: { $eq: title } });
   }
 
+  if (description) {
+    query.$or = query.$or || [];
+    query.$or.push({ description: { $eq: description } });
+  }
 
-  console.log(sortOptions['price']);
+  if (price) {
+    query.$or = query.$or || [];
+    query.$or.push({ price: { $eq: price } });
+  }
 
-  const products = await productModel.find(myQuery, null, { limit, skip }).sort(sortOptions).lean();
+  if (code) {
+    query.$or = query.$or || [];
+    query.$or.push({ code: { $eq: code } });
+  }
+
+  if (stock) {
+    query.$or = query.$or || [];
+    query.$or.push({ stock: { $eq: stock } });
+  }
+
+  if (thumbnail) {
+    query.$or = query.$or || [];
+    query.$or.push({ thumbnail: { $eq: thumbnail } });
+  }
+
+  if (status) {
+    query.$or = query.$or || [];
+    query.$or.push({ status: { $eq: status } });
+  }
+
+  if (category) {
+    query.$or = query.$or || [];
+    query.$or.push({ category: { $eq: category } });
+  }
+
+  let sortOptions = {};
+
+  const sortOrder = req.query.sort === 'desc' ? -1 : 1;
+  sortOptions = { price: sortOrder };
+
+  const products = await productModel.find(query, null, { limit, skip }).sort(sortOptions).lean();
 
   res.render('homeView', { title: 'Products', products });
 });

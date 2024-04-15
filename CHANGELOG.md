@@ -1,6 +1,14 @@
-# Primera Pre-entrega Proyecto Final
+# Segunda Pre-entrega Proyecto Final
 
 Desarrollar el servidor basado en Node.JS y express, que escuche en el puerto 8080 y disponga de dos grupos de rutas: /products y /carts. Dichos endpoints estarán implementados con el router de express.
+
+## 14-04-2024
+
+- Modified Project Structure.
+- Added Query Filtering Options.
+- Added Category and Status.
+
+----------------------------------------------------------------------------------------
 
 ## 10-03-2024
 
