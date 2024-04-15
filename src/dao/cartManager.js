@@ -61,6 +61,13 @@ class CartManager {
         throw new Error("Error adding product to cart");
     }
   }
+
+  async deleteProduct(cartId, productId) {
+
+    
+
+  }
+
 }
 
 export default CartManager;
