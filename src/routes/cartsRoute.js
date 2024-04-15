@@ -13,7 +13,24 @@ cartsRouter.get('/', async (_req, res) => {
 
 cartsRouter.delete('/:cid/products/:pid', async (req, res) => {
     try {
-        const results = await myCart.addProduct(req.params.cid, req.params.pid);
+        const results = await myCart.deleteProduct(req.params.cid, req.params.pid);
+
+        res.send({
+            status: 'success',
+            payload: results
+        });
+    } catch (error) {
+        res.status(400).send({
+            status: 'error',
+            message: error.message
+        });
+    }
+})
+
+cartsRouter.put('/:cid', async (req, res) => {
+    try {
+        const results = await myCart.updateProduct(req.params.cid, req.params.pid);
+
         res.send({
             status: 'success',
             payload: results
@@ -56,9 +73,10 @@ cartsRouter.post('/', async (_req, res) => {
     }
 });
 
-cartsRouter.post('/:cid/product/:pid', async (req, res) => {
+cartsRouter.post('/:cid/products/:pid', async (req, res) => {
     try {
         const results = await myCart.addProduct(req.params.cid, req.params.pid);
+
         res.send({
             status: 'success',
             payload: results

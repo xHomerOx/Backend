@@ -24,7 +24,7 @@ class CartManager {
             products: [],
         });
 
-        await cart.update();
+        await cart.save();
         return cart;
     } catch (error) {
         throw new Error("Error creating cart");
@@ -50,7 +50,7 @@ class CartManager {
             cart.products.push({ product: productId, quantity: 1 });
         }
 
-        await cart.update();
+        await cart.save();
 
         return "Product successfully added to cart!";
       } else {
@@ -62,10 +62,32 @@ class CartManager {
     }
   }
 
+  async updateProduct(cartId, productId) {
+    try {
+        const result = await cartModel.updateOne(cartId, {_id: productId});
+
+        return result;
+    } catch(error) {
+        throw new Error('Error updating Product!');
+    }
+}
+
   async deleteProduct(cartId, productId) {
+      try {
+        const cart = await cartModel.findById(cartId);
+        const deleteProduct = cart.products.findIndex(product => product.product.toString() === productId);
+        
+        if(deleteProduct >= 0) {
+            cart.products.splice(deleteProduct, 1);
 
-    
-
+            await cart.save();
+            return `Product with ${productId} deleted.`;
+        }else{
+            return `Product with ${productId} does not exist.`;
+        }
+    }catch (error) {
+        throw error;
+    }
   }
 
 }
