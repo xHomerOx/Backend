@@ -14,7 +14,8 @@ cartsRouter.get('/', async (_req, res) => {
 
 cartsRouter.get('/:cid', async (req, res) => {
     try {
-        const results = await myCart.getProductsFromCart(req.params.cid);
+        const results = await cartModel.findById(req.params.cid).populate("products.product");
+        
         res.send({
             status: 'success',
             payload: results
@@ -113,5 +114,21 @@ cartsRouter.put('/:cid/products/:pid', async (req, res) => {
         });
     }
 });
+
+cartsRouter.delete('/:cid', async (req, res) => {
+    try {
+        const results = await myCart.deleteAllProducts(req.params.cid);
+
+        res.send({
+            status: 'success',
+            payload: results
+        });
+    } catch (error) {
+        res.status(400).send({
+            status: 'error',
+            message: error.message
+        });
+    }
+})
 
 export default cartsRouter;

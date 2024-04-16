@@ -80,6 +80,24 @@ class CartManager {
       }
   }
 
+  async deleteAllProducts(cartId) {
+    try {
+      const cart = await cartModel.findById(cartId);
+      
+      if (!cart) {
+        throw new Error(`Cart ${cartId} not found`);
+      }
+
+      cart.products = [];
+
+      await cart.save();
+
+      return "All Products in Cart successfully deleted!";
+    } catch (error) {
+      throw error;
+    }
+}
+
   async updateProduct(cartId, updatedProducts) {
       try {
           const cart = await cartModel.findById(cartId);
