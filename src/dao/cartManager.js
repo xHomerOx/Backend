@@ -64,6 +64,7 @@ class CartManager {
   async deleteProduct(cartId, productId) {
       try {
         const cart = await cartModel.findById(cartId);
+
         const deleteProduct = cart.products.findIndex(product => product.product.toString() === productId);
         
         if (deleteProduct >= 0) {
@@ -119,12 +120,14 @@ class CartManager {
   async updateProductById(cartId, productId, quantity) {
     try {
         const cart = await cartModel.findById(cartId);
-        const myProduct = cart.products.findIndex(product => product._id == productId);
+        const myProduct = cart.products.findIndex(product => product.product == productId);
         
         if (myProduct >= 0) {
             cart.products[myProduct].quantity = quantity;
 
             await cart.save();
+
+            return "Cart successfully updated!";
         } else {
             throw new Error("Product not found in the cart");
         }

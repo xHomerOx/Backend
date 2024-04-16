@@ -101,7 +101,7 @@ cartsRouter.put('/:cid/products/:pid', async (req, res) => {
         const quantity = req.body.quantity;
         
         const results = await myCart.updateProductById(cartId, productId, quantity);
-
+        
         res.send({
             status: 'success',
             payload: results
