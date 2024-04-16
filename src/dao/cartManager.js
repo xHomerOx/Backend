@@ -57,6 +57,7 @@ class CartManager {
         return `Product with ID ${productId} not found`;
       }
     } catch (error) {
+        console.log(error)
         throw new Error("Error adding product to cart");
     }
   }

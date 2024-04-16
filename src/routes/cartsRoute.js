@@ -1,5 +1,4 @@
 import { Router } from "express";
-import ProductManager from "../dao/productManager.js";
 import CartManager from "../dao/cartManager.js";
 import { cartModel } from "../dao/models/cartModel.js";
 

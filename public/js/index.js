@@ -1,85 +1,31 @@
-const socket = io();
 
-socket.emit("message", "Client connected to Socket");
 
-socket.on('connect', () => {
-    console.log('Client connected to Socket');
-});
+const addProduct = document.querySelectorAll("#button");
+const productList = document.getElementById("product-list");
 
-socket.on("productAdded", (addedProducts) => {
-    const productList = document.getElementById("productList");
-    productList.innerHTML = "";
-    
-    addedProducts.forEach(product => {
-        const listItem = document.createElement("li");
-        listItem.id = `${product.id}`;
-        listItem.innerHTML = `
-            <h2>Title: ${product.title}</h2>
-            <p>Description: ${product.description}</p>
-            <p>Price: $${product.price}</p>
-            <p>Product Code: ${product.code}</p>
-            <p>Stock: ${product.stock}</p>
-            <p>Category: ${product.category}</p>
-            <button class="deleteButton" data-id="${product.id}">Delete Product</button>
-        `;
-        productList.appendChild(listItem);
-    });
-});
+addProduct.forEach(myButton => {
+    myButton.addEventListener("click", async (event) => {
+        event.preventDefault();
 
-socket.on("productDeleted", (deletedProduct) => {
-    const productList = document.getElementById("productList");
-    const deletedListItem = document.getElementById(deletedProduct);
-
-    if (deletedListItem) {
-        productList.removeChild(deletedListItem);
-    }
-});
-
-const addProductForm = document.getElementById("addProductForm");
-
-addProductForm.addEventListener("submit", async (event) => {
-    event.preventDefault();
-    
-    const title = document.getElementById("title").value;
-    const description = document.getElementById("description").value;
-    const price = document.getElementById("price").value;
-    const thumbnail = document.getElementById("thumbnail").value;
-    const code = document.getElementById("code").value;
-    const status = document.getElementById("status").value;
-    const stock = document.getElementById("stock").value;
-    const category = document.getElementById("category").value;
-    
-    const response = await fetch("/products", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify({ title, description, price, thumbnail, code, status, stock, category })
-    });
-    
-    if (response.ok) {
-        console.log("Product added successfully");
-    } else {
-        console.error(error);
-    }
-});
-
-document.addEventListener("click", async (event) => {
-    if (event.target.classList.contains("deleteButton")) {
-        const productId = event.target.dataset.id;
-
+        const productId = myButton.dataset.productId;
+        const cartId = productList.dataset.cartId;
+        
         try {
-            const response = await fetch(`/products/${productId}`, {
-                method: "DELETE",
+            const response = await fetch(`/carts/${cartId}/products/${productId}`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ productId, cartId })
             });
-
+            
             if (response.ok) {
-                console.log("Product deleted successfully");
+                console.log("Product added successfully");
             } else {
-                console.error("Error deleting product");
+                console.error(error);
             }
         } catch (error) {
             console.error(error);
         }
-    }
+    });
 });

@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import __dirname from '../utils/dirnameUtil.js';
 import productModel from '../dao/models/productModel.js';
+import { cartModel } from '../dao/models/cartModel.js';
 
 const viewsRouter = Router();
 
@@ -101,6 +102,10 @@ viewsRouter.get('/', async (req, res) => {
 
 viewsRouter.get('/products', async (req, res) => {
   try {
+
+    const myCart = await cartModel.findOne();
+    const cartId = myCart ? myCart._id : null;
+
     const limit = parseInt(req.query.limit) || 10;
     const page = parseInt(req.query.page) || 1;
 
@@ -109,13 +114,17 @@ viewsRouter.get('/products', async (req, res) => {
     const totalProducts = await productModel.countDocuments(query);
     const totalPages = Math.ceil(totalProducts / limit);
     const skip = (page - 1) * limit;
+    const sortOrder = req.query.sort === 'desc' ? -1 : 1;
+    
+    let sortOptions = {};
+    sortOptions = { price: sortOrder };
 
-    const products = await productModel.find(query).skip(skip).limit(limit).lean();
+    const products = await productModel.find(query).skip(skip).limit(limit).sort(sortOptions).lean();
 
     const prevPage = page > 1 ? `/products?page=${page - 1}` : null;
     const nextPage = page < totalPages ? `/products?page=${page + 1}` : null;
 
-    res.render('homeView', { products, page, prevPage, nextPage });
+    res.render('homeView', { products, page, prevPage, nextPage, cartId });
   } catch (error) {
     res.status(400).send({
           status: 'error',
