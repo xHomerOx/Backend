@@ -1,6 +1,9 @@
 import { Router } from 'express';
 import __dirname from '../utils/dirnameUtil.js';
 import productModel from '../dao/models/productModel.js';
+import ProductManager from '../dao/productManager.js';
+
+const myProducts = new ProductManager();
 
 const viewsRouter = Router();
 
@@ -97,6 +100,20 @@ viewsRouter.get('/', async (req, res) => {
       error: error.message
     });
   }
+});
+
+viewsRouter.get('/products', async (_req, res) => {
+  try {
+    const products = await myProducts.getProducts();
+
+    res.render('homeView', { products });
+  } catch (error) {
+    res.status(400).send({
+          status: 'error',
+          message: error.message
+    });
+  }
+  
 });
 
 export default viewsRouter;

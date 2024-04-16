@@ -49,7 +49,7 @@ addProductForm.addEventListener("submit", async (event) => {
     const stock = document.getElementById("stock").value;
     const category = document.getElementById("category").value;
     
-    const response = await fetch("/products/realtimeproducts", {
+    const response = await fetch("/products", {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
@@ -69,7 +69,7 @@ document.addEventListener("click", async (event) => {
         const productId = event.target.dataset.id;
 
         try {
-            const response = await fetch(`/products/realtimeproducts/${productId}`, {
+            const response = await fetch(`/products/${productId}`, {
                 method: "DELETE",
             });
 

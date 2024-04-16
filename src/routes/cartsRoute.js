@@ -3,7 +3,6 @@ import ProductManager from "../dao/productManager.js";
 import CartManager from "../dao/cartManager.js";
 import { cartModel } from "../dao/models/cartModel.js";
 
-const myProduct = new ProductManager();
 const myCart = new CartManager();
 const cartsRouter = Router();
 
@@ -15,7 +14,7 @@ cartsRouter.get('/', async (_req, res) => {
 cartsRouter.get('/:cid', async (req, res) => {
     try {
         const results = await cartModel.findById(req.params.cid).populate("products.product");
-        
+
         res.send({
             status: 'success',
             payload: results
