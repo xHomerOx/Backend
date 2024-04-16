@@ -133,4 +133,25 @@ viewsRouter.get('/products', async (req, res) => {
   }
 });
 
+viewsRouter.get('/carts/:cid', async (req, res) => {
+  try {
+
+    const cartId = req.params.cid;
+
+    const myCart = await cartModel.findById(cartId).lean().populate('products.product');
+
+    if (!myCart) {
+      return res.status(404).send({ message: 'Carrito no encontrado' });
+    }
+
+    res.render('cartView', { cartProducts: myCart.products, cartId });
+
+  } catch (error) {
+    res.status(400).send({
+          status: 'error',
+          message: error.message
+    });
+  }
+});
+
 export default viewsRouter;

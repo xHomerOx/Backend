@@ -1,5 +1,4 @@
 
-
 const addProduct = document.querySelectorAll("#button");
 const productList = document.getElementById("product-list");
 
@@ -11,7 +10,7 @@ addProduct.forEach(myButton => {
         const cartId = productList.dataset.cartId;
         
         try {
-            const response = await fetch(`/carts/${cartId}/products/${productId}`, {
+            const response = await fetch(`/api/carts/${cartId}/products/${productId}`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
@@ -21,8 +20,6 @@ addProduct.forEach(myButton => {
             
             if (response.ok) {
                 console.log("Product added successfully");
-            } else {
-                console.error(error);
             }
         } catch (error) {
             console.error(error);

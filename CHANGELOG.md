@@ -6,6 +6,9 @@ Desarrollar el servidor basado en Node.JS y express, que escuche en el puerto 80
 - Changed Product ID by Product Product ID.
 - Added Products View.
 - Removed unused deps.
+- Changed and Modified viewsRoute index.js and logic handlers.
+- Added cartView.
+- Modified homeView to make the POST request.
 
 ## 15-04-2024
 
