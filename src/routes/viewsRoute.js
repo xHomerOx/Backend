@@ -1,9 +1,6 @@
 import { Router } from 'express';
 import __dirname from '../utils/dirnameUtil.js';
 import productModel from '../dao/models/productModel.js';
-import ProductManager from '../dao/productManager.js';
-
-const myProducts = new ProductManager();
 
 const viewsRouter = Router();
 
@@ -102,10 +99,15 @@ viewsRouter.get('/', async (req, res) => {
   }
 });
 
-viewsRouter.get('/products', async (_req, res) => {
+viewsRouter.get('/products', async (req, res) => {
   try {
-    const products = await myProducts.getProducts();
+    const limit = parseInt(req.query.limit) || 10;
+    const page = parseInt(req.query.page) || 1;
 
+    const query = {};
+
+    const products = await productModel.find(query).limit(limit).lean();
+    
     res.render('homeView', { products });
   } catch (error) {
     res.status(400).send({
@@ -113,7 +115,6 @@ viewsRouter.get('/products', async (_req, res) => {
           message: error.message
     });
   }
-  
 });
 
 export default viewsRouter;
