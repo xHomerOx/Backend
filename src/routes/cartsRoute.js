@@ -96,9 +96,12 @@ cartsRouter.put('/:cid', async (req, res) => {
 
 cartsRouter.put('/:cid/products/:pid', async (req, res) => {
     try {
-        const cartId = req.params.cid;     
-        const results = await cartModel.findById(cartId).populate('products.product');
+        const cartId = req.params.cid;
+        const productId = req.params.pid;
+        const quantity = req.body.quantity;
         
+        const results = await myCart.updateProductById(cartId, productId, quantity);
+
         res.send({
             status: 'success',
             payload: results

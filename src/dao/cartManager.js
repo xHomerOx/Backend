@@ -42,12 +42,12 @@ class CartManager {
       const foundProduct = await productModel.findOne({_id: productId});
 
       if (foundProduct) {
-        const existingProduct = cart.products.find((cartProduct) => cartProduct.product.equals(productId));
-
-        if (existingProduct) {
-            existingProduct.quantity++;
+        const existingProduct = cart.products.findIndex((cartProduct) => cartProduct.product.equals(productId));
+        
+        if (existingProduct >= 0) {
+          cart.products[existingProduct].quantity++;
         } else {
-            cart.products.push({ product: productId, quantity: 1 });
+          cart.products.push({ product: productId, quantity: 1 });
         }
 
         await cart.save();
@@ -57,7 +57,6 @@ class CartManager {
         return `Product with ID ${productId} not found`;
       }
     } catch (error) {
-        console.log(error);
         throw new Error("Error adding product to cart");
     }
   }
@@ -71,6 +70,7 @@ class CartManager {
           cart.products.splice(deleteProduct, 1);
 
           await cart.save();
+          
           return `Product with ${productId} deleted.`;
         } else {
           return `Product with ${productId} does not exist.`;
@@ -98,6 +98,22 @@ class CartManager {
       }
   }
 
+  async updateProductById(cartId, productId, quantity) {
+    try {
+        const cart = await cartModel.findById(cartId);
+        const myProduct = cart.products.findIndex(product => product._id == productId);
+        
+        if (myProduct >= 0) {
+            cart.products[myProduct].quantity = quantity;
+
+            await cart.save();
+        } else {
+            throw new Error("Product not found in the cart");
+        }
+    } catch (error) {
+        throw new Error("Error updating cart: " + error.message);
+    }
+  }
 }
 
 
