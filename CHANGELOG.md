@@ -4,6 +4,7 @@ Desarrollar el servidor basado en Node.JS y express, que escuche en el puerto 80
 
 ## 16-04-2024
 - Changed Product ID by Product Product ID.
+- Added Products View.
 
 ## 15-04-2024
 

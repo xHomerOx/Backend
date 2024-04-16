@@ -106,9 +106,16 @@ viewsRouter.get('/products', async (req, res) => {
 
     const query = {};
 
-    const products = await productModel.find(query).limit(limit).lean();
-    
-    res.render('homeView', { products });
+    const totalProducts = await productModel.countDocuments(query);
+    const totalPages = Math.ceil(totalProducts / limit);
+    const skip = (page - 1) * limit;
+
+    const products = await productModel.find(query).skip(skip).limit(limit).lean();
+
+    const prevPage = page > 1 ? `/products?page=${page - 1}` : null;
+    const nextPage = page < totalPages ? `/products?page=${page + 1}` : null;
+
+    res.render('homeView', { products, page, prevPage, nextPage });
   } catch (error) {
     res.status(400).send({
           status: 'error',
