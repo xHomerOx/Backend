@@ -19,7 +19,7 @@ addProduct.forEach(myButton => {
             });
             
             if (response.ok) {
-                console.log("Product added successfully");
+                console.log(`Product ${productId} added successfully to Cart ${cartId}`);
             }
         } catch (error) {
             console.error(error);
