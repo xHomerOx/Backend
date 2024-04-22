@@ -27,7 +27,7 @@ usersRouter.post("/register", async (req, res) => {
     }
 });
 
-//Si todo va bien entra si no tira alert.
+//Si todo va bien entra si no tira alert, pasando por el Middleware auth para Admin.
 usersRouter.post("/login", auth, async (req, res) => {
     try {
         req.session.failLogin = false;
