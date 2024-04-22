@@ -19,5 +19,8 @@ viewsRouter.get('/products', async (_req, res) => {
   }
 });
 
+viewsRouter.get("/login", (req, res) => {
+  res.render('login',{ title: 'Login Form', failLogin: req.session.failLogin ?? false})
+});
 
 export default viewsRouter;
