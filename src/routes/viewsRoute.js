@@ -11,8 +11,9 @@ viewsRouter.get('/products', async (req, res) => {
     const products = await productModel.find(query).lean();
     const isLoggedIn = req.session.user ? true : false;
     const user = isLoggedIn ? req.session.user.user : null;
+    const role = isLoggedIn ? req.session.user.role : null;
 
-    res.render('home', { title: 'Products Page', products, isLoggedIn, user });
+    res.render('home', { title: 'Products Page', products, isLoggedIn, user, role });
   } catch (error) {
     res.status(400).send({
           status: 'error',
@@ -26,7 +27,16 @@ viewsRouter.get("/login", (req, res) => {
 });
 
 viewsRouter.get("/register", (req, res) => {
-  res.render('register', { title: 'Register Form', failLogin: req.session.failRegister ?? false })
+  res.render('register', { title: 'Register Form', failRegister: req.session.failRegister ?? false })
+});
+
+viewsRouter.get("/logout", (req, res) => {
+  req.session.destroy((error) => {
+    if (error) {
+      return console.log(error);
+    }
+    return res.redirect("/login");
+  });
 });
 
 export default viewsRouter;

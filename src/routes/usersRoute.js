@@ -5,9 +5,16 @@ const usersRouter = Router();
 
 usersRouter.post("/register", async (req, res) => {
     try {
-        req.session.failRegister = false;
-        await userModel.create(req.body);
-        res.redirect("/login");
+        const existingUser = await userModel.findOne({ user: req.body.user });
+
+        if (existingUser) {
+            req.session.failRegister = true;
+            return res.redirect("/register");
+        } else { 
+            req.session.failRegister = false;
+            await userModel.create(req.body);
+            res.redirect("/login");
+        }
     } catch (error) {
         console.log(error.message);
         req.session.failRegister = true;

@@ -8,6 +8,8 @@
     </head>
     <body>
         <div>Welcome {{#if isLoggedIn}}{{user}}{{else}}user{{/if}}!!!</div>
+        <small>{{#if isLoggedIn}}Role: {{role}}{{/if}}</small>
+        {{#if isLoggedIn}}<div><a href="/logout">Logout</a></div>{{/if}}
             {{#each products}}
             <ul>
                 <li>

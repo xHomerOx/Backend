@@ -24,7 +24,7 @@ app.use(session({
     store: mongoStore.create(
         {
             mongoUrl: uri,
-            ttl: 20
+            ttl: 300000
         }
     ),
     secret: 'myApiKey',
@@ -38,6 +38,7 @@ app.get('/', (_req, res) => {
     const body = 'Go to /login or /register to login to page. Go to Products to see User details.';
     res.render('layouts/main', { title: title, body: body });
 });
+
 app.use('/', viewsRouter);
 app.use('/api/sessions', usersRouter);
 
