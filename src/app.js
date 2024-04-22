@@ -1,20 +1,17 @@
 import express from 'express';
-import exphbs from 'express-handlebars';
 import path from 'path';
 import __dirname from './utils/dirnameUtil.js';
-import productsRouter from './routes/productsRoute.js';
-import cartsRouter from './routes/cartsRoute.js';
 import viewsRouter from './routes/viewsRoute.js';
 import { Server } from 'socket.io';
 import mongoose from 'mongoose';
+import handlebars from 'express-handlebars';
 
 const app = express();
 
 const uri = 'mongodb+srv://xHomerOx:oU4p3VvHAh11lf7s@ecommerce.ix5vqim.mongodb.net/ecommerce?retryWrites=true&w=majority';
 mongoose.connect(uri);
 
-app.engine('handlebars', exphbs.engine({ defaultLayout: false }));
-
+app.engine('handlebars', handlebars.engine());
 app.set('view engine', 'handlebars');
 app.set('views', path.join(__dirname, '../views'));
 
@@ -23,7 +20,6 @@ app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 
 app.use('/', viewsRouter);
-app.use('/api/carts/', cartsRouter);
 
 const PORT = 8080;
 
