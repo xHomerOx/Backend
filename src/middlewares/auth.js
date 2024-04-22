@@ -1,6 +1,6 @@
 export const auth = function (req, res, next) {
     const {user, password} = req.body;
-
+    
      //Veo si hay un admincoder user.
     if (user === "admincoder@coder.com" && password === "adminCod3r123") {
         req.session.user = user;

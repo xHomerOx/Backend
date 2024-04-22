@@ -7,6 +7,8 @@ const usersRouter = Router();
 //Me registro y chequeo si el usuario existe o no en la db.
 usersRouter.post("/register", async (req, res) => {
     try {
+        req.session.failRegister = false;
+
         const existingUser = await userModel.findOne({ user: req.body.user });
 
         //Veo si existe o es admincoder.
