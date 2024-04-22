@@ -21,16 +21,16 @@ app.use(express.static(path.join(__dirname, '../../public')));
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 app.use(session({
-        store: mongoStore.create(
-            {
-                mongoUrl: uri,
-                ttl: 20
-            }
-        ),
-        secret: 'myApiKey',
-        resave: true,
-        saveUninitialized: true
-    }));
+    store: mongoStore.create(
+        {
+            mongoUrl: uri,
+            ttl: 20
+        }
+    ),
+    secret: 'myApiKey',
+    resave: true,
+    saveUninitialized: true
+}));
 
 
 app.get('/', (_req, res) => {
