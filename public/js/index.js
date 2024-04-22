@@ -1,4 +1,3 @@
-
 const addProduct = document.querySelectorAll("#button");
 const productList = document.getElementById("product-list");
 
