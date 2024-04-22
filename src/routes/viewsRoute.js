@@ -4,15 +4,18 @@ import productModel from '../models/productModel.js';
 
 const viewsRouter = Router();
 
+//Traigo los productos.
 viewsRouter.get('/products', async (req, res) => {
   try {
-    const query = {}
+    const products = await productModel.find().lean();
 
-    const products = await productModel.find(query).lean();
+    //Chequeo si está logueado.
     const isLoggedIn = req.session.user ? true : false;
+    
+    //Assigno user y rol si existe.
     const user = isLoggedIn ? req.session.user.user : null;
     const role = isLoggedIn ? req.session.user.role : null;
-
+    
     res.render('home', { title: 'Products Page', products, isLoggedIn, user, role });
   } catch (error) {
     res.status(400).send({
@@ -22,6 +25,7 @@ viewsRouter.get('/products', async (req, res) => {
   }
 });
 
+//Endpoints de Login Register y Logout.
 viewsRouter.get("/login", (req, res) => {
   res.render('login', { title: 'Login Form', failLogin: req.session.failLogin ?? false })
 });

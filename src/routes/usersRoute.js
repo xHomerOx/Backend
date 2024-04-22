@@ -3,11 +3,13 @@ import userModel from '../models/userModel.js';
 
 const usersRouter = Router();
 
+//Me registro y chequeo si el usuario existe o no en la db.
 usersRouter.post("/register", async (req, res) => {
     try {
         const existingUser = await userModel.findOne({ user: req.body.user });
 
-        if (existingUser) {
+        //Veo si existe o es admincoder.
+        if (existingUser || req.body.user === "admincoder@coder.com") {
             req.session.failRegister = true;
             return res.redirect("/register");
         } else { 
@@ -22,10 +24,25 @@ usersRouter.post("/register", async (req, res) => {
     }
 });
 
+//Si todo va bien entra si no tira alert.
 usersRouter.post("/login", async (req, res) => {
     try {
         req.session.failLogin = false;
+
+        //Veo si hay un admincoder user.
+        if (req.body.user === "admincoder@coder.com" && req.body.password === "adminCod3r123") {
+            const adminUser = {
+                user: "admincoder@coder.com",
+                role: "admin"
+            };
+
+            req.session.user = adminUser;
+
+            return res.redirect("/products");
+        }
+
         const result = await userModel.findOne({user: req.body.user});
+
         if (!result) {
             req.session.failLogin = true;
             return res.redirect("/login");

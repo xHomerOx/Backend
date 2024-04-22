@@ -34,9 +34,7 @@ app.use(session({
 
 
 app.get('/', (_req, res) => {
-    const title = 'Home Page';
-    const body = 'Go to /login or /register to login to page. Go to Products to see User details.';
-    res.render('layouts/main', { title: title, body: body });
+    return res.redirect("/login");
 });
 
 app.use('/', viewsRouter);
