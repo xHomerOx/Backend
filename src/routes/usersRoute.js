@@ -1,24 +1,24 @@
-import {Router} from 'express';
+import { Router } from 'express';
 import userModel from '../models/userModel.js';
 
-const router = Router();
+const usersRouter = Router();
 
-router.post("/register", async (req, res) => {
+usersRouter.post("/register", async (req, res) => {
     try {
         req.session.failRegister = false;
         await userModel.create(req.body);
         res.redirect("/login");
-    } catch (e) {
-        console.log(e.message);
+    } catch (error) {
+        console.log(error.message);
         req.session.failRegister = true;
         res.redirect("/register");
     }
 });
 
-router.post("/login", async (req, res) => {
+usersRouter.post("/login", async (req, res) => {
     try {
         req.session.failLogin = false;
-        const result = await userModel.findOne({email: req.body.email});
+        const result = await userModel.findOne({user: req.body.user});
         if (!result) {
             req.session.failLogin = true;
             return res.redirect("/login");
@@ -32,11 +32,11 @@ router.post("/login", async (req, res) => {
         delete result.password;
         req.session.user = result;
 
-        return res.redirect("/");
-    } catch (e) {
+        return res.redirect("/products");
+    } catch (error) {
         req.session.failLogin = true;
         return res.redirect("/login");
     }
 });
 
-export default router;
+export default usersRouter;

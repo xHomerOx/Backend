@@ -8,7 +8,7 @@ const userSchema = mongoose.Schema({
         minLength: 3,
         require: true
     },
-    pass: {
+    password: {
         type: String,
         minLength: 3,
         require: true
