@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import userModel from '../models/userModel.js';
+import { auth } from '../middlewares/auth.js';
 
 const usersRouter = Router();
 
@@ -25,21 +26,9 @@ usersRouter.post("/register", async (req, res) => {
 });
 
 //Si todo va bien entra si no tira alert.
-usersRouter.post("/login", async (req, res) => {
+usersRouter.post("/login", auth, async (req, res) => {
     try {
         req.session.failLogin = false;
-
-        //Veo si hay un admincoder user.
-        if (req.body.user === "admincoder@coder.com" && req.body.password === "adminCod3r123") {
-            const adminUser = {
-                user: "admincoder@coder.com",
-                role: "admin"
-            };
-
-            req.session.user = adminUser;
-
-            return res.redirect("/products");
-        }
 
         const result = await userModel.findOne({user: req.body.user});
 
