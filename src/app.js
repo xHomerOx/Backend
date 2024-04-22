@@ -40,11 +40,6 @@ app.get('/', (_req, res) => {
 app.use('/', viewsRouter);
 app.use('/', usersRouter);
 
-app.use((err, req, res, next) => {
-    console.error(err.stack);
-    res.status(500).send('Something broke!');
-});
-
 const PORT = 8080;
 
 app.listen(PORT, () => {
