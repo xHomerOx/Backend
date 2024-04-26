@@ -7,6 +7,8 @@ import mongoose from 'mongoose';
 import handlebars from 'express-handlebars';
 import session from 'express-session';
 import mongoStore from 'connect-mongo';
+import passport from 'passport';
+import initializePassport from './config/passport.config.js';
 
 const app = express();
 
@@ -28,10 +30,15 @@ app.use(session({
         }
     ),
     secret: 'myApiKey',
-    resave: true,
-    saveUninitialized: true
+    resave: false,
+    saveUninitialized: false,
+    failLogin: false,
+    failRegister: false
 }));
 
+initializePassport();
+app.use(passport.initialize());
+app.use(passport.session());
 
 app.get('/', (_req, res) => {
     return res.redirect("/login");

@@ -30,8 +30,16 @@ viewsRouter.get("/login", (req, res) => {
   res.render('login', { title: 'Login Form', failLogin: req.session.failLogin ?? false })
 });
 
+viewsRouter.get("/failLogin", (_req, res) => {
+  res.render('failLogin', { title: 'Login Failed' })
+});
+
 viewsRouter.get("/register", (req, res) => {
   res.render('register', { title: 'Register Form', failRegister: req.session.failRegister ?? false })
+});
+
+viewsRouter.get("/failRegister", (_req, res) => {
+  res.render('failRegister', { title: 'Registration Failed' })
 });
 
 viewsRouter.get("/logout", (req, res) => {

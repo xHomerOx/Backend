@@ -2,11 +2,12 @@ import { Router } from 'express';
 import userModel from '../models/userModel.js';
 import { auth } from '../middlewares/auth.js';
 import { createHash, isValidPassword } from '../utils/utils.js';
+import passport from 'passport';
 
 const usersRouter = Router();
 
 //Me registro y chequeo si el usuario existe o no en la db.
-usersRouter.post("/register", async (req, res) => {
+usersRouter.post("/register", passport.authenticate('register', {failureRedirect: '/failRegister'}), async (req, res) => {
     try {
         req.session.failRegister = false;
 
@@ -21,21 +22,20 @@ usersRouter.post("/register", async (req, res) => {
         //Veo si existe o es admincoder.
         if (existingUser || req.body.user === "admincoder@coder.com") {
             req.session.failRegister = true;
-            return res.redirect("/register");
+            res.redirect("/login");
         } else { 
             req.session.failRegister = false;
             await userModel.create(newUser);
             res.redirect("/login");
         }
     } catch (error) {
-        console.log(error.message);
         req.session.failRegister = true;
         res.redirect("/register");
     }
 });
 
 //Si todo va bien entra si no tira alert, pasando por el Middleware auth para Admin.
-usersRouter.post("/login", auth, async (req, res) => {
+usersRouter.post("/login", auth, passport.authenticate('login', {failureRedirect: '/failLogin'}), async (req, res) => {
     try {
         req.session.failLogin = false;
 
