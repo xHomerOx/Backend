@@ -3,12 +3,15 @@ import path from 'path';
 import __dirname from './utils/utils.js';
 import viewsRouter from './routes/viewsRoute.js';
 import usersRouter from './routes/usersRoute.js';
+import sessionsRouter from './routes/sessionsRouter.js';
 import mongoose from 'mongoose';
 import handlebars from 'express-handlebars';
 import session from 'express-session';
 import mongoStore from 'connect-mongo';
 import passport from 'passport';
 import initializePassport from './config/passport.config.js';
+
+/* Secret 53fef6c19113d8d0762bcb76a95e448d55e920a2 */
 
 const app = express();
 
@@ -46,6 +49,7 @@ app.get('/', (_req, res) => {
 
 app.use('/', viewsRouter);
 app.use('/', usersRouter);
+app.use('/api/sessions', sessionsRouter);
 
 const PORT = 8080;
 
