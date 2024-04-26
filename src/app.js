@@ -1,6 +1,6 @@
 import express from 'express';
 import path from 'path';
-import __dirname from './utils/dirnameUtil.js';
+import __dirname from './utils/utils.js';
 import viewsRouter from './routes/viewsRoute.js';
 import usersRouter from './routes/usersRoute.js';
 import mongoose from 'mongoose';

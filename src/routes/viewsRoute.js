@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import __dirname from '../utils/dirnameUtil.js';
+import __dirname from '../utils/utils.js';
 import productModel from '../models/productModel.js';
 
 const viewsRouter = Router();
