@@ -11,8 +11,6 @@ import mongoStore from 'connect-mongo';
 import passport from 'passport';
 import initializePassport from './config/passport.config.js';
 
-/* Secret 53fef6c19113d8d0762bcb76a95e448d55e920a2 */
-
 const app = express();
 
 const uri = 'mongodb+srv://xHomerOx:oU4p3VvHAh11lf7s@ecommerce.ix5vqim.mongodb.net/ecommerce?retryWrites=true&w=majority';

@@ -39,7 +39,7 @@ const initializePassport = () => {
         {
             passReqToCallback: true,
             usernameField: 'user'
-        }, async (req, username, password, done) => {
+        }, async (_req, username, password, done) => {
             try {
                 let myUser = await userModel.findOne({ user: username });
                 
@@ -53,6 +53,31 @@ const initializePassport = () => {
                     return done(null, myUser);
                 } else {
                     return done(null, false);
+                }
+            } catch (error) {
+                return done(error);
+            }
+        }
+    ));
+
+    passport.use('github', new GithubStrategy(
+        {
+            clientID: 'Iv1.b95f5e07cc384cfb',
+            clientSecret: '53fef6c19113d8d0762bcb76a95e448d55e920a2',
+            callbackURL: 'http://localhost:8080/api/sessions/github'
+        }, async (_accessToken, _refreshToken, profile, done) => {
+            try {
+                let myUser = await userModel.findOne({ user: profile._json.email });
+                
+                if (!myUser) {
+                    let newUser = {
+                        user: profile._json.name
+                    }
+
+                    let result = await userModel.create(newUser);
+                    done(null, result);
+                } else {
+                    done(null, myUser);
                 }
             } catch (error) {
                 return done(error);
