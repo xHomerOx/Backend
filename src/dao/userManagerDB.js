@@ -6,7 +6,7 @@ class UserManager {
 
     async getUsers() {
       try {
-        return await userModel.find();
+        return await userModel.find().lean();
       } catch (error) {
         throw new Error("Error finding Users!");
       }
@@ -14,7 +14,7 @@ class UserManager {
 
     async getUser(uid) {
       try {
-        return await userModel.find({_id: uid});
+        return await userModel.findOne({_id: uid}).lean();
       } catch (error) {
         throw new Error("User not found!");
       }
