@@ -5,9 +5,16 @@ import passport from "passport";
 const sessionRouter = Router();
 const UserService =  new UserManager();
 
-sessionRouter.get('/:uid', (req, res, next) => {
+const isAdmin = (req, res, next) => {
+    if (req.user.role === 'admin') return next();
 
-}, async (req, res) => {
+    res.status(403).send({
+        status: 'error',
+        message: 'unauthorized'
+    });
+}
+
+sessionRouter.get('/:uid', passport.authenticate('jwt', {session: false}), isAdmin, async (req, res) => {
     try {
         const result = await UserService.getUser(req.params.uid);
         res.send({
