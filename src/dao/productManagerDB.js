@@ -1,7 +1,6 @@
 import productModel from "./models/productModel.js";
 
 class ProductManager {
-
     async getProducts() {
         try {
             return await productModel.find().lean();
@@ -25,11 +24,11 @@ class ProductManager {
         if (existingProduct) {
             throw new Error('Code could not be the same as existent one!');
         }
+
         if (!title || !description || !code || !price || !stock || !category) {
             throw new Error('Cart could not be created!');
         }
 
-        
         try {
             const result = await productModel.create({title, description, code, price, stock, category, thumbnail: thumbnail ?? []});
 

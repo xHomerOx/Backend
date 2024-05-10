@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import { createHash } from "../../utils/cryptoUtil.js";
 
 const userCollection = "users";
 
@@ -34,13 +35,18 @@ const userSchema = mongoose.Schema({
                     ref: "carts"
                 }
             }
-        ]
+        ],
+        default: []
     },
     role: {
         type: String,
         require: true,
         default: 'user'
     }
+});
+
+userSchema.pre("create", function() {
+    this.password = createHash(this.password);
 });
 
 const userModel = mongoose.model(userCollection, userSchema);
