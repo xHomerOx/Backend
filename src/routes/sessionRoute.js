@@ -14,21 +14,6 @@ const isAdmin = (req, res, next) => {
     });
 }
 
-sessionRouter.get('/:uid', passport.authenticate('jwt', {session: false}), isAdmin, async (req, res) => {
-    try {
-        const result = await UserService.getUser(req.params.uid);
-        res.send({
-            status: 'success',
-            payload: result
-        });
-    } catch (error) {
-        res.status(400).send({
-            status: 'error',
-            message: error.message
-        });
-    }
-});
-
 sessionRouter.post('/register', async (req, res) => {
     try {
         const result = await UserService.addUser(req.body);
@@ -65,6 +50,21 @@ sessionRouter.get('/current', passport.authenticate('jwt', {session: false}), as
     res.send({
         user: req.user
     })
+});
+
+sessionRouter.get('/:uid', passport.authenticate('jwt', {session: false}), isAdmin, async (req, res) => {
+    try {
+        const result = await UserService.getUser(req.params.uid);
+        res.send({
+            status: 'success',
+            payload: result
+        });
+    } catch (error) {
+        res.status(400).send({
+            status: 'error',
+            message: error.message
+        });
+    }
 });
 
 export default sessionRouter;
