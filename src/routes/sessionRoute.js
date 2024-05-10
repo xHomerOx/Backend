@@ -1,10 +1,13 @@
 import { Router } from "express";
 import UserManager from "../dao/userManagerDB.js";
+import passport from "passport";
 
 const sessionRouter = Router();
 const UserService =  new UserManager();
 
-sessionRouter.get('/:uid', async (req, res) => {
+sessionRouter.get('/:uid', (req, res, next) => {
+
+}, async (req, res) => {
     try {
         const result = await UserService.getUser(req.params.uid);
         res.send({
@@ -37,10 +40,11 @@ sessionRouter.post('/register', async (req, res) => {
 sessionRouter.post('/login', async (req, res) => {
     try {
         const { email, password } = req.body;
-        const result = await UserService.loginUser(email, password);
-        res.send({
+        const token = await UserService.loginUser(email, password);
+
+        res.cookie('auth', token, { maxAge: 60*60*1000 }).send({
             status: 'success',
-            token: result
+            token
         });
     } catch (error) {
         res.status(400).send({
@@ -48,6 +52,12 @@ sessionRouter.post('/login', async (req, res) => {
             message: error.message
         });
     }
+});
+
+sessionRouter.get('/current', passport.authenticate('jwt', {session: false}), async (req, res) => {
+    res.send({
+        user: req.user
+    })
 });
 
 export default sessionRouter;
