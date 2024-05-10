@@ -1,7 +1,7 @@
 import userModel from "./models/userModel.js";
 
 class UserManager {
-    
+
     async getUsers() {
       try {
         return await userModel.find();
@@ -24,6 +24,10 @@ class UserManager {
         } catch (error) {
             throw new Error('User could not be created!');
         }
+    }
+
+    async loginUser() {
+        
     }
 }
   
