@@ -1,11 +1,13 @@
 import express, { Router } from 'express';
 import __dirname from '../utils/dirnameUtil.js';
-import ProductManager from '../dao/productManagerFS.js';
+import ProductManager from '../dao/productManagerDB.js';
 import { socketServer } from '../app.js';
+import UserManager from '../dao/userManagerDB.js';
 
-const myProduct = new ProductManager('public');
+const myProduct = new ProductManager();
 const viewsRouter = Router();
 viewsRouter.use(express.json());
+const myUsers = new UserManager();
 
 viewsRouter.get('/', async (_req, res) => {
   const products = await myProduct.getProducts();
@@ -19,6 +21,19 @@ viewsRouter.get('/realtimeproducts', async (_req, res) => {
 
 viewsRouter.get('/chatbox', async (_req, res) => {
   res.render('chatView', { title: 'ChatView'});
+});
+
+viewsRouter.get('/register', async (_req, res) => {
+  res.render('registerView', { title: 'Register' });
+});
+
+viewsRouter.post('/register', async (req, res) => {
+  try {
+    const user = await myUsers.addUser(req.body);
+    res.render('registerView', { title: 'Register', user: user });
+  } catch (error) {
+    res.status(500).send('Error adding user');
+  }
 });
 
 viewsRouter.post("/realtimeproducts", async (req, res) => {
