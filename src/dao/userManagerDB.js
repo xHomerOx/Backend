@@ -1,5 +1,6 @@
 import userModel from "./models/userModel.js";
 import { isValidPassword } from "../utils/cryptoUtil.js";
+import jwt from "jsonwebtoken";
 
 class UserManager {
 
@@ -19,11 +20,17 @@ class UserManager {
       }
     }
 
-    async addUser() {
+    async addUser(user) {
         const { first_name, last_name, email, age, password } = user;
 
         if (!first_name || !last_name || !email || !age || !password) {
             throw new Error('User could not be created!');
+        }
+
+        const emailExists = await userModel.findOne({email}).lean();
+
+        if (emailExists) {
+            return "User already exists";
         }
 
         try {
@@ -31,7 +38,7 @@ class UserManager {
 
             return "User created succesfully";
         } catch (error) {
-            throw new Error('User could not be created!');
+            throw new Error('One or more fields are wrong or not in correct format!');
         }
     }
 
@@ -40,15 +47,16 @@ class UserManager {
           throw new error("Invalid credentials!");
         }
         try {
-          const user = await userModel.findOne({email});
+          const user = await userModel.findOne({email}).lean();
 
           if (!user) throw new Error('Invalid user!');
 
           if (isValidPassword(user, password)) {
-            return user;
+            return jwt.sign(user, "secretKey", { expiresIn: "1h"});
           }
         } catch (error) {
-          throw new error("Login Error!");
+          console.log(error);
+          throw new Error("Login Error!");
         }
     }
 }

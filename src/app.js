@@ -5,6 +5,7 @@ import __dirname from './utils/dirnameUtil.js';
 import productsRouter from './routes/productsRoute.js';
 import cartsRouter from './routes/cartsRoute.js';
 import viewsRouter from './routes/viewsRoute.js';
+import sessionRouter from './routes/sessionRoute.js';
 import { Server } from 'socket.io';
 import mongoose from 'mongoose';
 import messageModel from './dao/models/messageModel.js';
@@ -29,6 +30,7 @@ app.get('/', (_req, res) => {
 
 app.use('/api/products', productsRouter);
 app.use('/api/carts', cartsRouter);
+app.use('/api/users', sessionRouter);
 app.use('/products', viewsRouter);
 
 const PORT = 8080;
