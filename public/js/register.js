@@ -21,15 +21,25 @@ document.addEventListener('DOMContentLoaded', () => {
                 },
                 body: JSON.stringify(userData)
             });
-
+            
             if (!response.ok) {
-                throw new Error('Error adding User');
+                throw new Error('Error adding User from server');
             }
 
-            const data = await response.json();
-            console.log('User Registered:', data);
+            const registerMessage = document.createElement('p');
 
+            registerMessage.textContent = 'User Registered';
+            registerForm.appendChild(registerMessage);
+
+            console.log('User Registered');
+            
+            registerForm.reset();
         } catch (error) {
+            const registerMessage = document.createElement('p');
+
+            registerMessage.textContent = error.message;
+            registerForm.appendChild(registerMessage);
+            
             console.error(error.message);
         }
     });

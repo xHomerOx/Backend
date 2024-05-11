@@ -30,15 +30,15 @@ class UserManager {
         const emailExists = await userModel.findOne({email}).lean();
 
         if (emailExists) {
-            return "User already exists";
+          new Error("User already exists");
         }
 
         try {
-            await userModel.create({ first_name, last_name, email, age, password });
+          await userModel.create({ first_name, last_name, email, age, password });
 
-            return "User created succesfully";
+          return "User created succesfully";
         } catch (error) {
-            throw new Error('One or more fields are wrong or not in correct format!');
+          throw new Error('One or more fields are wrong or not in correct format!');
         }
     }
 
