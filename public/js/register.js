@@ -23,7 +23,7 @@ document.addEventListener('DOMContentLoaded', () => {
             });
             
             if (!response.ok) {
-                throw new Error('Error adding User from server');
+                throw new Error('User already exists');
             }
 
             const registerMessage = document.createElement('p');

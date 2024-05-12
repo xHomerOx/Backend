@@ -32,7 +32,14 @@ viewsRouter.post('/register', async (req, res) => {
     const user = await myUsers.addUser(req.body);
     res.render('registerView', { title: 'Register', user: user });
   } catch (error) {
-    res.status(500).send('Error adding user');
+    if (error.code === 'User already exists') {
+      res.status(400).send({
+        status: 'error',
+        message: 'User already exists'
+      });
+    }else{
+      res.status(500).send('Error adding user');
+    }
   }
 });
 
