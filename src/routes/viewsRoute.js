@@ -43,6 +43,26 @@ viewsRouter.post('/register', async (req, res) => {
   }
 });
 
+viewsRouter.get('/login', async (_req, res) => {
+  res.render('loginView', { title: 'Login' });
+});
+
+viewsRouter.post('/login', async (req, res) => {
+  try {
+    const user = await myUsers.loginUser(req.body);
+    res.render('loginView', { title: 'Login', user: user });
+  } catch (error) {
+    if (error.code === 'Invalid credentials') {
+      res.status(400).send({
+        status: 'error',
+        message: 'Invalid credentials'
+      });
+    }else{
+      res.status(500).send('Internal Server Error');
+    }
+  }
+});
+
 viewsRouter.post("/realtimeproducts", async (req, res) => {
   try {
     const response = await myProduct.addProducts(req.body);

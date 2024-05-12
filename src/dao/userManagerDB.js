@@ -53,9 +53,10 @@ class UserManager {
 
           if (isValidPassword(user, password)) {
             return jwt.sign(user, "secretKey", { expiresIn: "1h"});
+          } else {
+            throw new Error('Invalid password!');
           }
         } catch (error) {
-          console.log(error);
           throw new Error("Login Error!");
         }
     }
