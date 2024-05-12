@@ -49,8 +49,10 @@ viewsRouter.get('/login', async (_req, res) => {
 
 viewsRouter.post('/login', async (req, res) => {
   try {
-    const user = await myUsers.loginUser(req.body);
-    res.render('loginView', { title: 'Login', user: user });
+    const { email, password } = req.body;
+    await myUsers.loginUser(email, password);
+
+    res.redirect('/products/realtimeproducts');
   } catch (error) {
     if (error.code === 'Invalid credentials') {
       res.status(400).send({

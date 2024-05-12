@@ -11,7 +11,7 @@ document.addEventListener('DOMContentLoaded', () => {
         };
 
         try {
-            const response = await fetch('/api/users/login', {
+            const response = await fetch('/products/login', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -20,7 +20,7 @@ document.addEventListener('DOMContentLoaded', () => {
             });
             
             if (!response.ok) {
-                throw new Error('Wrong Password');
+                throw new Error('Internal Server Error');
             }
 
             const loginMessage = document.createElement('p');
@@ -31,8 +31,6 @@ document.addEventListener('DOMContentLoaded', () => {
             console.log('Logged in success');
             
             loginForm.reset();
-
-            window.location.href = '/products/realtimeproducts';
         } catch (error) {
             const loginMessage = document.createElement('p');
 
