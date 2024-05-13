@@ -32,7 +32,26 @@ app.use(express.urlencoded({extended: true}));
 app.use(cookieParser());
 
 app.get('/', (_req, res) => {
-    res.send('Welcome to the root path! Go to /products to see content! (ChatBox is in /products/chatbox)');
+    res.send(`
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Welcome</title>
+    </head>
+    <body>
+        <h1>Welcome to the root path!</h1>
+        <p>Go to /products to see content! (ChatBox is in /products/chatbox)</p>
+        <p>Endpoints:</p>
+        <p>/api/users/register</p>
+        <p>/api/users/login</p>
+        <p>/api/users/current</p>
+        <p>/api/users/:uid</p>
+        <p>/products</p>
+        <p>/products/realtimeproducts</p>
+        <p>/products/register</p>
+        <p>/products/login</p>
+    </body>
+    `);
 });
 
 app.use('/api/products', productsRouter);
