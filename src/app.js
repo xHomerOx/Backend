@@ -12,6 +12,7 @@ import messageModel from './dao/models/messageModel.js';
 import passport from 'passport';
 import initializePassport from './config/passportConfig.js';
 import cookieParser from 'cookie-parser';
+import session from 'express-session';
 
 const app = express();
 
@@ -30,6 +31,12 @@ app.use(express.static(path.join(__dirname, '../../public')));
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 app.use(cookieParser());
+
+app.use(session({
+    secret: 'secretKey',
+    resave: false,
+    saveUninitialized: true
+}));
 
 app.get('/', (_req, res) => {
     res.send(`

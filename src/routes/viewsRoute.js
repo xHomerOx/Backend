@@ -45,9 +45,10 @@ viewsRouter.get('/login', async (_req, res) => {
 viewsRouter.post('/login', async (req, res) => {
   try {
     const { email, password } = req.body;
-    await myUsers.loginUser(email, password);
+    const { token, user } = await myUsers.loginUser(email, password);
     
-    res.redirect('/products/realtimeproducts');
+    req.session.user = user;
+    res.send({ status: 'success', token: token });
   } catch (error) {
     if (error.code === 'Invalid credentials') {
       res.status(400).send({
@@ -60,9 +61,10 @@ viewsRouter.post('/login', async (req, res) => {
   }
 });
 
-viewsRouter.get('/realtimeproducts', async (_req, res) => {
+viewsRouter.get('/realtimeproducts', async (req, res) => {
+  const user = req.session.user; 
   const products = await myProduct.getProducts();
-  res.render('realTimeProductsView', { title: 'Products', products: products });
+  res.render('realTimeProductsView', { title: 'Products', user: user, products: products });
 });
 
 viewsRouter.post("/realtimeproducts", async (req, res) => {

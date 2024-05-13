@@ -29,6 +29,8 @@ document.addEventListener('DOMContentLoaded', () => {
             loginForm.appendChild(loginMessage);
             
             loginForm.reset();
+
+            window.location.href = '/products/realtimeproducts';
         } catch (error) {
             const loginMessage = document.createElement('p');
 
