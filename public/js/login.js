@@ -20,15 +20,13 @@ document.addEventListener('DOMContentLoaded', () => {
             });
             
             if (!response.ok) {
-                throw new Error('Internal Server Error');
+                throw new Error('Invalid Password');
             }
 
             const loginMessage = document.createElement('p');
 
             loginMessage.textContent = 'Logged in success';
             loginForm.appendChild(loginMessage);
-
-            console.log('Logged in success');
             
             loginForm.reset();
         } catch (error) {

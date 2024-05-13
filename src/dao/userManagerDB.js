@@ -44,18 +44,19 @@ class UserManager {
 
     async loginUser(email, password) {
         if (!email || !password) {
-          throw new error("Invalid credentials!");
+          throw new Error("Invalid credentials!");
         }
         try {
           const user = await userModel.findOne({email}).lean();
-
+          
           if (!user) throw new Error('Invalid user!');
 
           if (isValidPassword(user, password)) {
             return jwt.sign(user, "secretKey", { expiresIn: "1h"});
+          }else{
+            throw new Error("Invalid Password!");
           }
         } catch (error) {
-          console.log(error);
           throw new Error("Login Error!");
         }
     }

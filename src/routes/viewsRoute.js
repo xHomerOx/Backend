@@ -14,11 +14,6 @@ viewsRouter.get('/', async (_req, res) => {
   res.render('homeView', { title: 'Products', products: products });
 });
 
-viewsRouter.get('/realtimeproducts', async (_req, res) => {
-  const products = await myProduct.getProducts();
-  res.render('realTimeProductsView', { title: 'Products', products: products });
-});
-
 viewsRouter.get('/chatbox', async (_req, res) => {
   res.render('chatView', { title: 'ChatView'});
 });
@@ -51,7 +46,7 @@ viewsRouter.post('/login', async (req, res) => {
   try {
     const { email, password } = req.body;
     await myUsers.loginUser(email, password);
-
+    
     res.redirect('/products/realtimeproducts');
   } catch (error) {
     if (error.code === 'Invalid credentials') {
@@ -63,6 +58,11 @@ viewsRouter.post('/login', async (req, res) => {
       res.status(500).send('Internal Server Error');
     }
   }
+});
+
+viewsRouter.get('/realtimeproducts', async (_req, res) => {
+  const products = await myProduct.getProducts();
+  res.render('realTimeProductsView', { title: 'Products', products: products });
 });
 
 viewsRouter.post("/realtimeproducts", async (req, res) => {
