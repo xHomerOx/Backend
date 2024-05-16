@@ -6,24 +6,20 @@ socket.on('connect', () => {
     console.log('Client connected to Socket');
 });
 
-socket.on("productAdded", (addedProducts) => {
+socket.on("productAdded", (newProduct) => {
     const productList = document.getElementById("productList");
-    productList.innerHTML = "";
-    
-    addedProducts.forEach(product => {
-        const listItem = document.createElement("li");
-        listItem.id = `${product.id}`;
-        listItem.innerHTML = `
-            <h2>Title: ${product.title}</h2>
-            <p>Description: ${product.description}</p>
-            <p>Price: $${product.price}</p>
-            <p>Product Code: ${product.code}</p>
-            <p>Stock: ${product.stock}</p>
-            <p>Category: ${product.category}</p>
-            <button class="deleteButton" data-id="${product.id}">Delete Product</button>
-        `;
-        productList.appendChild(listItem);
-    });
+    const listItem = document.createElement("li");
+    listItem.id = `${newProduct.id}`;
+    listItem.innerHTML = `
+      <h2>Title: ${newProduct.title}</h2>
+      <p>Description: ${newProduct.description}</p>
+      <p>Price: $${newProduct.price}</p>
+      <p>Product Code: ${newProduct.code}</p>
+      <p>Stock: ${newProduct.stock}</p>
+      <p>Category: ${newProduct.category}</p>
+      <button class="deleteButton" data-id="${newProduct.id}">Delete Product</button>
+    `;
+    productList.appendChild(listItem);
 });
 
 socket.on("productDeleted", (deletedProduct) => {

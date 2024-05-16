@@ -69,10 +69,10 @@ viewsRouter.get('/realtimeproducts', async (req, res) => {
 
 viewsRouter.post("/realtimeproducts", async (req, res) => {
   try {
-    const response = await myProduct.addProducts(req.body);
-    socketServer.emit("productAdded", myProduct.products);
+    const newProduct = await myProduct.addProducts(req.body);
+    socketServer.emit("productAdded", newProduct);
 
-    res.status(201).send(response);
+    res.status(201).send(newProduct);
   } catch (error) {
     res.status(400).send(error.message);
   }
@@ -81,7 +81,7 @@ viewsRouter.post("/realtimeproducts", async (req, res) => {
 viewsRouter.delete("/realtimeproducts/:id", async (req, res) => {
   try {
     const productId = req.params.id;
-    await myProduct.deleteProduct(parseInt(productId));
+    await myProduct.deleteProduct(productId);
     socketServer.emit("productDeleted", productId); 
 
     res.status(201).send(productId);
