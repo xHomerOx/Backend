@@ -16,7 +16,7 @@ viewsRouter.get('/products', async (req, res) => {
     const user = isLoggedIn ? req.session.user.user : null;
     const role = isLoggedIn ? req.session.user.role : null;
     
-    res.render('home', { title: 'Products Page', products, isLoggedIn, user, role });
+    res.render('homeView', { title: 'Products Page', products, isLoggedIn, user, role });
   } catch (error) {
     res.status(400).send({
           status: 'error',
@@ -27,19 +27,19 @@ viewsRouter.get('/products', async (req, res) => {
 
 //Endpoints de Login Register y Logout.
 viewsRouter.get("/login", (req, res) => {
-  res.render('login', { title: 'Login Form', failLogin: req.session.failLogin ?? false })
+  res.render('loginView', { title: 'Login Form', failLogin: req.session.failLogin ?? false })
 });
 
 viewsRouter.get("/failLogin", (_req, res) => {
-  res.render('failLogin', { title: 'Login Failed' })
+  res.render('failLoginView', { title: 'Login Failed' })
 });
 
 viewsRouter.get("/register", (req, res) => {
-  res.render('register', { title: 'Register Form', failRegister: req.session.failRegister ?? false })
+  res.render('registerView', { title: 'Register Form', failRegister: req.session.failRegister ?? false })
 });
 
 viewsRouter.get("/failRegister", (_req, res) => {
-  res.render('failRegister', { title: 'Registration Failed' })
+  res.render('failRegisterView', { title: 'Registration Failed' })
 });
 
 viewsRouter.get("/logout", (req, res) => {

@@ -42,7 +42,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 app.get('/', (_req, res) => {
-    return res.redirect("/login");
+    return res.redirect("/products");
 });
 
 app.use('/', viewsRouter);
