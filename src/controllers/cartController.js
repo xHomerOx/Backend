@@ -12,8 +12,7 @@ class CartController {
     
     async getProductsFromCart(req, res) {
         try {
-            const results = await cartModel.findById(req.params.cid).populate("products.product");
-    
+            const results = await myCart.getProductsFromCart(req.params.cid);
             res.send({
                 status: 'success',
                 payload: results
@@ -45,7 +44,7 @@ class CartController {
     async addProduct(req, res) {
         try {
             const results = await myCart.addProduct(req.params.cid, req.params.pid);
-    
+
             res.send({
                 status: 'success',
                 payload: results
@@ -78,9 +77,9 @@ class CartController {
         try {
             const cartId = req.params.cid;
             const updatedProducts = req.body.products;
-    
+            console.log(cartId, updatedProducts);
             const results = await myCart.updateProduct(cartId, updatedProducts);
-    
+            
             res.send({
                 status: 'success',
                 payload: results

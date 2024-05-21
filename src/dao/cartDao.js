@@ -1,4 +1,5 @@
 import cartModel from "../models/cartModel.js";
+import productModel from "../models/productModel.js";
 
 class CartDao {
     constructor() {}
@@ -91,8 +92,7 @@ class CartDao {
             throw new Error(`Cart ${cartId} not found`);
         }
 
-        cart.products = updatedProducts;
-
+        cart = updatedProducts;
         await cart.save();
         return "Cart successfully updated!";     
     }

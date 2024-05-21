@@ -19,15 +19,15 @@ class CartService {
       if (!cart) {
         throw new Error(`Cart ${cartId} not found.`);
       }
-      return cart.products;
+      return cart;
     }
 
     async addCart() {
       try {
-          const cart = await this.cartDAO.addCart();     
-          return cart;
+        const cart = await this.cartDAO.addCart();     
+        return cart;
       } catch (error) {
-          throw new Error("Error creating cart");
+        throw new Error("Error creating cart");
       }
     }
 
@@ -36,14 +36,14 @@ class CartService {
         const cart = await this.cartDAO.addProduct(cartId, productId);
         return cart;
       } catch (error) {
-          throw new Error("Error adding product to cart");
+        throw new Error("Error adding product to cart");
       }
     }
 
     async deleteProduct(cartId, productId) {
         try {
           const cart = await this.cartDAO.getProductsFromCart(cartId);
-          cart.products.findIndex(product => product.product.toString() === productId);
+          cart.findIndex(product => product.product.toString() === productId);
           await this.cartDAO.deleteProduct(cartId, productId);
         } catch (error) {
           throw error;
@@ -59,9 +59,10 @@ class CartService {
       }
   }
 
-    async updateProduct(cartId, updatedProducts) {
+    async updateProduct(cartId) {
+      console.log(cartId);
         try {
-            const cart = await this.cartDAO.getProductsFromCart(cartId);
+            const cart = await this.cartDAO.updateProduct(cartId);
             return cart;
         } catch (error) {
             throw new Error("Error updating cart");
