@@ -46,7 +46,7 @@ app.get('/', (_req, res) => {
 });
 
 app.use('/', viewsRouter);
-app.use('/', usersRouter);
+app.use('/api/users', usersRouter);
 app.use('/api/sessions', sessionsRouter);
 
 const PORT = 8080;
