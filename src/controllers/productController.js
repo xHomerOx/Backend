@@ -1,49 +1,38 @@
-import productModel from "../models/productModel.js";
+import ProductDAO from '../dao/productDao.js'
 
 class ProductManager {
 
+    constructor() {
+        this.productDAO = ProductDAO.instance;
+      }
+
     async getProducts() {
         try {
-            return await productModel.find().lean();
+            return await this.productDAO.find().getProducts();
         } catch (error) {
             throw new Error("Error finding Products!");
         }
-    }
+    }    
 
     async getProductById(pid) {
-        const product = await productModel.findOne({_id: pid});
-
-        if (!product) throw new Error(`Product ${pid} does not exist!`);
-
-        return product;
+        try {        
+            return await this.productDAO.getProductById(pid);
+        } catch (error) {
+            throw new Error(`Product ${pid} does not exist!`);
+        }
     }
 
     async addProducts(product) {
-        const {title, description, code, price, stock, category, thumbnail} = product;
-        const existingProduct = await productModel.findOne({ code });
-
-        if (existingProduct) {
-            throw new Error('Code could not be the same as existent one!');
-        }
-        if (!title || !description || !code || !price || !stock || !category) {
-            throw new Error('Cart could not be created!');
-        }
-
-        
         try {
-            const result = await productModel.create({title, description, code, price, stock, category, thumbnail: thumbnail ?? []});
-
-            return result;
+            return await this.productDAO.addProducts(product);
         } catch (error) {
-            throw new Error('Product could not be added!');
+            throw new Error("Product could not be added!");
         }
     }
 
     async updateProduct(pid, productUpdate) {
         try {
-            const result = await productModel.updateOne({_id: pid}, productUpdate);
-
-            return result;
+            return await this.productDAO.updateProduct(pid, productUpdate);
         } catch(error) {
             throw new Error('Error updating Product!');
         }
@@ -51,11 +40,7 @@ class ProductManager {
 
     async deleteProduct(pid) {
         try {
-            const result = await productModel.deleteOne({_id: pid});
-
-            if (result.deletedCount === 0) throw new Error(`Product with ID ${pid} does not exist!`);
-
-            return result;
+            return await this.productDAO.deleteProduct(pid);
         } catch(error) {
             throw new Error(`Error deleting Product ${pid}`);
         }
