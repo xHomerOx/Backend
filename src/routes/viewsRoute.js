@@ -1,130 +1,22 @@
 import { Router } from 'express';
 import __dirname from '../utils/dirnameUtil.js';
 import productModel from '../dao/models/productModel.js';
-import { cartModel } from '../dao/models/cartModel.js';
 
 const viewsRouter = Router();
 
-viewsRouter.get('/', async (req, res) => {
-  try {
-    const limit = parseInt(req.query.limit) || 10;
-    const page = parseInt(req.query.page) || 1;
-
-    const title = req.query.title;
-    const description = req.query.description;
-    const price = req.query.price;
-    const code = req.query.code;
-    const stock = req.query.stock;
-    const thumbnail = req.query.thumbnail;
-    const status = req.query.status;
-    const category = req.query.category;
-
-    const query = {};
-
-    if (title) {
-      query.$or = query.$or || [];
-      query.$or.push({ title: { $eq: title } });
-    }
-
-    if (description) {
-      query.$or = query.$or || [];
-      query.$or.push({ description: { $eq: description } });
-    }
-
-    if (price) {
-      query.$or = query.$or || [];
-      query.$or.push({ price: { $eq: price } });
-    }
-
-    if (code) {
-      query.$or = query.$or || [];
-      query.$or.push({ code: { $eq: code } });
-    }
-
-    if (stock) {
-      query.$or = query.$or || [];
-      query.$or.push({ stock: { $eq: stock } });
-    }
-
-    if (thumbnail) {
-      query.$or = query.$or || [];
-      query.$or.push({ thumbnail: { $eq: thumbnail } });
-    }
-
-    if (status) {
-      query.$or = query.$or || [];
-      query.$or.push({ status: { $eq: status } });
-    }
-
-    if (category) {
-      query.$or = query.$or || [];
-      query.$or.push({ category: { $eq: category } });
-    }
-
-    let sortOptions = {};
-
-    const sortOrder = req.query.sort === 'desc' ? -1 : 1;
-    sortOptions = { price: sortOrder };
-
-    const products = await productModel.paginate(query, { page, limit, sort: sortOptions });
-
-    const currentPath = `${req.headers.host}`;
-    let prevLink = `${currentPath}/?page=${products.prevPage}`;
-    let nextLink = `${currentPath}/?page=${products.nextPage}`;
-
-    if (products.prevPage === null) {
-      prevLink = null;
-    }
-
-    if (products.nextPage === null) {
-      nextLink = null;
-    }
-
-    res.json({
-      status: 'success',
-      payload: products.docs,
-      totalPages: products.totalPages,
-      page: products.page,
-      prevPage: products.prevPage,
-      nextPage: products.nextPage,
-      hasPrevPage: products.hasPrevPage,
-      hasNextPage: products.hasNextPage,
-      prevLink: prevLink,
-      nextLink: nextLink
-    });
-  } catch (error) {
-    res.status(500).json({
-      status: 'error',
-      error: error.message
-    });
-  }
-});
-
+//Traigo los productos.
 viewsRouter.get('/products', async (req, res) => {
   try {
+    const products = await productModel.find().lean();
 
-    const myCart = await cartModel.findOne();
-    const cartId = myCart ? myCart._id : null;
-
-    const limit = parseInt(req.query.limit) || 10;
-    const page = parseInt(req.query.page) || 1;
-
-    const query = {};
-
-    const totalProducts = await productModel.countDocuments(query);
-    const totalPages = Math.ceil(totalProducts / limit);
-    const skip = (page - 1) * limit;
-    const sortOrder = req.query.sort === 'desc' ? -1 : 1;
+    //Chequeo si está logueado.
+    const isLoggedIn = req.session.user ? true : false;
     
-    let sortOptions = {};
-    sortOptions = { price: sortOrder };
-
-    const products = await productModel.find(query).skip(skip).limit(limit).sort(sortOptions).lean();
-
-    const prevPage = page > 1 ? `/products?page=${page - 1}` : null;
-    const nextPage = page < totalPages ? `/products?page=${page + 1}` : null;
-
-    res.render('homeView', { products, page, prevPage, nextPage, cartId });
+    //Assigno user y rol si existe.
+    const user = isLoggedIn ? req.session.user.user : null;
+    const role = isLoggedIn ? req.session.user.role : null;
+    
+    res.render('home', { title: 'Products Page', products, isLoggedIn, user, role });
   } catch (error) {
     res.status(400).send({
           status: 'error',
@@ -133,25 +25,30 @@ viewsRouter.get('/products', async (req, res) => {
   }
 });
 
-viewsRouter.get('/carts/:cid', async (req, res) => {
-  try {
+//Endpoints de Login Register y Logout.
+viewsRouter.get("/login", (req, res) => {
+  res.render('login', { title: 'Login Form', failLogin: req.session.failLogin ?? false })
+});
 
-    const cartId = req.params.cid;
+viewsRouter.get("/failLogin", (_req, res) => {
+  res.render('failLogin', { title: 'Login Failed' })
+});
 
-    const myCart = await cartModel.findById(cartId).lean().populate('products.product');
+viewsRouter.get("/register", (req, res) => {
+  res.render('register', { title: 'Register Form', failRegister: req.session.failRegister ?? false })
+});
 
-    if (!myCart) {
-      return res.status(404).send({ message: 'Carrito no encontrado' });
+viewsRouter.get("/failRegister", (_req, res) => {
+  res.render('failRegister', { title: 'Registration Failed' })
+});
+
+viewsRouter.get("/logout", (req, res) => {
+  req.session.destroy((error) => {
+    if (error) {
+      return console.log(error);
     }
-
-    res.render('cartView', { cartProducts: myCart.products, cartId });
-
-  } catch (error) {
-    res.status(400).send({
-          status: 'error',
-          message: error.message
-    });
-  }
+    return res.redirect("/login");
+  });
 });
 
 export default viewsRouter;
