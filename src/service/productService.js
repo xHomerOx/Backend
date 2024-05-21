@@ -1,10 +1,10 @@
-import ProductDAO from '../dao/productDao.js'
+import ProductDao from '../dao/productDao.js';
 
-class ProductManager {
+class ProductService {
 
     constructor() {
-        this.productDAO = ProductDAO.instance;
-      }
+        this.productDAO = ProductDao;
+    }
 
     async getProducts() {
         try {
@@ -47,4 +47,4 @@ class ProductManager {
     }
 }
 
-export default ProductManager;
+export default ProductService;

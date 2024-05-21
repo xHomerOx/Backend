@@ -1,9 +1,9 @@
 import { Router } from "express";
 import { uploader } from "../utils/multerUtil.js";
-import ProductManager from "../dao/productManager.js";
+import ProductService from "../service/productService.js";
 
+const myProducts = new ProductService();
 const productsRouter = Router();
-const myProducts = new ProductManager();
 
 productsRouter.get('/', async (_req, res) => {
     const products = await myProducts.getProducts();

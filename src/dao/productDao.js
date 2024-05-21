@@ -1,11 +1,14 @@
 import productModel from "../models/productModel.js";
 
 class ProductDao {
-    constructor() {
-      if (!ProductDao.instance) {
-        ProductDao.instance = new productModel();
-      }
-      return ProductDao.instance;
+    constructor() {}
+
+    static getInstance() {
+        if (!ProductDao.instance) {
+            ProductDao.instance = new ProductDao();
+            ProductDao.instance.productModel = new productModel();
+        }
+        return ProductDao.instance;
     }
 
     async getProducts() {
