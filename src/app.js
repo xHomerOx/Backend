@@ -11,6 +11,7 @@ import mongoStore from 'connect-mongo';
 import passport from 'passport';
 import initializePassport from './config/passport.config.js';
 import productsRouter from './routes/productsRoute.js';
+import cartsRouter from './routes/cartsRoute.js';
 
 const app = express();
 
@@ -47,9 +48,10 @@ app.get('/', (_req, res) => {
 });
 
 app.use('/', viewsRouter);
-app.use('/api/users', usersRouter);
 app.use('/api/products', productsRouter);
+app.use('/api/carts', cartsRouter);
 app.use('/api/sessions', sessionsRouter);
+app.use('/api/users', usersRouter);
 
 const PORT = 8080;
 
