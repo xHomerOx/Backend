@@ -12,7 +12,7 @@ class ProductDao {
     }
 
     async getProducts() {
-        return await ProductDao.find().lean();
+        return await productModel.find().lean();
     }
 
     async getProductById(pid) {

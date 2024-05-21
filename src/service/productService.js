@@ -8,7 +8,7 @@ class ProductService {
 
     async getProducts() {
         try {
-            return await this.productDAO.find().getProducts();
+            return await this.productDAO.getProducts();
         } catch (error) {
             throw new Error("Error finding Products!");
         }

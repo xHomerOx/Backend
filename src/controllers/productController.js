@@ -36,7 +36,7 @@ class ProductController {
     async updateProduct(req, res) {
         try {
             const pid = req.params.pid;
-      
+            
             if (req.files) {
                 const thumbnails = req.files.map((file) => file.filename);
                 req.body.thumbnail = thumbnails;
@@ -51,7 +51,8 @@ class ProductController {
             if (req.body.id && req.body.id !== pid) {
                 return res.status(400).send({ message: "Product ID in body must match URL ID" });
             }
-        
+
+            await myProducts.updateProduct(pid, req.body);
             return res.status(200).send({ message: "Product updated successfully" });
         } catch (error) {
             res.status(500).send('Could not update product');
@@ -69,7 +70,7 @@ class ProductController {
             }
         
             await myProducts.deleteProduct(pid);
-            res.status(200).send();
+            res.status(200).send({ message: "Product deleted successfully" });
         } catch (error) {
             res.status(500).send('Could not delete product');
         }
