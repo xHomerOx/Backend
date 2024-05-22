@@ -36,7 +36,7 @@ document.addEventListener("click", async (event) => {
         const productId = event.target.dataset.id;
 
         try {
-            const response = await fetch(`/products/${productId}`, {
+            const response = await fetch(`/api/products/${productId}`, {
                 method: "DELETE",
             });
 

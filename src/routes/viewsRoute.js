@@ -9,9 +9,8 @@ const viewsRouter = Router();
 viewsRouter.get('/products', fetchProducts, (req, res) => {
   try {
     const { products } = req;
-    const isLoggedIn = req.session.user ? true : false;
-    const user = isLoggedIn ? req.session.user.user : null;
-    const role = isLoggedIn ? req.session.user.role : null;
+    const isLoggedIn = req.user ? true : false;
+    const { user, role } = req.user;
     res.render('homeView', { title: 'Products Page', products, isLoggedIn, user, role });
   } catch (error) {
     res.status(400).send({
@@ -47,7 +46,7 @@ viewsRouter.get("/logout", (req, res) => {
   });
 });
 
-viewsRouter.post("/login", passport.authenticate('login', { failureRedirect: '/failLogin' }), fetchProducts, (req, res) => {
+viewsRouter.post("/login", passport.authenticate('login', { failureRedirect: '/failLogin', successRedirect: '/products' }), fetchProducts, (req, res) => {
   const { user, role } = req.user;
   res.render('homeView', { title: 'Products Page', products: req.products, isLoggedIn: true, user, role });
 });
