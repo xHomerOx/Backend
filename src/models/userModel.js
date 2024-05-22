@@ -6,12 +6,17 @@ const userSchema = mongoose.Schema({
     user: {
         type: String,
         minLength: 3,
-        require: true
+        required: true
     },
     password: {
         type: String,
         minLength: 3,
-        require: true
+        required: true
+    },
+    email: {
+        type: String,
+        required: true,
+        unique: true
     },
     role: {
         type: String,

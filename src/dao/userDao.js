@@ -1,5 +1,5 @@
 import userModel from '../models/userModel.js';
-import { createHash } from '../utils/cryptoUtil.js';
+import { createHash, isValidPassword } from '../utils/cryptoUtil.js';
 
 class UserDao {
     constructor() {}
@@ -12,27 +12,48 @@ class UserDao {
         return UserDao.instance;
     }
 
-    async addUser() {
-        const existingUser = await userModel.findOne({ user });
-
-        let newUser =  {
-            user,
-            password: createHash(password)
-        }
-
-        if (existingUser || user === "admincoder@coder.com") {
-            throw new Error(`User ${user} already exists!`);
-        } else { 
-            await userModel.create(newUser);
+    async addUser(user, email, password) {
+        try {
+            const existingUser = await userModel.findOne({ email });
+    
+            if (existingUser) {
+                throw new Error(`User with email ${email} already exists!`);
+            } else {
+                const newUser = {
+                    user,
+                    email,
+                    password: createHash(password)
+                };
+                await userModel.create(newUser);
+                return newUser;
+            }
+        } catch (error) {
+            throw new Error(error.message);
         }
     }
 
-    async getUser(user) {
+    async getUser(user, password) {
         try {
-          const myUser = await userModel.findOne({ user });
-          return myUser;
+            if (!user || !password) {
+                throw new Error("User and password are required!");
+            }
+    
+            const myUser = await userModel.findOne({ user });
+    
+            if (!myUser) {
+                throw new Error(`User does not exist!`);
+            }
+    
+            const isValid = isValidPassword(myUser, password);
+            
+            if (!isValid) {
+                throw new Error(`Incorrect Password!`);
+            }
+
+            delete myUser.password;
+            return myUser;
         } catch (error) {
-          throw new Error(error.message);
+            throw new Error(error.message);
         }
     }
 }
