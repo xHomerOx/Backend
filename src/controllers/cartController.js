@@ -1,4 +1,4 @@
-import CartService from "../service/cartService.js";
+import CartService from "../services/cartService.js";
 
 const myCart = new CartService();
 
