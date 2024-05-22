@@ -10,7 +10,7 @@ viewsRouter.get('/products', fetchProducts, (req, res) => {
   try {
     const { products } = req;
     const isLoggedIn = req.user ? true : false;
-    const { user, role } = req.user;
+    const { user, role } = req.user|| {};
     res.render('homeView', { title: 'Products Page', products, isLoggedIn, user, role });
   } catch (error) {
     res.status(400).send({
@@ -46,9 +46,10 @@ viewsRouter.get("/logout", (req, res) => {
   });
 });
 
-viewsRouter.post("/login", passport.authenticate('login', { failureRedirect: '/failLogin', successRedirect: '/products' }), fetchProducts, (req, res) => {
-  const { user, role } = req.user;
-  res.render('homeView', { title: 'Products Page', products: req.products, isLoggedIn: true, user, role });
+viewsRouter.post("/login", passport.authenticate('login', { failureRedirect: '/failLogin', successRedirect: '/products' }), (req, res) => {
+  const user = req.user;
+  const role = req.user.role;
+  res.render('homeView', { title: 'Products Page', products: req.products, isLoggedIn: true, user: user, role: role });
 });
 
 viewsRouter.post("/register", passport.authenticate('register', { failureRedirect: '/failRegister' }), (req, res) => {

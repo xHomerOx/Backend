@@ -12,10 +12,13 @@ import passport from 'passport';
 import initializePassport from './config/passportConfig.js';
 import productsRouter from './routes/productsRoute.js';
 import cartsRouter from './routes/cartsRoute.js';
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 const app = express();
 
-const uri = 'mongodb+srv://xHomerOx:oU4p3VvHAh11lf7s@ecommerce.ix5vqim.mongodb.net/ecommerce?retryWrites=true&w=majority';
+const uri = process.env.DB_CONNECTION;
 mongoose.connect(uri);
 
 app.engine('handlebars', handlebars.engine());
