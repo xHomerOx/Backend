@@ -59,19 +59,18 @@ class CartService {
       }
   }
 
-    async updateProduct(cartId) {
-      console.log(cartId);
+    async updateProduct(cartId, quantity) {
         try {
-            const cart = await this.cartDAO.updateProduct(cartId);
-            return cart;
+          const cart = await this.cartDAO.updateProduct(cartId, quantity);
+          return cart;
         } catch (error) {
-            throw new Error("Error updating cart");
+          throw new Error("Error updating cart");
         }
     }
 
     async updateProductById(cartId, productId, quantity) {
       try {
-        const cart = await this.cartDAO.getProductsFromCart(cartId);
+        const cart = await this.cartDAO.updateProductById(cartId, productId, quantity);
         return cart;
       } catch (error) {
           throw new Error("Error updating cart: " + error.message);

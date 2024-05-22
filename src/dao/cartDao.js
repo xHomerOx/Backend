@@ -85,14 +85,17 @@ class CartDao {
         return "All Products in Cart successfully deleted!";
     }
 
-    async updateProduct(cartId, updatedProducts) {
+    async updateProduct(cartId, quantity) {
         const cart = await cartModel.findById(cartId);
-  
+
         if (!cart) {
             throw new Error(`Cart ${cartId} not found`);
         }
 
-        cart = updatedProducts;
+        cart.products.forEach(product => {
+          product.quantity = quantity;
+        });
+
         await cart.save();
         return "Cart successfully updated!";     
     }
@@ -100,7 +103,7 @@ class CartDao {
     async updateProductById(cartId, productId, quantity) {
         const cart = await cartModel.findById(cartId);
         const myProduct = cart.products.findIndex(product => product.product == productId);
-            
+
         if (myProduct >= 0) {
             cart.products[myProduct].quantity = quantity;
     

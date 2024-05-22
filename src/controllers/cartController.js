@@ -76,9 +76,8 @@ class CartController {
     async updateProduct(req, res) {
         try {
             const cartId = req.params.cid;
-            const updatedProducts = req.body.products;
-            console.log(cartId, updatedProducts);
-            const results = await myCart.updateProduct(cartId, updatedProducts);
+            const quantity = req.body.quantity;
+            const results = await myCart.updateProduct(cartId, quantity);
             
             res.send({
                 status: 'success',
