@@ -9,7 +9,7 @@ import handlebars from 'express-handlebars';
 import session from 'express-session';
 import mongoStore from 'connect-mongo';
 import passport from 'passport';
-import initializePassport from './config/passport.config.js';
+import initializePassport from './config/passportConfig.js';
 import productsRouter from './routes/productsRoute.js';
 import cartsRouter from './routes/cartsRoute.js';
 
