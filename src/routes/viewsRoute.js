@@ -53,7 +53,7 @@ viewsRouter.post("/login", passport.authenticate('login', { failureRedirect: '/f
 });
 
 viewsRouter.post("/register", passport.authenticate('register', { failureRedirect: '/failRegister' }), (req, res) => {
-  res.render('loginView', { title: 'Login Form', failLogin: req.session.failLogin ?? false })
+  res.render('loginView', { title: 'Login Form', failLogin: req.session.failLogin ?? false });
 });
 
 export default viewsRouter;
