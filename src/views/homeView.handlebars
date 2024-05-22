@@ -10,6 +10,36 @@
         <div>Welcome {{#if isLoggedIn}}{{user}}{{else}}user{{/if}}!!!</div>
         <small>{{#if isLoggedIn}}Role: {{role}}{{/if}}</small>
         {{#if isLoggedIn}}<div><a href="/logout">Logout</a></div>{{/if}}
+        <form id="addProductForm">
+            <label for="title">Title:</label>
+            <input type="text" id="title" name="title" required>
+            <br>
+            <label for="description">Description:</label>
+            <textarea id="description" name="description" rows="4" cols="50" required></textarea>
+            <br>
+            <label for="price">Price:</label>
+            <input type="number" id="price" name="price" required>
+            <br>
+            <label for="thumbnail">Thumbnail:</label>
+            <input type="text" id="thumbnail" name="thumbnail" required>
+            <br>
+            <label for="code">Product Code:</label>
+            <input type="text" id="code" name="code" required>
+            <br>
+            <label for="stock">Stock:</label>
+            <input type="number" id="stock" name="stock" required>
+            <br>
+            <label for="status">Status:</label>
+            <select id="status" name="status" required>
+                <option value="true">Available</option>
+                <option value="false">Not Available</option>
+            </select>
+            <br>
+            <label for="category">Category:</label>
+            <input type="text" id="category" name="category" required>
+            <br>
+            <button type="submit">Add Product</button>
+        </form>    
             {{#each products}}
             <ul>
                 <li>
