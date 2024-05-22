@@ -1,5 +1,5 @@
 import userModel from '../models/userModel.js';
-import { createHash } from '../utils/utils.js';
+import { createHash } from '../utils/cryptoUtil.js';
 
 class UserDao {
     constructor() {}
