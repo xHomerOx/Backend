@@ -2,6 +2,13 @@ class ProductDao {
     constructor() {
       this.products = [];
     }
+
+    static getInstance() {
+      if (!ProductMemoryDAO.instance) {
+        ProductMemoryDAO.instance = new ProductMemoryDAO();
+      }
+      return ProductMemoryDAO.instance;
+  }
   
     async getProducts() {
       return this.products;
@@ -25,25 +32,21 @@ class ProductDao {
       if (!product.title ||!product.description ||!product.code ||!product.price ||!product.stock ||!product.category) {
         throw new Error('Cart could not be created!');
       }
-
+      
       this.products.push(product);
       return product;
     }
   
     async updateProduct(pid, productUpdate) {
       const index = this.products.findIndex((product) => product.id === pid);
-
       if (index === -1) throw new Error(`Product ${pid} does not exist!`);
-      
       this.products[index] = {...this.products[index],...productUpdate };
       return this.products[index];
     }
   
     async deleteProduct(pid) {
       const index = this.products.findIndex((product) => product.id === pid);
-
       if (index === -1) throw new Error(`Product ${pid} does not exist!`);
-      
       this.products.splice(index, 1);
       return true;
     }
