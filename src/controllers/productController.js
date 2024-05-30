@@ -1,7 +1,7 @@
 import productModel from "./models/productModel.js";
 
-class ProductManager {
-
+class ProductController {
+    
     async getProducts() {
         try {
             return await productModel.find().lean();
@@ -62,4 +62,4 @@ class ProductManager {
     }
 }
 
-export default ProductManager;
+export default ProductController;

@@ -1,7 +1,8 @@
 import { cartModel } from "./models/cartModel.js";
 import productModel from "./models/productModel.js";
 
-class CartManager {
+class CartController {
+
   async getCarts() {
     try {
       return await cartModel.find();
@@ -20,14 +21,14 @@ class CartManager {
 
   async addCart() {
     try {
-        const cart = new cartModel({
-            products: [],
-        });
+      const cart = new cartModel({
+        products: [],
+      });
 
-        await cart.save();
-        return cart;
+      await cart.save();
+      return cart;
     } catch (error) {
-        throw new Error("Error creating cart");
+      throw new Error("Error creating cart");
     }
   }
 
@@ -43,7 +44,7 @@ class CartManager {
 
       if (foundProduct) {
         const existingProduct = cart.products.findIndex((cartProduct) => cartProduct.product.equals(productId));
-        
+
         if (existingProduct >= 0) {
           cart.products[existingProduct].quantity++;
         } else {
@@ -51,41 +52,38 @@ class CartManager {
         }
 
         await cart.save();
-
         return "Product successfully added to cart!";
       } else {
         return `Product with ID ${productId} not found`;
       }
     } catch (error) {
-        console.log(error)
-        throw new Error("Error adding product to cart");
+      console.log(error)
+      throw new Error("Error adding product to cart");
     }
   }
 
   async deleteProduct(cartId, productId) {
-      try {
-        const cart = await cartModel.findById(cartId);
+    try {
+      const cart = await cartModel.findById(cartId);
 
-        const deleteProduct = cart.products.findIndex(product => product.product.toString() === productId);
-        
-        if (deleteProduct >= 0) {
-          cart.products.splice(deleteProduct, 1);
+      const deleteProduct = cart.products.findIndex(product => product.product.toString() === productId);
 
-          await cart.save();
-          
-          return `Product with ${productId} deleted.`;
-        } else {
-          return `Product with ${productId} does not exist.`;
-        }
-      } catch (error) {
-        throw error;
+      if (deleteProduct >= 0) {
+        cart.products.splice(deleteProduct, 1);
+        await cart.save();
+        return `Product with ${productId} deleted.`;
+      } else {
+        return `Product with ${productId} does not exist.`;
       }
+    } catch (error) {
+      throw error;
+    }
   }
 
   async deleteAllProducts(cartId) {
     try {
       const cart = await cartModel.findById(cartId);
-      
+
       if (!cart) {
         throw new Error(`Cart ${cartId} not found`);
       }
@@ -98,45 +96,44 @@ class CartManager {
     } catch (error) {
       throw error;
     }
-}
+  }
 
   async updateProduct(cartId, updatedProducts) {
-      try {
-          const cart = await cartModel.findById(cartId);
+    try {
+      const cart = await cartModel.findById(cartId);
 
-          if (!cart) {
-              throw new Error(`Cart ${cartId} not found`);
-          }
-
-          cart.products = updatedProducts;
-
-          await cart.save();
-
-          return "Cart successfully updated!";
-      } catch (error) {
-          throw new Error("Error updating cart");
+      if (!cart) {
+        throw new Error(`Cart ${cartId} not found`);
       }
+
+      cart.products = updatedProducts;
+
+      await cart.save();
+
+      return "Cart successfully updated!";
+    } catch (error) {
+      throw new Error("Error updating cart");
+    }
   }
 
   async updateProductById(cartId, productId, quantity) {
     try {
-        const cart = await cartModel.findById(cartId);
-        const myProduct = cart.products.findIndex(product => product.product == productId);
-        
-        if (myProduct >= 0) {
-            cart.products[myProduct].quantity = quantity;
+      const cart = await cartModel.findById(cartId);
+      const myProduct = cart.products.findIndex(product => product.product == productId);
 
-            await cart.save();
+      if (myProduct >= 0) {
+        cart.products[myProduct].quantity = quantity;
 
-            return "Cart successfully updated!";
-        } else {
-            throw new Error("Product not found in the cart");
-        }
+        await cart.save();
+
+        return "Cart successfully updated!";
+      } else {
+        throw new Error("Product not found in the cart");
+      }
     } catch (error) {
-        throw new Error("Error updating cart: " + error.message);
+      throw new Error("Error updating cart: " + error.message);
     }
   }
 }
 
-
-export default CartManager;
+export default CartController;

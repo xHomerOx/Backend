@@ -2,7 +2,8 @@
 
 Mejorando la arquitectura del servidor.
 
-
+## 30-05-2024
+- Refactorized Proyect with MVC Pattern.
 
 ----------------------------------------------------------------------------------------
 
