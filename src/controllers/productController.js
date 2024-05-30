@@ -1,8 +1,8 @@
-import ProductDao from '../dao/mongo/productMongoDAO.js'
+import myProductsFactory from "../dao/factory.js";
 
 class ProductController {
     constructor() {
-        this.dao = new ProductDao();
+        this.dao = myProductsFactory();
     }
 
     async getProducts(_req, res) {

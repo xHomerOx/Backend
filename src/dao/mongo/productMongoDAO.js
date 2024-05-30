@@ -1,4 +1,4 @@
-import productModel from "../models/productModel.js";
+import productModel from "../../models/productModel.js";
 
 class ProductDao {
     constructor() {}
@@ -61,5 +61,4 @@ class ProductDao {
     }
 }
 
-const instance = new ProductDao();
-export default instance;
+export default ProductDao;

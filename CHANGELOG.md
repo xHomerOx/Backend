@@ -4,6 +4,9 @@ Mejorando la arquitectura del servidor.
 
 ## 30-05-2024
 - Refactorized Proyect with MVC Pattern.
+- Added Product Memory and Mongo DAO.
+- Added config.js for Persistence.
+- Used Factory Method Pattern.
 
 ----------------------------------------------------------------------------------------
 
