@@ -1,63 +1,78 @@
-import productModel from "./models/productModel.js";
+import ProductDao from '../dao/mongo/productMongoDAO.js'
 
 class ProductController {
+    constructor() {
+        this.dao = new ProductDao();
+    }
+
+    async getProducts(_req, res) {
+        try {
+            const products = await this.dao.getProducts();
+            res.send({status: 'success', payload: products});
+        } catch (error) {
+            res.status(500).json({ message: error.message });
+        }
+    };
+
+    async getProductById(req, res) {
+        try {
+            const pid = req.params.pid;
+            const products = await this.dao.getProductById(pid);
+            res.send({status: 'success', payload: products});
+        } catch (error) {
+            res.status(400).send({status: 'error', message: error.message});
+        }
+    }
+
+    async addProducts(req, res) {
+        try {
+            const product = await this.dao.addProducts(req.body);
+            res.send({ status: 'success', payload: product });
+        } catch (error) {
+            res.status(400).send({ status: 'error', message: error.message });
+        }
+    }
+
+    async updateProduct(req, res) {
+        try {
+            const pid = req.params.pid;
+            
+            if (req.files) {
+                const thumbnails = req.files.map((file) => file.filename);
+                req.body.thumbnail = thumbnails;
+            }
     
-    async getProducts() {
-        try {
-            return await productModel.find().lean();
-        } catch (error) {
-            throw new Error("Error finding Products!");
-        }
-    }
-
-    async getProductById(pid) {
-        const product = await productModel.findOne({_id: pid});
-
-        if (!product) throw new Error(`Product ${pid} does not exist!`);
-
-        return product;
-    }
-
-    async addProducts(product) {
-        const {title, description, code, price, stock, category, thumbnail} = product;
-        const existingProduct = await productModel.findOne({ code });
-
-        if (existingProduct) {
-            throw new Error('Code could not be the same as existent one!');
-        }
-        if (!title || !description || !code || !price || !stock || !category) {
-            throw new Error('Cart could not be created!');
-        }
-
+            const existingProduct = await this.dao.getProductById(pid);
+            
+            if (!existingProduct) {
+                return res.status(404).send({ message: "Product not found" }); 
+            }
         
-        try {
-            const result = await productModel.create({title, description, code, price, stock, category, thumbnail: thumbnail ?? []});
+            if (req.body.id && req.body.id !== pid) {
+                return res.status(400).send({ message: "Product ID in body must match URL ID" });
+            }
 
-            return result;
+            await this.dao.updateProduct(pid, req.body);
+            return res.status(200).send({ message: "Product updated successfully" });
         } catch (error) {
-            throw new Error('Product could not be added!');
+            res.status(500).send('Could not update product');
         }
     }
 
-    async updateProduct(pid, productUpdate) {
-        try {
-            const result = await productModel.updateOne({_id: pid}, productUpdate);
+    async deleteProduct(req, res) {
+        try{
+            const pid = req.params.pid;
+            const product = await this.dao.getProductById(pid);
 
-            return result;
-        } catch(error) {
-            throw new Error('Error updating Product!');
-        }
-    }
-
-    async deleteProduct(pid) {
-        try {
-            const result = await productModel.deleteOne({_id: pid});
-
-            if (result.deletedCount === 0) throw new Error(`Product with ID ${pid} does not exist!`);
-
-            return result;
-        } catch(error) {
-            throw new Error(`Error deleting Product ${pid}`);
+            if (!product) {
+                res.status(404).send({ message: "Product not found" });
+                return;
+            }
+        
+            await this.dao.deleteProduct(pid);
+            res.status(200).send({ message: "Product deleted successfully" });
+        } catch (error) {
+            res.status(500).send('Could not delete product');
         }
     }
 }
