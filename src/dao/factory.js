@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 import config from "../config/config.js";
 
-const myProductsFactory = async () => {
+const Products = async () => {
     switch (config.persistence) {
         case 'MONGO':
             mongoose.connect(process.env.DB_CONNECTION);
@@ -13,4 +13,4 @@ const myProductsFactory = async () => {
     }
 }
 
-export default myProductsFactory;
+export default Products;

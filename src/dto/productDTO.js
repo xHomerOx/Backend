@@ -1,5 +1,4 @@
-class ProductDTO {
-
+class ProductDto {
     constructor(product) {
       this.title = product.title ?? 'Unknown';
       this.description = product.description ?? 'No description';
@@ -9,5 +8,6 @@ class ProductDTO {
       this.category = product.category ?? 'Unknown';
       this.thumbnail = product.thumbnail ?? null;
     }
-
 }
+
+export default ProductDto;

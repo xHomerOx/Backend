@@ -7,6 +7,7 @@ Mejorando la arquitectura del servidor.
 - Added Product Memory and Mongo DAO.
 - Added config.js for Persistence.
 - Used Factory Method Pattern.
+- Added Repository and modified Controller based on that one.
 
 ----------------------------------------------------------------------------------------
 
