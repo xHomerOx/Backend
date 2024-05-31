@@ -2,17 +2,17 @@ import express from 'express';
 import exphbs from 'express-handlebars';
 import path from 'path';
 import __dirname from './utils/dirnameUtil.js';
-import productsRouter from './routes/productsRoute.js';
-import cartsRouter from './routes/cartsRoute.js';
 import viewsRouter from './routes/viewsRoute.js';
-import sessionsRouter from './routes/sessionsRoute.js';
-import { Server } from 'socket.io';
-import mongoose from 'mongoose';
 import usersRouter from './routes/usersRoute.js';
+import sessionsRouter from './routes/sessionsRoute.js';
+import mongoose from 'mongoose';
+import { Server } from 'socket.io';
 import session from 'express-session';
 import mongoStore from 'connect-mongo';
 import passport from 'passport';
 import initializePassport from './config/passportConfig.js';
+import productsRouter from './routes/productsRoute.js';
+import cartsRouter from './routes/cartsRoute.js';
 import dotenv from 'dotenv';
 
 dotenv.config();
@@ -31,12 +31,6 @@ app.use(express.static(path.join(__dirname, '../../public')));
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 
-app.use('/', viewsRouter);
-app.use('/api/carts/', cartsRouter);
-app.use('/api/products/', productsRouter);
-app.use('/api/users/', usersRouter);
-app.use('/api/sessions', sessionsRouter);
-
 app.use(session({
     store: mongoStore.create(
         {
@@ -54,6 +48,12 @@ app.use(session({
 initializePassport();
 app.use(passport.initialize());
 app.use(passport.session());
+
+app.use('/', viewsRouter);
+app.use('/api/carts/', cartsRouter);
+app.use('/api/products/', productsRouter);
+app.use('/api/users/', usersRouter);
+app.use('/api/sessions', sessionsRouter);
 
 const PORT = 8080;
 

@@ -52,5 +52,4 @@ class ProductDao {
     }
   }
   
-  const instance = new ProductDao();
-  export default instance;
+  export default ProductDao;

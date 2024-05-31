@@ -6,6 +6,20 @@ import passport from 'passport';
 
 const viewsRouter = Router();
 
+viewsRouter.get('/', (req, res) => {
+  try {
+    const { products } = req;
+    const isLoggedIn = req.user ? true : false;
+    const { user, role } = req.user|| {};
+    res.render('homeView', { title: 'Products Page', products, isLoggedIn, user, role });
+  } catch (error) {
+    res.status(400).send({
+      status: 'error',
+      message: error.message
+    });
+  }
+});
+
 viewsRouter.get('/', async (req, res) => {
   try {
 
@@ -61,7 +75,6 @@ viewsRouter.get('/carts/:cid', async (req, res) => {
 });
 
 viewsRouter.get("/login", (req, res) => {
-  console.log(req.session)
   res.render('loginView', { title: 'Login Form', failLogin: req.session.failLogin ?? false })
 });
 
@@ -86,7 +99,7 @@ viewsRouter.get("/logout", (req, res) => {
   });
 });
 
-viewsRouter.post("/login", passport.authenticate('login', { failureRedirect: '/failLogin', successRedirect: '/products' }), (req, res) => {
+viewsRouter.post("/login", passport.authenticate('login', { failureRedirect: '/failLogin', successRedirect: '/' }), (req, res) => {
   const user = req.user;
   const role = req.user.role;
   res.render('homeView', { title: 'Products Page', products: req.products, isLoggedIn: true, user: user, role: role });

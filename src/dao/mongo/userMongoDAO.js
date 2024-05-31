@@ -1,5 +1,5 @@
-import userModel from '../models/userModel.js';
-import { createHash, isValidPassword } from '../utils/cryptoUtil.js';
+import userModel from '../../models/userModel.js';
+import { createHash, isValidPassword } from '../../utils/cryptoUtil.js';
 
 class UserDao {
     constructor() {}
@@ -58,5 +58,4 @@ class UserDao {
     }
 }
 
-const instance = new UserDao();
-export default instance;
+export default UserDao;
