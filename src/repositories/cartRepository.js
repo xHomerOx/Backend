@@ -23,106 +23,58 @@ class CartRepository {
         }
     };
     
-    async addCart(req, res) {
+    async addCart(products = []) {
         try {
-            const results = await this.dao.addCart();
-            const cartDto = new CartDto(results);
-
-            res.send({
-                status: 'success',
-                payload: cartDto
-            });
+            const results = await this.dao.addCart(products);
+            return new CartDto(results);
         } catch (error) {
-            res.status(400).send({
-                status: 'error',
-                message: error.message
-            });
+            throw new Error(`Could not add Cart`);
         }
     };
     
-    async addProduct(product) {
+    async addProduct(cart, product) {
         try {
-            const newProduct = new CartDto(product);
-            await this.dao.addProduct(newProduct);
-
-            res.send("Product successfully added to cart!");
+            const newProduct = this.dao.addProduct(cart, product);
+            return new CartDto(newProduct);
         } catch (error) {
-            res.status(400).send({
-                status: 'error',
-                message: error.message
-            });
+            throw new Error(`Could not add Product to Cart`);
         }
     };
     
-    async deleteProduct(req, res) {
+    async deleteProduct(cid, pid) {
         try {
-            const cartId = req.params.cid;
-            const productId = req.params.pid;
-            const results = await this.dao.deleteProduct(cartId, productId);
-    
-            res.send({
-                status: 'success',
-                payload: results
-            });
+            const results = await this.dao.deleteProduct(cid, pid);
+            return new CartDto(results);
         } catch (error) {
-            res.status(400).send({
-                status: 'error',
-                message: error.message
-            });
+            throw new Error(`Could not delete product ${pid}`);
         }
     };
     
-    async updateProduct(req, res) {
+    async updateProduct(cid, quantity) {
         try {
-            const cartId = req.params.cid;
-            const quantity = req.body.quantity;
-            await this.dao.updateProduct(cartId, quantity);
-            
-            res.send({
-                status: 'success',
-                message: 'Cart successfully updated!'
-            });
+            const results = await this.dao.updateProduct(cid, quantity);
+            return new CartDto(results);
         } catch (error) {
-            res.status(400).send({
-                status: 'error',
-                message: error.message
-            });
+            console.log(error);
+            throw new Error(`Could not update products in cart ${cid}`);
         }
     };
     
-    async updateProductById(req, res) {
+    async updateProductById(cid, pid, quantity) {
         try {
-            const cartId = req.params.cid;
-            const productId = req.params.pid;
-            const quantity = req.body.quantity;
-            await this.dao.updateProductById(cartId, productId, quantity);
-            
-            res.send({
-                status: 'success',
-                message: 'Cart successfully updated!'
-            });
+            const results = await this.dao.updateProductById(cid, pid, quantity);
+            return new CartDto(results);
         } catch (error) {
-            res.status(400).send({
-                status: 'error',
-                message: error.message
-            });
+            throw new Error(`Could not update product ${pid} in ${cid}`);
         }
     };
     
-    async deleteAllProducts(req, res) {
+    async deleteAllProducts(cid) {
         try {
-            const cartId = req.params.cid;
-            const results = await this.dao.deleteAllProducts(cartId);
-    
-            res.send({
-                status: 'success',
-                payload: results
-            });
+            const results = await this.dao.deleteAllProducts(cid);
+            return new CartDto(results);
         } catch (error) {
-            res.status(400).send({
-                status: 'error',
-                message: error.message
-            });
+            throw new Error(`Could not delete products on ${cid}`);
         }
     };
 }

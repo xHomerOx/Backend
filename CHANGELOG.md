@@ -6,6 +6,7 @@ Mejorando la arquitectura del servidor.
 - Fixed Patterns in Factory and DAOs Patterns.
 - Fixed Update Products was not updating.
 - Added getCarts function to display every Cart with their matching items.
+- Refactored Carts CRUD Operations.
 
 ## 30-05-2024
 - Refactorized Proyect with MVC Pattern.

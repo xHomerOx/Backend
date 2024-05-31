@@ -77,9 +77,9 @@ cartsRouter.delete('/:cid/products/:pid', async (req, res) => {
 cartsRouter.put('/:cid', async (req, res) => {
     try {
         const cartId = req.params.cid;
-        const updatedProducts = req.body.products;
+        const quantity = req.body.quantity;
 
-        const results = await myCart.updateProduct(cartId, updatedProducts);
+        const results = await myCart.updateProduct(cartId, quantity);
 
         res.send({
             status: 'success',

@@ -10,21 +10,29 @@ class CartController {
         return await cartService.getProductsFromCart(cart);
     }
 
-    async addCart(cart) {
-        return await cartService.addCart(cart);
+    async addCart() {
+        return await cartService.addCart();
     }
 
     async addProduct(cart, product) {
         return await cartService.addProduct(cart, product);
     }
 
-    async updateProduct(cart, updatedProducts) {
-        return await cartService.updateProduct(cart, updatedProducts);
+    async deleteProduct(cart, product) {
+        return await cartService.deleteProduct(cart, product);
+    };
+
+    async updateProduct(cart, quantity) {
+        return await cartService.updateProduct(cart, quantity);
     }
 
     async updateProductById(cart, product, quantity) {
         return await cartService.updateProductById(cart, product, quantity);
     }
+
+    async deleteAllProducts(cart) {
+        return await cartService.deleteAllProducts(cart);
+    };
 }
 
 export default CartController;
