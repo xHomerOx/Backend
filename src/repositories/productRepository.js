@@ -37,25 +37,24 @@ class ProductRepository {
         try {
             await this.dao.getProductById(pid);
             const updatedProduct = await this.dao.updateProduct(pid, productUpdate);
-            return updatedProduct;
+            return new ProductDto(updatedProduct);;
         } catch (error) {
             throw new Error(`Could not update this Product ${pid}`);
         }
     }
-    async deleteProduct(req, res) {
+
+    async deleteProduct(pid) {
         try{
-            const pid = new ProductDto(req.params.pid);
             const product = await this.dao.getProductById(pid);
 
             if (!product) {
-                res.status(404).send({ message: "Product not found" });
-                return;
+                throw new Error(`Product ${pid} not found`);
             }
         
-            await this.dao.deleteProduct(pid);
-            res.status(200).send({ message: "Product deleted successfully" });
+            const deletedProduct = await this.dao.deleteProduct(product);
+            return new ProductDto(deletedProduct);
         } catch (error) {
-            res.status(500).send('Could not delete product');
+            throw new Error(`Could not delete this Product ${pid}`);
         }
     }
 }

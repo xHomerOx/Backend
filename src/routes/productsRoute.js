@@ -58,15 +58,15 @@ productsRouter.put("/:pid", uploader.array('thumbnail', 3), async (req, res) => 
     
         delete req.body._id;
     
-        const updatedProduct = await productService.updateProduct(pid, req.body);
+        await productService.updateProduct(pid, req.body);
     
-        return res.status(200).send({ message: "Product updated successfully", data: updatedProduct });
+        return res.status(200).send({ message: "Product updated successfully" });
     } catch (error) {
         res.status(500).send({ message: 'Could not update product', error: error.message });
     }
   });
 
-  productsRouter.delete("/:pid", async (req, res) => {
+ productsRouter.delete("/:pid", async (req, res) => {
     try {
         const pid = req.params.pid;
         const product = await productService.getProductById(pid);
@@ -76,11 +76,12 @@ productsRouter.put("/:pid", uploader.array('thumbnail', 3), async (req, res) => 
                 return;
         }
     
-            await productService.deleteProduct(pid);
-            res.status(200).send();
-        } catch (error) {
-            res.status(500).send('Could not delete product');
-        }
-    });
+        await productService.deleteProduct(pid);
+        
+        return res.status(200).send({ message: "Product deleted successfully" });
+    } catch (error) {
+        res.status(500).send('Could not delete product');
+    }    
+});
 
 export default productsRouter;
