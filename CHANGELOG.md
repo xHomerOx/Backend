@@ -7,6 +7,7 @@ Mejorando la arquitectura del servidor.
 - Fixed Update Products was not updating.
 - Added getCarts function to display every Cart with their matching items.
 - Refactored Carts CRUD Operations.
+- Added and Installed missing deps.
 
 ## 30-05-2024
 - Refactorized Proyect with MVC Pattern.

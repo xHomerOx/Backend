@@ -7,6 +7,7 @@ import cartsRouter from './routes/cartsRoute.js';
 import viewsRouter from './routes/viewsRoute.js';
 import { Server } from 'socket.io';
 import mongoose from 'mongoose';
+import usersRouter from './routes/usersRoute.js';
 
 const app = express();
 
@@ -25,6 +26,7 @@ app.use(express.urlencoded({extended: true}));
 app.use('/', viewsRouter);
 app.use('/api/carts/', cartsRouter);
 app.use('/api/products/', productsRouter);
+app.use('/api/users/', usersRouter);
 
 const PORT = 8080;
 
