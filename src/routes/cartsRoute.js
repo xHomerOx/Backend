@@ -13,7 +13,6 @@ cartsRouter.get('/', async (_req, res) => {
 cartsRouter.get('/:cid', async (req, res) => {
     try {
         const results = await myCart.getProductsFromCart(req.params.cid);
-
         res.send({
             status: 'success',
             payload: results

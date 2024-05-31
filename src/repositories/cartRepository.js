@@ -14,20 +14,12 @@ class CartRepository {
         }
     };
     
-    async getProductsFromCart(req, res) {
+    async getProductsFromCart(cid) {
         try {
-            const cartId = req.params.cid;
-            const results = await this.dao.getProductsFromCart(cartId);
-
-            res.send({
-                status: 'success',
-                payload: results
-            });
+            const products = await this.dao.getProductsFromCart(cid);
+            return new CartDto(products);
         } catch (error) {
-            res.status(400).send({
-                status: 'error',
-                message: error.message
-            });
+            throw new Error(`Products not found in ${cid}`);
         }
     };
     
