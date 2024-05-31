@@ -115,5 +115,4 @@ class CartDao {
     }
 }
 
-const instance = new CartDao();
-export default instance;
+export default CartDao;

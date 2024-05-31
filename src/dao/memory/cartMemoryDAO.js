@@ -1,13 +1,13 @@
-class CartMemoryDAO {
+class CartDao {
     constructor() {
         this.carts = [];
     }
 
     static getInstance() {
-        if (!CartMemoryDAO.instance) {
-            CartMemoryDAO.instance = new CartMemoryDAO();
+        if (!CartDao.instance) {
+          CartDao.instance = new CartDAO();
         }
-        return CartMemoryDAO.instance;
+        return CartDao.instance;
     }
 
     async getCarts() {
@@ -103,5 +103,5 @@ class CartMemoryDAO {
     }
 }
 
-const instance = new CartMemoryDAO();
+const instance = new CartDao();
 export default instance;

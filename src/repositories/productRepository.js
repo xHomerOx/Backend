@@ -1,26 +1,26 @@
 import ProductDto from "../dto/productDTO.js";
+import Products from "../dao/factory.js";
 
 class ProductRepository {
-    constructor(products) {
-        this.dao = products;
+    constructor() {
+        this.dao = Products();
     }
 
     async getProducts() {
         try {
-            const myProduct = new ProductDto();
-            const products = await this.dao.getProducts(myProduct);
-            res.send({status: 'success', payload: products});
+            const products = await this.dao.productDAO.getProducts();
+            return products.map(product => new ProductDto(product));
         } catch (error) {
             console.log(error);
             res.status(500).send({ message: error.message });
         }
-    };
+    }
 
     async getProductById(req, res) {
         try {
             const pid = new ProductDto(req.params.pid);
-            const products = await this.dao.getProductById(pid);
-            res.send({status: 'success', payload: products});
+            const product = await this.dao.getProductById(pid);
+            res.send({status: 'success', payload: new ProductDto(product)});
         } catch (error) {
             res.status(400).send({status: 'error', message: error.message});
         }
@@ -30,7 +30,7 @@ class ProductRepository {
         try {
             const pid = new ProductDto(req.body);
             const product = await this.dao.addProducts(pid);
-            res.send({ status: 'success', payload: product });
+            res.send({ status: 'success', payload: new ProductDto(product) });
         } catch (error) {
             res.status(400).send({ status: 'error', message: error.message });
         }
@@ -51,7 +51,7 @@ class ProductRepository {
                 return res.status(404).send({ message: "Product not found" }); 
             }
         
-            if (req.body.id && req.body.id !== pid) {
+            if (req.body.id && req.body.id!== pid) {
                 return res.status(400).send({ message: "Product ID in body must match URL ID" });
             }
 

@@ -4,10 +4,10 @@ class ProductDao {
     }
 
     static getInstance() {
-      if (!ProductMemoryDAO.instance) {
-        ProductMemoryDAO.instance = new ProductMemoryDAO();
+      if (!ProductDao.instance) {
+        ProductDao.instance = new ProductDao();
       }
-      return ProductMemoryDAO.instance;
+      return ProductDao.instance;
   }
   
     async getProducts() {

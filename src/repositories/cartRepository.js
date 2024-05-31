@@ -1,8 +1,9 @@
 import CartDto from "../dto/cartDTO.js";
+import CartDao from "../dao/mongo/cartMongoDAO.js"
 
 class CartRepository {
-    constructor(dao) {
-        this.dao = dao;
+    constructor() {
+        this.dao = CartDao.getInstance();
     }
 
     async getProducts(req, res) {
