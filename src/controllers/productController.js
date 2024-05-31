@@ -14,8 +14,8 @@ class ProductController {
         return await productService.addProducts(cartId, productId);
     }
 
-    async updateProduct(product) {
-        return await productService.updateProduct(product);
+    async updateProduct(productId, productUpdate) {
+        return await productService.updateProduct(productId, productUpdate);
     }
 
     async deleteProduct(product) {

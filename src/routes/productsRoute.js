@@ -4,10 +4,10 @@ import ProductController from "../controllers/productController.js";
 import { productService } from "../repositories/index.js";
 
 const productsRouter = Router();
-const myProducts = new ProductController();
+const myProduct = new ProductController(productService);
 
 productsRouter.get('/', async (_req, res) => {
-    const products = await myProducts.getProducts();
+    const products = await myProduct.getProducts();
     
     res.send({status: 'success', payload: products});
 });
@@ -15,7 +15,7 @@ productsRouter.get('/', async (_req, res) => {
 productsRouter.get('/:pid', async (req, res) => {
     try{
         let pid = req.params.pid;
-        const products = await productService.getProductById(pid);
+        const products = await myProduct.getProductById(pid);
 
         res.send({status: 'success', payload: products});
     }catch(error){
@@ -30,7 +30,7 @@ productsRouter.post("/", uploader.array('thumbnail', 3), async (req, res) => {
     }
   
     try {
-        const products = await productService.addProducts(req.body);
+        const products = await myProduct.addProducts(req.body);
         res.send({ status: 'success', payload: products });
     } catch (error) {
         res.status(400).send({ status: 'error', message: error.message });
@@ -46,7 +46,7 @@ productsRouter.put("/:pid", uploader.array('thumbnail', 3), async (req, res) => 
             req.body.thumbnail = thumbnails;
         }
     
-        const existingProduct = await productService.getProductById(pid);
+        const existingProduct = await myProduct.getProductById(pid);
     
         if (!existingProduct) {
             return res.status(404).send({ message: "Product not found" });
@@ -58,7 +58,7 @@ productsRouter.put("/:pid", uploader.array('thumbnail', 3), async (req, res) => 
     
         delete req.body._id;
     
-        await productService.updateProduct(pid, req.body);
+        await myProduct.updateProduct(pid, req.body);
     
         return res.status(200).send({ message: "Product updated successfully" });
     } catch (error) {
@@ -69,14 +69,14 @@ productsRouter.put("/:pid", uploader.array('thumbnail', 3), async (req, res) => 
  productsRouter.delete("/:pid", async (req, res) => {
     try {
         const pid = req.params.pid;
-        const product = await productService.getProductById(pid);
+        const product = await myProduct.getProductById(pid);
 
         if (!product) {
                 res.status(404).send({ message: "Product not found" });
                 return;
         }
     
-        await productService.deleteProduct(pid);
+        await myProduct.deleteProduct(pid);
         
         return res.status(200).send({ message: "Product deleted successfully" });
     } catch (error) {

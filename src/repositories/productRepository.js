@@ -37,7 +37,7 @@ class ProductRepository {
         try {
             await this.dao.getProductById(pid);
             const updatedProduct = await this.dao.updateProduct(pid, productUpdate);
-            return new ProductDto(updatedProduct);;
+            return new ProductDto(updatedProduct);
         } catch (error) {
             throw new Error(`Could not update this Product ${pid}`);
         }

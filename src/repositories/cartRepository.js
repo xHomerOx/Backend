@@ -1,21 +1,16 @@
 import CartDto from "../dto/cartDTO.js";
-import CartDao from "../dao/mongo/cartMongoDAO.js"
 
 class CartRepository {
-    constructor() {
-        this.dao = CartDao.getInstance();
+    constructor(dao) {
+        this.dao = dao;
     }
 
-    async getProducts(req, res) {
+    async getCarts() {
         try {
-            const myCart = new CartDto(req.query);
-            const carts = await this.dao.getCarts(myCart);
-            res.send(carts);
+            const carts = await this.dao.getCarts();
+            return carts.map(cart => new CartDto(cart));
         } catch (error) {
-            res.status(400).send({
-                status: 'error',
-                message: error.message
-            });
+            throw new Error(`No Products found in this cart`);
         }
     };
     
