@@ -2,6 +2,9 @@
 
 Mejorando la arquitectura del servidor.
 
+## 31-05-2024
+- Fixed Patterns in Factory and DAOs Patterns.
+
 ## 30-05-2024
 - Refactorized Proyect with MVC Pattern.
 - Added Product Memory and Mongo DAO.
