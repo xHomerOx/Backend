@@ -33,32 +33,15 @@ class ProductRepository {
         }
     }
 
-    async updateProduct(req, res) {
+    async updateProduct(pid, productUpdate) {
         try {
-            const pid = new ProductDto(req.params.pid);
-            
-            if (req.files) {
-                const thumbnails = req.files.map((file) => file.filename);
-                req.body.thumbnail = thumbnails;
-            }
-    
-            const existingProduct = await this.dao.getProductById(pid);
-            
-            if (!existingProduct) {
-                return res.status(404).send({ message: "Product not found" }); 
-            }
-        
-            if (req.body.id && req.body.id!== pid) {
-                return res.status(400).send({ message: "Product ID in body must match URL ID" });
-            }
-
-            await this.dao.updateProduct(pid, req.body);
-            return res.status(200).send({ message: "Product updated successfully" });
+            await this.dao.getProductById(pid);
+            const updatedProduct = await this.dao.updateProduct(pid, productUpdate);
+            return updatedProduct;
         } catch (error) {
-            res.status(500).send('Could not update product');
+            throw new Error(`Could not update this Product ${pid}`);
         }
     }
-
     async deleteProduct(req, res) {
         try{
             const pid = new ProductDto(req.params.pid);

@@ -40,27 +40,31 @@ productsRouter.post("/", uploader.array('thumbnail', 3), async (req, res) => {
 productsRouter.put("/:pid", uploader.array('thumbnail', 3), async (req, res) => {
     try {
         const pid = req.params.pid;
-  
+    
         if (req.files) {
             const thumbnails = req.files.map((file) => file.filename);
             req.body.thumbnail = thumbnails;
         }
-
+    
         const existingProduct = await productService.getProductById(pid);
-        
+    
         if (!existingProduct) {
-            return res.status(404).send({ message: "Product not found" }); 
+            return res.status(404).send({ message: "Product not found" });
         }
     
-        if (req.body.id && req.body.id !== pid) {
+        if (req.body.id && req.body.id!== pid) {
             return res.status(400).send({ message: "Product ID in body must match URL ID" });
         }
     
-        return res.status(200).send({ message: "Product updated successfully" });
-        } catch (error) {
-            res.status(500).send('Could not update product');
-        }
-    });
+        delete req.body._id;
+    
+        const updatedProduct = await productService.updateProduct(pid, req.body);
+    
+        return res.status(200).send({ message: "Product updated successfully", data: updatedProduct });
+    } catch (error) {
+        res.status(500).send({ message: 'Could not update product', error: error.message });
+    }
+  });
 
   productsRouter.delete("/:pid", async (req, res) => {
     try {

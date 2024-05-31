@@ -4,6 +4,7 @@ Mejorando la arquitectura del servidor.
 
 ## 31-05-2024
 - Fixed Patterns in Factory and DAOs Patterns.
+- Fixed Update Products was not updating.
 
 ## 30-05-2024
 - Refactorized Proyect with MVC Pattern.
