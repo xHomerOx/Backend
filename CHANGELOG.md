@@ -9,6 +9,8 @@ Mejorando la arquitectura del servidor.
 - Refactored Carts CRUD Operations.
 - Added and Installed missing deps.
 - Added UserDTO.
+- Modified Memory and Mongo Persistance to match the UserModel.
+- Added User Login to Home Page.
 
 ## 30-05-2024
 - Refactorized Proyect with MVC Pattern.
