@@ -156,6 +156,7 @@ viewsRouter.get('/carts/:cid', async (req, res) => {
 });
 
 viewsRouter.get("/login", (req, res) => {
+  console.log(req.session)
   res.render('loginView', { title: 'Login Form', failLogin: req.session.failLogin ?? false })
 });
 

@@ -8,6 +8,8 @@ import viewsRouter from './routes/viewsRoute.js';
 import { Server } from 'socket.io';
 import mongoose from 'mongoose';
 import usersRouter from './routes/usersRoute.js';
+import mongoStore from 'connect-mongo';
+import session from 'express-session';
 
 const app = express();
 
@@ -27,6 +29,20 @@ app.use('/', viewsRouter);
 app.use('/api/carts/', cartsRouter);
 app.use('/api/products/', productsRouter);
 app.use('/api/users/', usersRouter);
+
+app.use(session({
+    store: mongoStore.create(
+        {
+            mongoUrl: uri,
+            ttl: 300000
+        }
+    ),
+    secret: 'myApiKey',
+    resave: false,
+    saveUninitialized: false,
+    failLogin: false,
+    failRegister: false
+}));
 
 const PORT = 8080;
 
