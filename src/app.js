@@ -5,15 +5,21 @@ import __dirname from './utils/dirnameUtil.js';
 import productsRouter from './routes/productsRoute.js';
 import cartsRouter from './routes/cartsRoute.js';
 import viewsRouter from './routes/viewsRoute.js';
+import sessionsRouter from './routes/sessionsRoute.js';
 import { Server } from 'socket.io';
 import mongoose from 'mongoose';
 import usersRouter from './routes/usersRoute.js';
-import mongoStore from 'connect-mongo';
 import session from 'express-session';
+import mongoStore from 'connect-mongo';
+import passport from 'passport';
+import initializePassport from './config/passportConfig.js';
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 const app = express();
 
-const uri = 'mongodb+srv://xHomerOx:oU4p3VvHAh11lf7s@ecommerce.ix5vqim.mongodb.net/ecommerce?retryWrites=true&w=majority';
+const uri = process.env.DB_CONNECTION;
 mongoose.connect(uri);
 
 app.engine('handlebars', exphbs.engine({ defaultLayout: false }));
@@ -29,6 +35,7 @@ app.use('/', viewsRouter);
 app.use('/api/carts/', cartsRouter);
 app.use('/api/products/', productsRouter);
 app.use('/api/users/', usersRouter);
+app.use('/api/sessions', sessionsRouter);
 
 app.use(session({
     store: mongoStore.create(
@@ -43,6 +50,10 @@ app.use(session({
     failLogin: false,
     failRegister: false
 }));
+
+initializePassport();
+app.use(passport.initialize());
+app.use(passport.session());
 
 const PORT = 8080;
 
