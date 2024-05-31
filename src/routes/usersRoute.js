@@ -18,7 +18,6 @@ usersRouter.post("/register", passport.authenticate('register', {failureRedirect
             password: createHash(password)
         }
 
-        //Veo si existe o es admincoder.
         if (existingUser || req.body.user === "admincoder@coder.com") {
             req.session.failRegister = true;
             res.redirect("/login");

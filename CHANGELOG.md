@@ -8,6 +8,7 @@ Mejorando la arquitectura del servidor.
 - Added getCarts function to display every Cart with their matching items.
 - Refactored Carts CRUD Operations.
 - Added and Installed missing deps.
+- Added UserDTO.
 
 ## 30-05-2024
 - Refactorized Proyect with MVC Pattern.

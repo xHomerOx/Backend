@@ -2,6 +2,7 @@ import { Router } from 'express';
 import __dirname from '../utils/dirnameUtil.js';
 import productModel from '../models/productModel.js';
 import { cartModel } from '../models/cartModel.js';
+import passport from 'passport';
 
 const viewsRouter = Router();
 
@@ -152,6 +153,41 @@ viewsRouter.get('/carts/:cid', async (req, res) => {
           message: error.message
     });
   }
+});
+
+viewsRouter.get("/login", (req, res) => {
+  res.render('loginView', { title: 'Login Form', failLogin: req.session.failLogin ?? false })
+});
+
+viewsRouter.get("/failLogin", (_req, res) => {
+  res.render('failLoginView', { title: 'Login Failed' })
+});
+
+viewsRouter.get("/register", (req, res) => {
+  res.render('registerView', { title: 'Register Form', failRegister: req.session.failRegister ?? false })
+});
+
+viewsRouter.get("/failRegister", (_req, res) => {
+  res.render('failRegisterView', { title: 'Registration Failed' })
+});
+
+viewsRouter.get("/logout", (req, res) => {
+  req.session.destroy((error) => {
+    if (error) {
+      return console.log(error);
+    }
+    return res.redirect("/login");
+  });
+});
+
+viewsRouter.post("/login", passport.authenticate('login', { failureRedirect: '/failLogin', successRedirect: '/products' }), (req, res) => {
+  const user = req.user;
+  const role = req.user.role;
+  res.render('homeView', { title: 'Products Page', products: req.products, isLoggedIn: true, user: user, role: role });
+});
+
+viewsRouter.post("/register", passport.authenticate('register', { failureRedirect: '/failRegister' }), (req, res) => {
+  res.render('loginView', { title: 'Login Form', failLogin: req.session.failLogin ?? false });
 });
 
 export default viewsRouter;
