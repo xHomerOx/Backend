@@ -1,6 +1,7 @@
 import { Router } from "express";
 import { uploader } from "../utils/multerUtil.js";
 import ProductController from "../controllers/productController.js";
+import { productService } from "../repositories/index.js";
 
 const productsRouter = Router();
 const myProducts = new ProductController();
@@ -14,7 +15,7 @@ productsRouter.get('/', async (_req, res) => {
 productsRouter.get('/:pid', async (req, res) => {
     try{
         let pid = req.params.pid;
-        const products = await myProducts.getProductById(pid);
+        const products = await productService.getProductById(pid);
 
         res.send({status: 'success', payload: products});
     }catch(error){
@@ -29,7 +30,7 @@ productsRouter.post("/", uploader.array('thumbnail', 3), async (req, res) => {
     }
   
     try {
-        const products = await myProducts.addProducts(req.body);
+        const products = await productService.addProducts(req.body);
         res.send({ status: 'success', payload: products });
     } catch (error) {
         res.status(400).send({ status: 'error', message: error.message });
@@ -45,7 +46,7 @@ productsRouter.put("/:pid", uploader.array('thumbnail', 3), async (req, res) => 
             req.body.thumbnail = thumbnails;
         }
 
-        const existingProduct = await myProducts.getProductById(pid);
+        const existingProduct = await productService.getProductById(pid);
         
         if (!existingProduct) {
             return res.status(404).send({ message: "Product not found" }); 
@@ -64,14 +65,14 @@ productsRouter.put("/:pid", uploader.array('thumbnail', 3), async (req, res) => 
   productsRouter.delete("/:pid", async (req, res) => {
     try {
         const pid = req.params.pid;
-        const product = await myProducts.getProductById(pid);
+        const product = await productService.getProductById(pid);
 
         if (!product) {
                 res.status(404).send({ message: "Product not found" });
                 return;
         }
     
-            await myProducts.deleteProduct(pid);
+            await productService.deleteProduct(pid);
             res.status(200).send();
         } catch (error) {
             res.status(500).send('Could not delete product');

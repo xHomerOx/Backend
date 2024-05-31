@@ -10,8 +10,8 @@ class ProductController {
         return await productService.getProductById(product);
     }
 
-    async addProducts(product) {
-        return await productService.addProducts(product);
+    async addProducts(cartId, productId) {
+        return await productService.addProducts(cartId, productId);
     }
 
     async updateProduct(product) {

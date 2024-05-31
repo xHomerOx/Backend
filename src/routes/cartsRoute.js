@@ -1,18 +1,17 @@
 import { Router } from "express";
 import CartController from "../controllers/cartController.js";
-import { cartModel } from "../models/cartModel.js";
 
-const myCart = new CartController();
 const cartsRouter = Router();
+const cartService = new CartController();
 
 cartsRouter.get('/', async (_req, res) => {
-    const carts = await myCart.getCarts();
+    const carts = await cartService.getCarts();
     res.send(carts);
 });
 
 cartsRouter.get('/:cid', async (req, res) => {
     try {
-        const results = await cartModel.findById(req.params.cid).populate("products.product");
+        const results = await cartService.getProductsFromCart(req.params.cid);
 
         res.send({
             status: 'success',
@@ -28,7 +27,7 @@ cartsRouter.get('/:cid', async (req, res) => {
 
 cartsRouter.post('/', async (_req, res) => {
     try {
-        const results = await myCart.addCart();
+        const results = await cartService.addCart();
         
         res.send({
             status: 'success',
@@ -44,13 +43,14 @@ cartsRouter.post('/', async (_req, res) => {
 
 cartsRouter.post('/:cid/products/:pid', async (req, res) => {
     try {
-        const results = await myCart.addProduct(req.params.cid, req.params.pid);
-
+        const results = await cartService.addProduct(req.params.cid, req.params.pid);
+        
         res.send({
             status: 'success',
             payload: results
         });
     } catch (error) {
+        console.log(error);
         res.status(400).send({
             status: 'error',
             message: error.message
@@ -60,7 +60,7 @@ cartsRouter.post('/:cid/products/:pid', async (req, res) => {
 
 cartsRouter.delete('/:cid/products/:pid', async (req, res) => {
     try {
-        const results = await myCart.deleteProduct(req.params.cid, req.params.pid);
+        const results = await cartService.deleteProduct(req.params.cid, req.params.pid);
 
         res.send({
             status: 'success',
@@ -79,7 +79,7 @@ cartsRouter.put('/:cid', async (req, res) => {
         const cartId = req.params.cid;
         const updatedProducts = req.body.products;
 
-        const results = await myCart.updateProduct(cartId, updatedProducts);
+        const results = await cartService.updateProduct(cartId, updatedProducts);
 
         res.send({
             status: 'success',
@@ -99,7 +99,7 @@ cartsRouter.put('/:cid/products/:pid', async (req, res) => {
         const productId = req.params.pid;
         const quantity = req.body.quantity;
         
-        const results = await myCart.updateProductById(cartId, productId, quantity);
+        const results = await cartService.updateProductById(cartId, productId, quantity);
         
         res.send({
             status: 'success',
@@ -115,7 +115,7 @@ cartsRouter.put('/:cid/products/:pid', async (req, res) => {
 
 cartsRouter.delete('/:cid', async (req, res) => {
     try {
-        const results = await myCart.deleteAllProducts(req.params.cid);
+        const results = await cartService.deleteAllProducts(req.params.cid);
 
         res.send({
             status: 'success',

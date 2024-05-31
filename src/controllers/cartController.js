@@ -1,6 +1,6 @@
 import { cartService } from "../repositories/index.js";
 
-class ProductController {
+class CartController {
 
     async getCarts() {
         return await cartService.getCarts();
@@ -27,4 +27,4 @@ class ProductController {
     }
 }
 
-export default ProductController;
+export default CartController;

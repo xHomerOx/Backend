@@ -5,15 +5,16 @@ class ProductRepository {
         this.dao = products;
     }
 
-    async getProducts(req, res) {
+    async getProducts() {
         try {
-          const myProduct = new ProductDto(req.query);
-          const products = await this.dao.getProducts(myProduct);
-          res.send({status: 'success', payload: products});
+            const myProduct = new ProductDto();
+            const products = await this.dao.getProducts(myProduct);
+            res.send({status: 'success', payload: products});
         } catch (error) {
-          res.status(500).send({ message: error.message });
+            console.log(error);
+            res.status(500).send({ message: error.message });
         }
-      };
+    };
 
     async getProductById(req, res) {
         try {

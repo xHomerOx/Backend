@@ -24,6 +24,7 @@ app.use(express.urlencoded({extended: true}));
 
 app.use('/', viewsRouter);
 app.use('/api/carts/', cartsRouter);
+app.use('/api/products/', productsRouter);
 
 const PORT = 8080;
 

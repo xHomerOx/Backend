@@ -1,138 +1,142 @@
 import CartDto from "../dto/cartDTO.js";
 
 class CartRepository {
-    constructor(carts) {
-        this.dao = carts;
+    constructor(dao) {
+        this.dao = dao;
     }
 
-    async getCarts() {
+    async getProducts(req, res) {
         try {
-        const carts = await cartModel.find();
-        return carts.map((cart) => new CartDto(cart));
+            const myCart = new CartDto(req.query);
+            const carts = await this.dao.getCarts(myCart);
+            res.send(carts);
         } catch (error) {
-        throw new Error("Error finding Carts!");
+            res.status(400).send({
+                status: 'error',
+                message: error.message
+            });
         }
-    }
-
-    async getProductsFromCart(cartId) {
-        const cart = await cartModel.findById(cartId);
-        if (!cart) {
-        throw new Error(`Cart ${cartId} not found.`);
-        }
-        return cart.products;
-    }
-
-    async addCart() {
+    };
+    
+    async getProductsFromCart(req, res) {
         try {
-        const cart = new cartModel({
-            products: [],
-        });
+            const cartId = req.params.cid;
+            const results = await this.dao.getProductsFromCart(cartId);
 
-        await cart.save();
-        return new CartDto(cart);
+            res.send({
+                status: 'success',
+                payload: results
+            });
         } catch (error) {
-        throw new Error("Error creating cart");
+            res.status(400).send({
+                status: 'error',
+                message: error.message
+            });
         }
-    }
-
-    async addProduct(cartId, productId) {
+    };
+    
+    async addCart(req, res) {
         try {
-        const cart = await cartModel.findById(cartId);
+            const results = await this.dao.addCart();
+            const cartDto = new CartDto(results);
 
-        if (!cart) {
-            throw new Error(`Cart ${cartId} not found`);
-        }
-
-        const foundProduct = await productModel.findOne({_id: productId});
-
-        if (foundProduct) {
-            const existingProduct = cart.products.findIndex((cartProduct) => cartProduct.product.equals(productId));
-
-            if (existingProduct >= 0) {
-            cart.products[existingProduct].quantity++;
-            } else {
-            cart.products.push({ product: productId, quantity: 1 });
-            }
-
-            await cart.save();
-            return "Product successfully added to cart!";
-        } else {
-            return `Product with ID ${productId} not found`;
-        }
+            res.send({
+                status: 'success',
+                payload: cartDto
+            });
         } catch (error) {
-            throw new Error("Error adding product to cart");
+            res.status(400).send({
+                status: 'error',
+                message: error.message
+            });
         }
-    }
-
-    async deleteProduct(cartId, productId) {
+    };
+    
+    async addProduct(product) {
         try {
-            const cart = await cartModel.findById(cartId);
+            const newProduct = new CartDto(product);
+            await this.dao.addProduct(newProduct);
 
-            const deleteProduct = cart.products.findIndex(product => product.product.toString() === productId);
-
-            if (deleteProduct >= 0) {
-                cart.products.splice(deleteProduct, 1);
-                await cart.save();
-                return `Product with ${productId} deleted.`;
-            } else {
-                return `Product with ${productId} does not exist.`;
-            }
+            res.send("Product successfully added to cart!");
         } catch (error) {
-            throw error;
+            res.status(400).send({
+                status: 'error',
+                message: error.message
+            });
         }
-    }
-
-    async deleteAllProducts(cartId) {
+    };
+    
+    async deleteProduct(req, res) {
         try {
-            const cart = await cartModel.findById(cartId);
-
-            if (!cart) {
-                throw new Error(`Cart ${cartId} not found`);
-            }
-
-            cart.products = [];
-            await cart.save();
-            return "All Products in Cart successfully deleted!";
+            const cartId = req.params.cid;
+            const productId = req.params.pid;
+            const results = await this.dao.deleteProduct(cartId, productId);
+    
+            res.send({
+                status: 'success',
+                payload: results
+            });
         } catch (error) {
-            throw error;
+            res.status(400).send({
+                status: 'error',
+                message: error.message
+            });
         }
-    }
-
-    async updateProduct(cartId, updatedProducts) {
+    };
+    
+    async updateProduct(req, res) {
         try {
-            const cart = await cartModel.findById(cartId);
-
-            if (!cart) {
-                throw new Error(`Cart ${cartId} not found`);
-            }
-
-            cart.products = updatedProducts;
-
-            await cart.save();
-            return "Cart successfully updated!";
+            const cartId = req.params.cid;
+            const quantity = req.body.quantity;
+            await this.dao.updateProduct(cartId, quantity);
+            
+            res.send({
+                status: 'success',
+                message: 'Cart successfully updated!'
+            });
         } catch (error) {
-            throw new Error("Error updating cart");
+            res.status(400).send({
+                status: 'error',
+                message: error.message
+            });
         }
-    }
-
-    async updateProductById(cartId, productId, quantity) {
+    };
+    
+    async updateProductById(req, res) {
         try {
-            const cart = await cartModel.findById(cartId);
-            const myProduct = cart.products.findIndex(product => product.product == productId);
-
-            if (myProduct >= 0) {
-                cart.products[myProduct].quantity = quantity;
-
-                await cart.save();
-
-                return "Cart successfully updated!";
-            } else {
-                throw new Error("Product not found in the cart");
-            }
+            const cartId = req.params.cid;
+            const productId = req.params.pid;
+            const quantity = req.body.quantity;
+            await this.dao.updateProductById(cartId, productId, quantity);
+            
+            res.send({
+                status: 'success',
+                message: 'Cart successfully updated!'
+            });
         } catch (error) {
-            throw new Error("Error updating cart: " + error.message);
+            res.status(400).send({
+                status: 'error',
+                message: error.message
+            });
         }
-    }
+    };
+    
+    async deleteAllProducts(req, res) {
+        try {
+            const cartId = req.params.cid;
+            const results = await this.dao.deleteAllProducts(cartId);
+    
+            res.send({
+                status: 'success',
+                payload: results
+            });
+        } catch (error) {
+            res.status(400).send({
+                status: 'error',
+                message: error.message
+            });
+        }
+    };
 }
 
 export default CartRepository;
