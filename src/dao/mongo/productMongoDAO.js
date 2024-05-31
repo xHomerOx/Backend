@@ -31,7 +31,7 @@ class ProductDao {
             throw new Error('Code could not be the same as existent one!');
         }
         if (!title || !description || !code || !price || !stock || !category) {
-            throw new Error('Cart could not be created!');
+            throw new Error('Product could not be created!');
         }
         
         try {

@@ -1,17 +1,17 @@
 import mongoose from "mongoose";
 import config from "../config/config.js";
+import ProductMongoDAO from "../dao/mongo/productMongoDAO.js";
+import CartMongoDAO from "../dao/mongo/cartMongoDAO.js";
+import ProductMemoryDAO from "../dao/memory/productMemoryDAO.js";
+import CartMemoryDAO from "../dao/memory/cartMemoryDAO.js";
 
 const Products = async () => {
     switch (config.persistence) {
         case 'MONGO':
             mongoose.connect(process.env.DB_CONNECTION);
-            const { default: productMongoDAO } = await import('../dao/mongo/productMongoDAO.js');
-            const { default: cartMongoDAO } = await import('../dao/mongo/cartMongoDAO.js');
-            return { productDAO: productMongoDAO, cartDAO: cartMongoDAO };
+            return { productDAO: new ProductMongoDAO(), cartDAO: new CartMongoDAO() };
         case 'MEMORY':
-            const { default: productMemoryDAO } = await import('../dao/memory/productMemoryDAO.js');
-            const { default: cartMemoryDAO } = await import('../dao/memory/cartMemoryDAO.js');
-            return { productDAO: productMemoryDAO, cartDAO: cartMemoryDAO };
+            return { productDAO: new ProductMemoryDAO(), cartDAO: new CartMemoryDAO() };
     }
 }
 

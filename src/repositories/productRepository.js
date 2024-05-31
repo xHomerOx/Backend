@@ -1,38 +1,35 @@
 import ProductDto from "../dto/productDTO.js";
-import Products from "../dao/factory.js";
 
 class ProductRepository {
-    constructor() {
-        this.dao = Products();
+    constructor(dao) {
+        this.dao = dao;
     }
 
     async getProducts() {
         try {
-            const products = await this.dao.productDAO.getProducts();
+            const products = await this.dao.getProducts();
             return products.map(product => new ProductDto(product));
         } catch (error) {
-            console.log(error);
-            res.status(500).send({ message: error.message });
+            throw new Error(`Error fetching data: ${error.message}`);
         }
     }
 
-    async getProductById(req, res) {
+    async getProductById(pid) {
         try {
-            const pid = new ProductDto(req.params.pid);
             const product = await this.dao.getProductById(pid);
-            res.send({status: 'success', payload: new ProductDto(product)});
+            return new ProductDto(product);
         } catch (error) {
-            res.status(400).send({status: 'error', message: error.message});
+            throw new Error(`Product with ID ${pid} not found`);
         }
     }
+    
 
-    async addProducts(req, res) {
+    async addProducts(pid) {
         try {
-            const pid = new ProductDto(req.body);
-            const product = await this.dao.addProducts(pid);
-            res.send({ status: 'success', payload: new ProductDto(product) });
+            const product = await this.dao.addProducts(pid);        
+            return new ProductDto(product);
         } catch (error) {
-            res.status(400).send({ status: 'error', message: error.message });
+             throw new Error(`Could not add this Product ${pid}`);
         }
     }
 
