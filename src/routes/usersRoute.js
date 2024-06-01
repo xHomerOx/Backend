@@ -31,7 +31,7 @@ usersRouter.post("/register", passport.authenticate('register', {failureRedirect
     }
 });
 
-usersRouter.post("/login", auth, passport.authenticate('login', {failureRedirect: '/failLogin'}), async (req, res) => {
+usersRouter.post("/login", async (req, res) => {
     try {
         const { user, password } = req.body;
         const token = await myUser.loginUser(user, password);
@@ -54,7 +54,7 @@ usersRouter.get('/current', passport.authenticate('jwt', {session: false}), asyn
     })
 });
 
-usersRouter.get('/:uid', isAdmin, async (req, res) => {
+usersRouter.get('/:uid', passport.authenticate('jwt', {session: false}), isAdmin, async (req, res) => {
     try {
         const result = await myUser.getUser(req.params.uid);
         res.send({

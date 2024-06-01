@@ -94,9 +94,8 @@ const initializePassport = () => {
         }
     ));
 
-    passport.use(
-        "jwt",
-        new JWTStrategy({
+    passport.use("jwt", new JWTStrategy(
+        {
             jwtFromRequest: ExtractJwt.fromExtractors([cookieExtractor]),
             secretOrKey: "secretKey"
         }, async (jwt_payload, done) => {
