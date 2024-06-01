@@ -10,7 +10,7 @@ export const auth = function (req, res, next) {
         }
 
         req.session.user = adminUser;
-        return res.redirect("/products");
+        return res.redirect("/");
     } else {
         return next();
     }

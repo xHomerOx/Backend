@@ -35,10 +35,11 @@ usersRouter.post("/login", auth, passport.authenticate('login', {failureRedirect
     try {
         const { user, password } = req.body;
         const token = await myUser.loginUser(user, password);
-
+        
         res.cookie('auth', token, { maxAge: 60*60*1000 }).send({
             status: 'success',
-            token
+            token,
+            user
         });
     } catch (error) {
         res.status(400).send({
