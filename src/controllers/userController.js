@@ -1,9 +1,13 @@
 import { userService } from "../repositories/index.js";
 
-class ProductController {
+class UserController {
 
-    async getUser(user, password) {
-        return await userService.getUser(user, password);
+    async loginUser(user, password) {
+        return await userService.loginUser(user, password);
+    }
+
+    async getUser(user) {
+        return await userService.getUser(user);
     }
 
     async addUser(user, email, password) {
@@ -11,4 +15,4 @@ class ProductController {
     }
 }
 
-export default ProductController;
+export default UserController;

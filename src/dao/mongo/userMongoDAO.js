@@ -32,7 +32,7 @@ class UserDao {
         }
     }
 
-    async getUser(user, password) {
+    async loginUser(user, password) {
         try {
             if (!user || !password) {
                 throw new Error("User and password are required!");
@@ -54,6 +54,14 @@ class UserDao {
             return myUser;
         } catch (error) {
             throw new Error(error.message);
+        }
+    }
+
+    async getUser(uid) {
+        try {
+            return await userModel.findOne({_id: uid}).lean();
+        } catch (error) {
+            throw new Error("User not found!");
         }
     }
 }

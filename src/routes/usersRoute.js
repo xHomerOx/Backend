@@ -1,64 +1,79 @@
 import { Router } from 'express';
-import userModel from '../models/userModel.js';
 import { auth } from '../middlewares/auth.js';
-import { createHash, isValidPassword } from '../utils/cryptoUtil.js'
 import passport from 'passport';
+import UserController from "../controllers/userController.js";
+import { userService } from "../repositories/index.js";
 
 const usersRouter = Router();
+const myUser = new UserController(userService);
+
+const isAdmin = (req, res, next) => {
+    if (req.user.role === 'admin') return next();
+
+    res.status(403).send({
+        status: 'error',
+        message: 'unauthorized'
+    });
+}
 
 usersRouter.post("/register", passport.authenticate('register', {failureRedirect: '/failRegister'}), async (req, res) => {
     try {
-        req.session.failRegister = false;
-
-        const { user, password } = req.body;
-        const existingUser = await userModel.findOne({ user: req.body.user });
-
-        let newUser =  {
-            user,
-            password: createHash(password)
-        }
-
-        if (existingUser || req.body.user === "admincoder@coder.com") {
-            req.session.failRegister = true;
-            res.redirect("/login");
-        } else { 
-            req.session.failRegister = false;
-            await userModel.create(newUser);
-            res.redirect("/login");
-        }
+        const result = await myUser.addUser(req.body);
+        res.send({
+            status: 'success',
+            payload: result
+        });
     } catch (error) {
-        req.session.failRegister = true;
-        res.redirect("/register");
+        res.status(400).send({
+            status: 'error',
+            message: error.message
+        });
     }
 });
 
 usersRouter.post("/login", auth, passport.authenticate('login', {failureRedirect: '/failLogin'}), async (req, res) => {
     try {
-        req.session.failLogin = false;
-
         const { user, password } = req.body;
-        const myUser = await userModel.findOne({user: user});
+        const token = await myUser.loginUser(user, password);
 
-        if (!myUser) {
-            req.session.failLogin = true;
-            return res.redirect("/login");
-        }
-
-        if (isValidPassword(myUser, password)) {
-            req.session.failLogin = false;
-        } else {
-            req.session.failLogin = true;
-            return res.redirect("/login");
-        }
-
-        delete myUser.password;
-        req.session.user = myUser;
-
-        return res.redirect("/products");
+        res.cookie('auth', token, { maxAge: 60*60*1000 }).send({
+            status: 'success',
+            token
+        });
     } catch (error) {
-        req.session.failLogin = true;
-        return res.redirect("/login");
+        res.status(400).send({
+            status: 'error',
+            message: error.message
+        });
     }
+});
+
+usersRouter.get('/current', passport.authenticate('jwt', {session: false}), async (req, res) => {
+    res.send({
+        user: req.user
+    })
+});
+
+usersRouter.get('/:uid', isAdmin, async (req, res) => {
+    try {
+        const result = await myUser.getUser(req.params.uid);
+        res.send({
+            status: 'success',
+            payload: result
+        });
+    } catch (error) {
+        res.status(400).send({
+            status: 'error',
+            message: error.message
+        });
+    }
+});
+
+usersRouter.get('/github'), passport.authenticate('github', {scope: ['user: user']}, async (_req, _res) => {});
+
+usersRouter.get('/github', passport.authenticate('github', {failureRedirect: '/login'}), async (req, res) => {
+    req.session.user = req.user;
+    res.redirect('/');
 });
 
 export default usersRouter;

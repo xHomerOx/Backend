@@ -4,7 +4,6 @@ import path from 'path';
 import __dirname from './utils/dirnameUtil.js';
 import viewsRouter from './routes/viewsRoute.js';
 import usersRouter from './routes/usersRoute.js';
-import sessionsRouter from './routes/sessionsRoute.js';
 import mongoose from 'mongoose';
 import { Server } from 'socket.io';
 import session from 'express-session';
@@ -53,7 +52,6 @@ app.use('/', viewsRouter);
 app.use('/api/carts/', cartsRouter);
 app.use('/api/products/', productsRouter);
 app.use('/api/users/', usersRouter);
-app.use('/api/sessions', sessionsRouter);
 
 const PORT = 8080;
 

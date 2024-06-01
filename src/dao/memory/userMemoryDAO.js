@@ -30,7 +30,7 @@ class UserDao {
         }
     }
 
-    async getUser(user, password) {
+    async loginUser(user, password) {
         try {
             if (!user ||!password) {
                 throw new Error("User and password are required!");
@@ -50,6 +50,20 @@ class UserDao {
 
             delete myUser.password;
             return myUser;
+        } catch (error) {
+            throw new Error(error.message);
+        }
+    }
+
+    async getUser(userId) {
+        try {
+            const user = this.users.find((user) => user._id === userId);
+
+            if (!user) {
+                throw new Error("User not found!");
+            }
+
+            return user;
         } catch (error) {
             throw new Error(error.message);
         }

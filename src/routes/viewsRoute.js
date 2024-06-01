@@ -6,20 +6,6 @@ import passport from 'passport';
 
 const viewsRouter = Router();
 
-viewsRouter.get('/', (req, res) => {
-  try {
-    const { products } = req;
-    const isLoggedIn = req.user ? true : false;
-    const { user, role } = req.user|| {};
-    res.render('homeView', { title: 'Products Page', products, isLoggedIn, user, role });
-  } catch (error) {
-    res.status(400).send({
-      status: 'error',
-      message: error.message
-    });
-  }
-});
-
 viewsRouter.get('/', async (req, res) => {
   try {
 
@@ -44,7 +30,10 @@ viewsRouter.get('/', async (req, res) => {
     const prevPage = page > 1 ? `?page=${page - 1}` : null;
     const nextPage = page < totalPages ? `?page=${page + 1}` : null;
 
-    res.render('homeView', { products, page, prevPage, nextPage, cartId });
+    const isLoggedIn = req.user ? true : false;
+    const { user, role } = req.user|| {};
+
+    res.render('homeView', { products, page, prevPage, nextPage, cartId, isLoggedIn, user, role });
   } catch (error) {
     res.status(400).send({
           status: 'error',

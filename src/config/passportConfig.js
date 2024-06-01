@@ -4,10 +4,12 @@ import GithubStrategy from 'passport-github2';
 import userModel from '../models/userModel.js';
 import { createHash, isValidPassword } from '../utils/cryptoUtil.js';
 import dotenv from 'dotenv';
+import jwt, { ExtractJwt } from 'passport-jwt';
 
 dotenv.config();
 
 const localStrategy = local.Strategy;
+const JWTStrategy = jwt.Strategy;
 
 const initializePassport = () => {
     passport.use('register', new localStrategy(
@@ -91,6 +93,20 @@ const initializePassport = () => {
             }
         }
     ));
+
+    passport.use(
+        "jwt",
+        new JWTStrategy({
+            jwtFromRequest: ExtractJwt.fromExtractors([cookieExtractor]),
+            secretOrKey: "secretKey"
+        }, async (jwt_payload, done) => {
+            try {
+                return done(null, jwt_payload);
+            } catch (error) {
+                return done(error)
+            }
+        })
+    )
     
     passport.serializeUser(async (user, done) => {
         done(null, user._id);
@@ -100,6 +116,16 @@ const initializePassport = () => {
         let myUser = await userModel.findById(id);
         done(null, myUser);
     })
+}
+
+const cookieExtractor = (req) => {
+    let token = null;
+    
+    if (req && req.cookies) {
+        token = req.cookies.auth ?? null;
+    }
+
+    return token;
 }
 
 export default initializePassport;
