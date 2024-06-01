@@ -3,18 +3,10 @@ import { auth } from '../middlewares/auth.js';
 import passport from 'passport';
 import UserController from "../controllers/userController.js";
 import { userService } from "../repositories/index.js";
+import { isAdmin } from '../middlewares/guard.js';
 
 const usersRouter = Router();
 const myUser = new UserController(userService);
-
-const isAdmin = (req, res, next) => {
-    if (req.user.role === 'admin') return next();
-
-    res.status(403).send({
-        status: 'error',
-        message: 'unauthorized'
-    });
-}
 
 usersRouter.post("/register", passport.authenticate('register', {failureRedirect: '/failRegister'}), async (req, res) => {
     try {

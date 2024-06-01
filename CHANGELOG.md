@@ -8,6 +8,8 @@ Mejorando la arquitectura del servidor.
 - Modified Current Path to return user and role only.
 - Fixed Github Sessions.
 - Added Update Product Button and Swal2.
+- Added Admin Guard for POST, PUT and DELETE Operations.
+- Added Admin and User Privileges for HBS.
 
 ## 31-05-2024
 - Fixed Patterns in Factory and DAOs Patterns.

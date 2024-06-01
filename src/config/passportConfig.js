@@ -106,7 +106,7 @@ const initializePassport = () => {
             return done(error)
           }
         }
-      ))
+    ))
     
     passport.serializeUser(async (user, done) => {
         done(null, user._id);

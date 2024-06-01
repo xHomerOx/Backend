@@ -3,10 +3,11 @@ import __dirname from '../utils/dirnameUtil.js';
 import productModel from '../models/productModel.js';
 import { cartModel } from '../models/cartModel.js';
 import passport from 'passport';
+import { auth } from '../middlewares/auth.js';
 
 const viewsRouter = Router();
 
-viewsRouter.get('/', async (req, res) => {
+viewsRouter.get('/', auth, async (req, res) => {
   try {
 
     const myCart = await cartModel.findOne();
@@ -31,9 +32,11 @@ viewsRouter.get('/', async (req, res) => {
     const nextPage = page < totalPages ? `?page=${page + 1}` : null;
 
     const isLoggedIn = req.user ? true : false;
+    const isAdmin = req.user && req.user.role === 'admin' ? true : false;
+
     const { user, role } = req.user|| {};
 
-    res.render('homeView', { products, page, prevPage, nextPage, cartId, isLoggedIn, user, role });
+    res.render('homeView', { products, page, prevPage, nextPage, cartId, isLoggedIn, isAdmin, user, role });
   } catch (error) {
     res.status(400).send({
           status: 'error',
