@@ -7,6 +7,7 @@ Mejorando la arquitectura del servidor.
 - Added Payload in result object.
 - Modified Current Path to return user and role only.
 - Fixed Github Sessions.
+- Added Update Product Button and Swal2.
 
 ## 31-05-2024
 - Fixed Patterns in Factory and DAOs Patterns.
