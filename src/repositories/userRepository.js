@@ -15,12 +15,12 @@ class UserRepository {
   }
 
   async loginUser(user, password) {
-    try {
-      const myUser = await this.dao.loginUser(user, password);
-      return new UserDto(myUser);
-    } catch (error) {
-      throw new Error(error.message);
-    }
+      try {
+          const myUser = await this.dao.loginUser(user, password);
+          return new UserDto(myUser);
+      } catch (error) {
+          throw new Error(error.message);
+      }
   }
 
   async getUser(user) {

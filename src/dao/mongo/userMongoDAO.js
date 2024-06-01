@@ -1,5 +1,6 @@
 import userModel from '../../models/userModel.js';
 import { createHash, isValidPassword } from '../../utils/cryptoUtil.js';
+import jwt from "jsonwebtoken";
 
 class UserDao {
     constructor() {}
@@ -37,21 +38,25 @@ class UserDao {
             if (!user || !password) {
                 throw new Error("User and password are required!");
             }
-    
+
             const myUser = await userModel.findOne({ user });
-    
+
             if (!myUser) {
                 throw new Error(`User does not exist!`);
             }
-    
-            const isValid = isValidPassword(myUser, password);
-            
-            if (!isValid) {
-                throw new Error(`Incorrect Password!`);
-            }
 
-            delete myUser.password;
-            return myUser;
+            if (isValidPassword(myUser, password)) {
+                const payload = {
+                    id: myUser._id,
+                    user: myUser.user,
+                    email: myUser.email,
+                    role: myUser.role
+                };
+                const token = jwt.sign(payload, "secretKey", { expiresIn: "1h" });
+                return { token, user: myUser.user };
+            } else {
+                throw new Error("Invalid Password!");
+            }
         } catch (error) {
             throw new Error(error.message);
         }
