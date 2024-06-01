@@ -74,11 +74,4 @@ usersRouter.get('/:uid', passport.authenticate('jwt', {session: false}), isAdmin
     }
 });
 
-usersRouter.get('/github'), passport.authenticate('github', {scope: ['user: user']}, async (_req, _res) => {});
-
-usersRouter.get('/github', passport.authenticate('github', {failureRedirect: '/login'}), async (req, res) => {
-    req.session.user = req.user;
-    res.redirect('/');
-});
-
 export default usersRouter;

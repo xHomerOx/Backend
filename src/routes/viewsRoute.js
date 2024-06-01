@@ -98,4 +98,11 @@ viewsRouter.post("/register", passport.authenticate('register', { failureRedirec
   res.render('loginView', { title: 'Login Form', failLogin: req.session.failLogin ?? false });
 });
 
+viewsRouter.get('/api/sessions/github'), passport.authenticate('github', {scope: ['user: user']}, async (_req, _res) => {});
+
+viewsRouter.get('/api/sessions/github', passport.authenticate('github', {failureRedirect: '/login'}), async (req, res) => {
+    req.session.user = req.user;
+    res.redirect('/');
+});
+
 export default viewsRouter;
