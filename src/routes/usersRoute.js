@@ -36,10 +36,11 @@ usersRouter.post("/login", auth, passport.authenticate('login', {failureRedirect
         const { user, password } = req.body;
         const token = await myUser.loginUser(user, password);
         
-        res.cookie('auth', token, { maxAge: 60*60*1000 }).send({
+        res.cookie('auth', token.token, { maxAge: 60*60*1000 }).send({
             status: 'success',
-            token,
-            user
+            token: token.token,
+            user: token.user,
+            role: token.role
         });
     } catch (error) {
         res.status(400).send({
@@ -51,7 +52,10 @@ usersRouter.post("/login", auth, passport.authenticate('login', {failureRedirect
 
 usersRouter.get('/current', passport.authenticate('jwt', {session: false}), async (req, res) => {
     res.send({
-        user: req.user
+        user: {
+            user: req.user.user,
+            role: req.user.role
+        }
     })
 });
 
@@ -60,7 +64,7 @@ usersRouter.get('/:uid', passport.authenticate('jwt', {session: false}), isAdmin
         const result = await myUser.getUser(req.params.uid);
         res.send({
             status: 'success',
-            payload: result
+            payload: result.payload
         });
     } catch (error) {
         res.status(400).send({

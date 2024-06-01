@@ -24,12 +24,12 @@ class UserRepository {
   }
 
   async getUser(user) {
-      try {
-          const myUser = await this.dao.getUser(user);
-          return new UserDto(myUser);
-      } catch (error) {
-          throw new Error(error.message);
-      }
+    try {
+        const myUser = await this.dao.getUser(user);
+        return myUser;
+    } catch (error) {
+        throw new Error(error.message);
+    }
   }
 }
 

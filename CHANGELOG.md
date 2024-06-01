@@ -2,6 +2,11 @@
 
 Mejorando la arquitectura del servidor.
 
+## 01-06-2024
+- Fixed JWT not working with DTO.
+- Added Payload in result object.
+- Modified Current Path to return user and role only.
+
 ## 31-05-2024
 - Fixed Patterns in Factory and DAOs Patterns.
 - Fixed Update Products was not updating.

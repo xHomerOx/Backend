@@ -33,31 +33,46 @@ class UserDao {
     }
 
     async loginUser(user, password) {
-        if (!user || !password) {
+        if (!user ||!password) {
           throw new Error("Invalid credentials!");
         }
         try {
           const myUser = await userModel.findOne({ user }).lean();
-          
+      
           if (!myUser) throw new Error('Invalid user!');
-
+      
           if (isValidPassword(myUser, password)) {
             const token = jwt.sign(myUser, "secretKey", { expiresIn: "1h" });
-
-            return token;
-          }else{
+      
+            return {
+              status: "success",
+              token,
+              user,
+              role: myUser.role
+            };
+          } else {
             throw new Error("Invalid Password!");
           }
         } catch (error) {
           throw new Error("Login Error!");
         }
-    }
+      }
 
-    async getUser(uid) {
+      async getUser(uid) {
+        if (!uid) {
+            throw new Error("Invalid user ID!");
+        }
+        
         try {
-            return await userModel.findOne({_id: uid}).lean();
+            const user = await userModel.findOne({ _id: uid }).lean();
+            if (!user) throw new Error('User not found!');
+        
+            return {
+                status: 'success',
+                payload: user
+            };
         } catch (error) {
-            throw new Error("User not found!");
+            throw new Error("Error getting user!");
         }
     }
 }
