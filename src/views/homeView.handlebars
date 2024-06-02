@@ -12,7 +12,7 @@
             <small>{{#if isLoggedIn}}Role: {{role}}{{/if}}</small>
             {{#if isLoggedIn}}<div><a href="/logout">Logout</a></div>{{/if}}
             {{#unless isLoggedIn}}<div><a href="/login">Login</a></div> {{/unless}}
-            
+
             {{#if isAdmin}}
                 <form id="addProductForm">
                     <label for="title">Title:</label>
@@ -45,7 +45,7 @@
                     <button type="submit">Add Product</button>
                 </form>  
             {{/if}}
-
+    
             <h2>Page {{page}}</h2>
             
             <div id="product-list" data-cart-id="{{cartId}}">
@@ -73,6 +73,11 @@
                         </li>
                     </ul>
                 {{/each}}
+                {{#if isLoggedIn}}
+                    <div class="d-flex justify-content-center">
+                        <button type="button" id="button" class="btn btn-primary finishPurchase" data-cart-id="{{cartId}}">Finish Purchase</button>
+                    </div>
+                {{/if}}
                 {{#if prevPage}}
                     <a href="{{prevPage}}" id="prevLink">Previous</a>
                 {{/if}}
@@ -83,6 +88,11 @@
             </div>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <script>
+            const user = {
+                role: '{{role}}'
+            };
+        </script>
         <script src="/js/index.js"></script>
     </body>
 </html>

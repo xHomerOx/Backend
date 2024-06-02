@@ -129,4 +129,21 @@ cartsRouter.delete('/:cid', async (req, res) => {
     }
 })
 
+cartsRouter.post('/:cid/purchase', async (req, res) => {
+    try {
+        const results = await myCart.getStockfromProducts(req.params.cid);
+
+        res.send({
+            status: 'success',
+            payload: results
+        });
+    } catch (error) {
+        console.log(error);
+        res.status(400).send({
+            status: 'error',
+            message: error.message
+        });
+    }
+});
+
 export default cartsRouter;

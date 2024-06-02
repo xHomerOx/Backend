@@ -35,7 +35,7 @@ viewsRouter.get('/', auth, async (req, res) => {
     const isLoggedIn = req.user ? true : false;
     const isAdmin = req.user && req.user.role === 'admin' ? true : false;
 
-    const { user, role } = req.user|| {};
+    const { user, role } = req.user || {};
 
     res.render('homeView', { products, page, prevPage, nextPage, cartId, isLoggedIn, isAdmin, user, role });
   } catch (error) {

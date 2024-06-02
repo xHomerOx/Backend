@@ -4,8 +4,12 @@ export const auth = function (req, res, next) {
     if (req.user && req.user.role === 'admin' && req.path !== '/') {
       req.session.user = user;
       req.session.admin = true;
-  
-      return res.redirect("/");
+      
+      res.json({
+        status: 'success',
+        user: user,
+        admin: true
+      });
     } else {
       return next();
     }

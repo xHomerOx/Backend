@@ -77,6 +77,16 @@ class CartRepository {
             throw new Error(`Could not delete products on ${cid}`);
         }
     };
+
+    async getStockfromProducts(cid) {
+        try {
+            const results = await this.dao.getStockfromProducts(cid);
+            return new CartDto(results);
+        } catch (error) {
+            console.log(error);
+            throw new Error(`Could not add products to ${cid}`);
+        }
+    };
 }
 
 export default CartRepository;

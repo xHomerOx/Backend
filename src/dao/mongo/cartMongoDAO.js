@@ -113,6 +113,35 @@ class CartDao {
             throw new Error("Product not found in the cart");
         }
     }
+
+    async getStockfromProducts(cartId) {
+      const cart = await cartModel.findById(cartId);
+    
+      if (!cart) {
+        throw new Error(`Cart ${cartId} not found`);
+      }
+
+      for (const cartProduct of cart.products) {
+          const product = await productModel.findById(cartProduct.product);
+      
+          if (!product) {
+            throw new Error(`Product ${cartProduct.product} not found`);
+          }
+      
+          if (product.stock < cartProduct.quantity) {
+            return `Not enough stock for product ${product.name}`;
+          }
+      
+          product.stock -= cartProduct.quantity;
+          
+          await product.save();
+      }
+    
+      cart.products = [];
+      await cart.save();
+    
+      return "Checkout successfull!";
+    }
 }
 
 export default CartDao;

@@ -23,7 +23,7 @@ usersRouter.post("/register", passport.authenticate('register', {failureRedirect
     }
 });
 
-usersRouter.post("/login", auth, passport.authenticate('login', {failureRedirect: '/failLogin'}), async (req, res) => {
+usersRouter.post("/login", auth, async (req, res) => {
     try {
         const { user, password } = req.body;
         const token = await myUser.loginUser(user, password);

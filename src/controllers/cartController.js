@@ -33,6 +33,10 @@ class CartController {
     async deleteAllProducts(cart) {
         return await cartService.deleteAllProducts(cart);
     };
+
+    async getStockfromProducts(cart) {
+        return await cartService.getStockfromProducts(cart);
+    }
 }
 
 export default CartController;
