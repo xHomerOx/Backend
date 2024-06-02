@@ -11,6 +11,7 @@
             <div>Welcome {{#if isLoggedIn}}{{user}}{{else}}user{{/if}}!!!</div>
             <small>{{#if isLoggedIn}}Role: {{role}}{{/if}}</small>
             {{#if isLoggedIn}}<div><a href="/logout">Logout</a></div>{{/if}}
+            {{#unless isLoggedIn}}<div><a href="/login">Login</a></div> {{/unless}}
             
             {{#if isAdmin}}
                 <form id="addProductForm">

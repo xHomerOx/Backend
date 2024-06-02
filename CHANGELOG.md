@@ -4,6 +4,7 @@ Mejorando la arquitectura del servidor.
 
 ## 02-06-2024
 - Added Ticket Model with Mongoose.
+- Redo email field in passportConfig and homeView.
 
 ## 01-06-2024
 - Fixed JWT not working with DTO.
