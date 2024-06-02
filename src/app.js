@@ -13,6 +13,7 @@ import initializePassport from './config/passportConfig.js';
 import productsRouter from './routes/productsRoute.js';
 import cartsRouter from './routes/cartsRoute.js';
 import dotenv from 'dotenv';
+import messageModel from './models/messageModel.js';
 
 dotenv.config();
 
@@ -66,6 +67,12 @@ let messages = [];
 socketServer.on("connection", socket => {
     socket.on("message", data => {
         messages.push(data);
+        socketServer.emit("messages", messages);
+        const chatLogs = new messageModel({
+            user: data.user,
+            message: data.message
+        });
+        chatLogs.save().then(() => console.log('Messages saved'));
     });
 });
 

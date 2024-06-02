@@ -19,6 +19,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
                 if (response.ok) {
                     console.log(`Product ${productId} added successfully to ${cartId}`);
+                    Swal.fire({
+                        title: 'Product Added',
+                        text: 'The product has been added to your cart',
+                        icon: 'success',
+                        confirmButtonText: 'OK'
+                    });
                 }
             } catch (error) {
                 console.error(error);
@@ -43,8 +49,20 @@ document.addEventListener("DOMContentLoaded", () => {
             });
 
             if (response.ok) {
+                Swal.fire({
+                    title: 'Product Added',
+                    text: 'The product has been added successfully',
+                    icon: 'success',
+                    confirmButtonText: 'OK'
+                });
                 console.log("Product added successfully");
             } else {
+                Swal.fire({
+                    title: 'Error',
+                    text: 'There was an error adding the product',
+                    icon: 'error',
+                    confirmButtonText: 'OK'
+                });
                 console.error("Error adding product");
             }
         } catch (error) {
@@ -65,8 +83,20 @@ document.addEventListener("DOMContentLoaded", () => {
 
                 if (response.ok) {
                     event.target.parentElement.remove();
+                    Swal.fire({
+                        title: 'Product Deleted',
+                        text: 'The product has been deleted successfully',
+                        icon: 'success',
+                        confirmButtonText: 'OK'
+                    });
                     console.log("Product deleted successfully");
                 } else {
+                    Swal.fire({
+                        title: 'Error',
+                        text: 'There was an error deleting the product',
+                        icon: 'error',
+                        confirmButtonText: 'OK'
+                    });
                     console.error("Error deleting product");
                 }
             } catch (error) {
@@ -129,7 +159,7 @@ document.addEventListener("DOMContentLoaded", () => {
                         const stock = formData.get('stock');
                         const status = formData.get('status') === 'true';
                         const category = formData.get('category');
-            
+                    
                         try {
                             const response = await fetch(`/api/products/${productId}`, {
                                 method: "PUT",
@@ -147,19 +177,27 @@ document.addEventListener("DOMContentLoaded", () => {
                                     category
                                 })
                             });
-
-                            console.log(response)
-            
+                    
                             if (response.ok) {
                                 console.log("Product updated successfully");
+                                Swal.fire({
+                                    title: 'Product Updated',
+                                    text: 'The product has been updated successfully',
+                                    icon: 'success',
+                                    confirmButtonText: 'OK'
+                                });
                             } else {
                                 console.error("Error updating product");
+                                Swal.fire({
+                                    title: 'Error',
+                                    text: 'There was an error updating the product',
+                                    icon: 'error',
+                                    confirmButtonText: 'OK'
+                                });
                             }
                         } catch (error) {
                             console.error(error);
                         }
-            
-                        Swal.close();
                     });
                 }
             });

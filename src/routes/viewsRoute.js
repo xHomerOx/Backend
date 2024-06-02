@@ -4,6 +4,7 @@ import productModel from '../models/productModel.js';
 import { cartModel } from '../models/cartModel.js';
 import passport from 'passport';
 import { auth } from '../middlewares/auth.js';
+import { isLoggedIn } from '../middlewares/guard.js';
 
 const viewsRouter = Router();
 
@@ -106,6 +107,18 @@ viewsRouter.get('/api/sessions/github'), passport.authenticate('github', {scope:
 viewsRouter.get('/api/sessions/github', passport.authenticate('github', {failureRedirect: '/login'}), async (req, res) => {
     req.session.user = req.user;
     res.redirect('/');
+});
+
+viewsRouter.get('/chatbox', isLoggedIn, async (req, res) => {
+  try {
+    const user = req.user;
+    res.render('chatView', { title: 'ChatView', user: user.user });
+  } catch (error) {
+    res.status(400).send({
+      status: 'error',
+      message: error.message
+    });
+  }
 });
 
 export default viewsRouter;

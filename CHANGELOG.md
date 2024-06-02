@@ -10,6 +10,8 @@ Mejorando la arquitectura del servidor.
 - Added Update Product Button and Swal2.
 - Added Admin Guard for POST, PUT and DELETE Operations.
 - Added Admin and User Privileges for HBS.
+- Added Swal to display Messages.
+- Added ChatBox.
 
 ## 31-05-2024
 - Fixed Patterns in Factory and DAOs Patterns.

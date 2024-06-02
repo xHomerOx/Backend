@@ -9,4 +9,4 @@ export const auth = function (req, res, next) {
     } else {
       return next();
     }
-  }
+}
