@@ -8,6 +8,7 @@ Mejorando la arquitectura del servidor.
 - Added Ticket Logic in cartDAO.
 - Removed Middleware from login to make POSTMAN test return a JSON.
 - Added Logic in index.js to check if is admin or user.
+- Fixed missing Cart Ref in User Schema.
 
 ## 01-06-2024
 - Fixed JWT not working with DTO.

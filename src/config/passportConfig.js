@@ -5,6 +5,7 @@ import userModel from '../models/userModel.js';
 import { createHash, isValidPassword } from '../utils/cryptoUtil.js';
 import dotenv from 'dotenv';
 import jwt, { ExtractJwt } from 'passport-jwt';
+import { cartModel } from '../models/cartModel.js';
 
 dotenv.config();
 
@@ -32,7 +33,11 @@ const initializePassport = () => {
                     }
 
                     let result = await userModel.create(newUser);
+                    const cart = await cartModel.create({});
+                    result.cart = cart._id;
                     
+                    await result.save();
+
                     return done(null, result);
                 }else{
                     return done(null, false);
