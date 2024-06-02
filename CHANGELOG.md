@@ -2,6 +2,9 @@
 
 Mejorando la arquitectura del servidor.
 
+## 02-06-2024
+- Added Ticket Model with Mongoose.
+
 ## 01-06-2024
 - Fixed JWT not working with DTO.
 - Added Payload in result object.
