@@ -2,6 +2,10 @@
 
 Mejorando la arquitectura del servidor.
 
+## 03-06-2024
+- Prevented Cart to keep products after logged in.
+- Fixed the bug where the user couldn't add products to cart after login.
+
 ## 02-06-2024
 - Added Ticket Model with Mongoose.
 - Redo email field in passportConfig and homeView.

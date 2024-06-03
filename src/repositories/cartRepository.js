@@ -83,7 +83,6 @@ class CartRepository {
             const results = await this.dao.getStockfromProducts(cid);
             return new CartDto(results);
         } catch (error) {
-            console.log(error);
             throw new Error(`Could not add products to ${cid}`);
         }
     };

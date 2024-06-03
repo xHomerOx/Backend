@@ -128,11 +128,9 @@ class CartDao {
             throw new Error(`Product ${cartProduct.product} not found`);
           }
       
-          if (product.stock < cartProduct.quantity) {
-            return `Not enough stock for product ${product.name}`;
+          if (product.stock > cartProduct.quantity) {
+            product.stock -= cartProduct.quantity;
           }
-      
-          product.stock -= cartProduct.quantity;
           
           await product.save();
       }

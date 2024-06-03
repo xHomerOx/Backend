@@ -55,7 +55,7 @@ const initializePassport = () => {
         }, async (_req, username, password, done) => {
             try {
                 let myUser = await userModel.findOne({ user: username });
-                
+
                 if (!myUser) {
                     return done(null, false);
                 }
@@ -63,6 +63,14 @@ const initializePassport = () => {
                 const isValid = isValidPassword(myUser, password);
 
                 if (isValid) {
+
+                    const cart = await cartModel.findOne({ _id: myUser.cart });
+
+                    if (cart) {
+                        cart.products = [];
+                        await cart.save();
+                    }
+
                     return done(null, myUser);
                 } else {
                     return done(null, false);
