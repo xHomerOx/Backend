@@ -150,17 +150,17 @@ cartsRouter.get('/:cid/purchase', async (req, res) => {
     try {
         const purchaser = req.user.email;
         const cart = await myCart.getProductsFromCart(req.params.cid);
-
+        
         let amount = 0;
         for (const cartProduct of cart.products) {
             amount += cartProduct.product.price * cartProduct.quantity;
         }
         
         const ticket = await myTicket.createTicket(purchaser, amount, cart.id);
-        const { notProcessed } = await myCart.getStockfromProducts(req.params.cid);
+        const notProcessed = await myCart.getStockfromProducts(req.params.cid);
         console.log(notProcessed);
 
-        res.render('ticketView', { title: 'Ticket', ticket: ticket, notProcessed });
+        res.render('ticketView', { title: 'Ticket', ticket: ticket, notProcessed: notProcessed });
 
         myCart.clearCart(cart);
     } catch (error) {

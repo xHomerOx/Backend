@@ -149,7 +149,6 @@ class CartDao {
       }
       
       await cart.save();
-    
       return { notProcessed };
     }
 
