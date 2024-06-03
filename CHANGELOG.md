@@ -7,6 +7,9 @@ Mejorando la arquitectura del servidor.
 - Fixed the bug where the user couldn't add products to cart after login.
 - Added Ticket Model, DAO, DTO, etc.
 - Created GET Endpoint to display results.
+- Added ClearCart Function.
+- Added Amount calculator.
+- Fixed not clearcart after HBS Template.
 
 ## 02-06-2024
 - Added Ticket Model with Mongoose.

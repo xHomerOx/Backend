@@ -17,12 +17,22 @@ class CartDao {
     }
 
     async getProductsFromCart(cartId) {
-        const cart = await cartModel.findById(cartId);
-
+        const cart = await cartModel.findById(cartId).populate({
+          path: 'products.product',
+          select: 'price stock'
+        });
+        
         if (!cart) {
           throw new Error(`Cart ${cartId} not found.`);
         }
-        return cart.products;
+        
+        return {
+          id: cart._id,
+          products: cart.products.map((cartProduct) => ({
+            product: cartProduct.product,
+            quantity: cartProduct.quantity,
+          })),
+        };
     }
 
     async addCart() {
@@ -116,7 +126,7 @@ class CartDao {
 
     async getStockfromProducts(cartId) {
       const cart = await cartModel.findById(cartId);
-    
+
       if (!cart) {
         throw new Error(`Cart ${cartId} not found`);
       }
@@ -134,12 +144,15 @@ class CartDao {
           
           await product.save();
       }
-    
-      cart.products = [];
+      
       await cart.save();
     
       return "Checkout successfull!";
     }
+
+    async clearCart (cart) {
+      await cartModel.findByIdAndUpdate(cart.id, { products: [] });
+    };
 }
 
 export default CartDao;

@@ -17,7 +17,7 @@ class CartRepository {
     async getProductsFromCart(cid) {
         try {
             const products = await this.dao.getProductsFromCart(cid);
-            return new CartDto(products);
+            return products;
         } catch (error) {
             throw new Error(`Products not found in ${cid}`);
         }
@@ -84,6 +84,16 @@ class CartRepository {
             return new CartDto(results);
         } catch (error) {
             throw new Error(`Could not add products to ${cid}`);
+        }
+    };
+
+    async clearCart(cart) {
+        try {
+            const results = await this.dao.clearCart(cart);
+            return results;
+        } catch (error) {
+            console.log(error);
+            throw new Error(`Could not clear cart`);
         }
     };
 }

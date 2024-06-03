@@ -14,7 +14,7 @@ class TicketDao {
 
     async createTicket(purchaser, amount, cart) {
         const myCart = await cartModel.findById(cart);
-
+        
         if (!myCart) {
             throw new Error(`Cart ${cart} not found`);
         }
@@ -31,6 +31,7 @@ class TicketDao {
         });
       
         await ticket.save();
+
         return ticket;
     }
 }

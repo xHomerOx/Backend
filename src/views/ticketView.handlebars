@@ -1,0 +1,17 @@
+{{title}}
+
+<h2>Ticket Information</h2>
+
+<p>Purchaser: {{ticket.purchaser}}</p>
+<p>Amount: {{ticket.amount}}</p>
+<p>Purchase Date: {{ticket.purchase_datetime}}</p>
+<p>Ticket Code: {{ticket.code}}</p>
+
+<h3>Products:</h3>
+<ul>
+  {{#ticket.products}}
+  <li>
+    {{product.name}} ({{quantity}} x ${{product.price}})
+  </li>
+  {{/ticket.products}}
+</ul>

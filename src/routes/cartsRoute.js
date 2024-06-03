@@ -52,7 +52,6 @@ cartsRouter.post('/:cid/products/:pid', async (req, res) => {
             payload: results
         });
     } catch (error) {
-        console.log(error);
         res.status(400).send({
             status: 'error',
             message: error.message
@@ -147,19 +146,21 @@ cartsRouter.post('/:cid/purchase', async (req, res) => {
     }
 });
 
-cartsRouter.get('/:cid/purchase',  async (req, res) => {
+cartsRouter.get('/:cid/purchase', async (req, res) => {
     try {
         const purchaser = req.user.email;
-        const amount = 1;
-        const cart = req.params.cid;
+        const cart = await myCart.getProductsFromCart(req.params.cid);
 
-        const ticket = await myTicket.createTicket(purchaser, amount, cart);
-        console.log(ticket);
+        let amount = 0;
+        for (const cartProduct of cart.products) {
+            amount += cartProduct.product.price * cartProduct.quantity;
+        }
+        
+        const ticket = await myTicket.createTicket(purchaser, amount, cart.id);
 
-        res.send({
-            status: 'success',
-            payload: ticket
-        });
+        res.render('ticketView', { title: 'Ticket', ticket: ticket });
+
+        myCart.clearCart(cart);
     } catch (error) {
         res.status(400).send({
             status: 'error',
