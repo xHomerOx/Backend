@@ -9,6 +9,7 @@ Mejorando la arquitectura del servidor.
 - Removed Middleware from login to make POSTMAN test return a JSON.
 - Added Logic in index.js to check if is admin or user.
 - Fixed missing Cart Ref in User Schema.
+- Added BS5 Flexbox.
 
 ## 01-06-2024
 - Fixed JWT not working with DTO.
