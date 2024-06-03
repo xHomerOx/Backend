@@ -142,7 +142,7 @@ class CartDao {
           if (product.stock > cartProduct.quantity) {
             product.stock -= cartProduct.quantity;
           }else{
-            notProcessed.push(product.title);
+            notProcessed.push(product.id + ', ');
           }
 
           await product.save();

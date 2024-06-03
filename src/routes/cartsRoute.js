@@ -158,7 +158,6 @@ cartsRouter.get('/:cid/purchase', async (req, res) => {
         
         const ticket = await myTicket.createTicket(purchaser, amount, cart.id);
         const notProcessed = await myCart.getStockfromProducts(req.params.cid);
-        console.log(notProcessed);
 
         res.render('ticketView', { title: 'Ticket', ticket: ticket, notProcessed: notProcessed });
 
