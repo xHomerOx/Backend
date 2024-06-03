@@ -5,6 +5,8 @@ Mejorando la arquitectura del servidor.
 ## 03-06-2024
 - Prevented Cart to keep products after logged in.
 - Fixed the bug where the user couldn't add products to cart after login.
+- Added Ticket Model, DAO, DTO, etc.
+- Created GET Endpoint to display results.
 
 ## 02-06-2024
 - Added Ticket Model with Mongoose.

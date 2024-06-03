@@ -46,12 +46,7 @@ document.addEventListener("DOMContentLoaded", () => {
             });
 
             if (response.ok) {
-                Swal.fire({
-                    title: 'Purchase completed',
-                    text: 'Purchase completed',
-                    icon: 'success',
-                    confirmButtonText: 'OK'
-                });
+                window.location.href = `/api/carts/${cartId}/purchase`;
                 console.log('Purchase completed');
             } else {
                 console.error('Error occurred while completing purchase');

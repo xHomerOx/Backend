@@ -1,9 +1,11 @@
 import { Router } from "express";
 import CartController from "../controllers/cartController.js";
-import { cartService } from "../repositories/index.js";
+import { cartService, ticketService } from "../repositories/index.js";
+import TicketController from "../controllers/ticketController.js";
 
 const cartsRouter = Router();
 const myCart = new CartController(cartService);
+const myTicket = new TicketController(ticketService);
 
 cartsRouter.get('/', async (_req, res) => {
     const carts = await myCart.getCarts();
@@ -138,12 +140,33 @@ cartsRouter.post('/:cid/purchase', async (req, res) => {
             payload: results
         });
     } catch (error) {
-        console.log(error);
         res.status(400).send({
             status: 'error',
             message: error.message
         });
     }
 });
+
+cartsRouter.get('/:cid/purchase',  async (req, res) => {
+    try {
+        const purchaser = req.user.email;
+        const amount = 1;
+        const cart = req.params.cid;
+
+        const ticket = await myTicket.createTicket(purchaser, amount, cart);
+        console.log(ticket);
+
+        res.send({
+            status: 'success',
+            payload: ticket
+        });
+    } catch (error) {
+        res.status(400).send({
+            status: 'error',
+            message: error.message
+        });
+    }
+});
+
 
 export default cartsRouter;
