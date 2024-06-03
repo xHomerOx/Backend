@@ -48,7 +48,7 @@
     
             <h2>Page {{page}}</h2>
             
-            <div id="product-list" data-cart-id="{{cartId}}" class="row">
+            <div id="product-list" data-cart-id="{{cartId}}" class="row d-flex">
                 {{#each products}}
                     <div class="col-3 border">
                         <ul>
@@ -76,17 +76,19 @@
                     </div>
                 {{/each}}
                 {{#if isLoggedIn}}
-                    <div class="d-flex justify-content-center">
+                    <div class="d-flex justify-content-center my-5">
                         <button type="button" id="button" class="btn btn-primary finishPurchase" data-product-id="{{productId}}" data-cart-id="{{cartId}}">Finish Purchase</button>
                     </div>
                 {{/if}}
+                
+                <div class="d-flex justify-content-center">
                 {{#if prevPage}}
-                    <a href="{{prevPage}}" id="prevLink">Previous</a>
+                    <a href="{{prevPage}}" id="prevLink" class="btn btn-primary" role="button">Previous</a>
                 {{/if}}
-
                 {{#if nextPage}}
-                    <a href="{{nextPage}}" id="nextLink">Next</a>
+                    <a href="{{nextPage}}" id="nextLink" class="btn btn-primary" role="button">Next</a>
                 {{/if}}
+                </div>
             </div>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
