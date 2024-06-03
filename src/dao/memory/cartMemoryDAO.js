@@ -101,6 +101,31 @@ class CartDao {
             throw new Error("Product not found in the cart");
         }
     }
+
+    async getStockfromProducts(cartId) {
+      const cart = memoryDAO.carts[cartId];
+    
+      if (!cart) {
+        throw new Error(`Cart ${cartId} not found`);
+      }
+    
+      for (const cartProduct of cart.products) {
+        const product = memoryDAO.products[cartProduct.product];
+    
+        if (!product) {
+          throw new Error(`Product ${cartProduct.product} not found`);
+        }
+    
+        if (product.stock > cartProduct.quantity) {
+          product.stock -= cartProduct.quantity;
+        }
+      }
+    
+      cart.products = [];
+      memoryDAO.carts[cartId] = cart;
+    
+      return "Checkout successful!";
+    }
 }
 
 export default CartDao;
