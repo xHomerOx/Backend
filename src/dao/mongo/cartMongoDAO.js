@@ -126,6 +126,7 @@ class CartDao {
 
     async getStockfromProducts(cartId) {
       const cart = await cartModel.findById(cartId);
+      const notProcessed = [];
 
       if (!cart) {
         throw new Error(`Cart ${cartId} not found`);
@@ -140,14 +141,16 @@ class CartDao {
       
           if (product.stock > cartProduct.quantity) {
             product.stock -= cartProduct.quantity;
+          }else{
+            notProcessed.push(product.title);
           }
-          
+
           await product.save();
       }
       
       await cart.save();
     
-      return "Checkout successfull!";
+      return { notProcessed };
     }
 
     async clearCart (cart) {
