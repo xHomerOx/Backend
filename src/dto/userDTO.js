@@ -4,7 +4,7 @@ class UserDto {
       this.user = user.user;
       this.email = user.email;
       this.role = role;
-      this.cart = cart;
+      this.cart = user.cart;
     }
 }
 

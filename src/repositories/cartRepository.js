@@ -32,9 +32,9 @@ class CartRepository {
         }
     };
     
-    async addProduct(cart, product) {
+    async addProduct(cart, product, user) {
         try {
-            const newProduct = this.dao.addProduct(cart, product);
+            const newProduct = this.dao.addProduct(cart, product, user);
             return new CartDto(newProduct);
         } catch (error) {
             throw new Error(`Could not add Product to Cart`);

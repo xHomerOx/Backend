@@ -11,8 +11,8 @@ const viewsRouter = Router();
 viewsRouter.get('/', auth, async (req, res) => {
   try {
 
-    const myCart = await cartModel.findOne();
-    const cartId = myCart ? myCart._id : null;
+    const { _id, user, role, cart } = req.user || {};
+    const cartId = cart ? cart._id : null;
 
     const limit = parseInt(req.query.limit) || 10;
     const page = parseInt(req.query.page) || 1;
@@ -34,8 +34,6 @@ viewsRouter.get('/', auth, async (req, res) => {
 
     const isLoggedIn = req.user ? true : false;
     const isAdmin = req.user && req.user.role === 'admin' ? true : false;
-
-    const { user, role } = req.user || {};
 
     res.render('homeView', { products, page, prevPage, nextPage, cartId, isLoggedIn, isAdmin, user, role });
   } catch (error) {

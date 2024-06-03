@@ -14,8 +14,8 @@ class CartController {
         return await cartService.addCart();
     }
 
-    async addProduct(cart, product) {
-        return await cartService.addProduct(cart, product);
+    async addProduct(cart, product, user) {
+        return await cartService.addProduct(cart, product, user);
     }
 
     async deleteProduct(cart, product) {
