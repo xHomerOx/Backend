@@ -86,16 +86,6 @@ class CartRepository {
             throw new Error(`Could not add products to ${cid}`);
         }
     };
-
-    async clearCart(cart) {
-        try {
-            const results = await this.dao.clearCart(cart);
-            return results;
-        } catch (error) {
-            console.log(error);
-            throw new Error(`Could not clear cart`);
-        }
-    };
 }
 
 export default CartRepository;

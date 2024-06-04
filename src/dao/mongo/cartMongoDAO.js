@@ -147,14 +147,12 @@ class CartDao {
 
           await product.save();
       }
-      
+
+      cart.products = cart.products.filter(cartProduct => notProcessed.includes(cartProduct.product));
       await cart.save();
+
       return { notProcessed };
     }
-
-    async clearCart (cart) {
-      await cartModel.findByIdAndUpdate(cart.id, { products: [] });
-    };
 }
 
 export default CartDao;

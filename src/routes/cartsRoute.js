@@ -132,7 +132,7 @@ cartsRouter.delete('/:cid', async (req, res) => {
 
 cartsRouter.post('/:cid/purchase', async (req, res) => {
     try {
-        const results = await myCart.getStockfromProducts(req.params.cid);
+        const results = req.params.cid;
 
         res.send({
             status: 'success',
@@ -159,9 +159,9 @@ cartsRouter.get('/:cid/purchase', async (req, res) => {
         const ticket = await myTicket.createTicket(purchaser, amount, cart.id);
         const notProcessed = await myCart.getStockfromProducts(req.params.cid);
 
-        res.render('ticketView', { title: 'Ticket', ticket: ticket, notProcessed: notProcessed });
+        req.params.cid = ticket;
 
-        myCart.clearCart(cart);
+        res.render('ticketView', { title: 'Ticket', ticket: ticket, notProcessed: notProcessed });
     } catch (error) {
         res.status(400).send({
             status: 'error',
@@ -169,6 +169,5 @@ cartsRouter.get('/:cid/purchase', async (req, res) => {
         });
     }
 });
-
 
 export default cartsRouter;
