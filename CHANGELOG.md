@@ -51,10 +51,6 @@ Mejorando la arquitectura del servidor.
 
 ----------------------------------------------------------------------------------------
 
-# Segunda Pre-entrega Proyecto Final
-
-Desarrollar el servidor basado en Node.JS y express, que escuche en el puerto 8080 y disponga de dos grupos de rutas: /products y /carts. Dichos endpoints estarán implementados con el router de express.
-
 ## 16-04-2024
 - Changed Product ID by Product Product ID.
 - Added Products View.
