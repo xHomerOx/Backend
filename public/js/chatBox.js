@@ -38,5 +38,4 @@ async function startChat() {
     });
 }
 
-// Llamar a la función startChat una vez que se haya inicializado el nombre de usuario
 startChat();
