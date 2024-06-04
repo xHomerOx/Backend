@@ -132,23 +132,26 @@ class CartDao {
         throw new Error(`Cart ${cartId} not found`);
       }
 
+      const removedProducts = [];
+
       for (const cartProduct of cart.products) {
           const product = await productModel.findById(cartProduct.product);
       
           if (!product) {
             throw new Error(`Product ${cartProduct.product} not found`);
           }
-      
-          if (product.stock > cartProduct.quantity) {
+          
+          if (product.stock >= cartProduct.quantity) {
             product.stock -= cartProduct.quantity;
           }else{
             notProcessed.push(product.id + ', ');
+            removedProducts.push(cartProduct);
           }
 
           await product.save();
       }
 
-      cart.products = cart.products.filter(cartProduct => notProcessed.includes(cartProduct.product));
+      cart.products = cart.products.filter(product => removedProducts.includes(product));
       await cart.save();
 
       return { notProcessed };
