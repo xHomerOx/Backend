@@ -103,29 +103,34 @@ class CartDao {
     }
 
     async getStockfromProducts(cartId) {
-      const cart = memoryDAO.carts[cartId];
-    
+      const cart = this.carts.find(cart => cart.id === cartId);
+      const notProcessed = [];
+  
       if (!cart) {
         throw new Error(`Cart ${cartId} not found`);
       }
-    
+  
+      const removedProducts = [];
+  
       for (const cartProduct of cart.products) {
-        const product = memoryDAO.products[cartProduct.product];
-    
+        const product = this.products.find(product => product.id === cartProduct.product);
+  
         if (!product) {
           throw new Error(`Product ${cartProduct.product} not found`);
         }
-    
-        if (product.stock > cartProduct.quantity) {
+  
+        if (product.stock >= cartProduct.quantity) {
           product.stock -= cartProduct.quantity;
+        } else {
+          notProcessed.push(product.id + ', ');
+          removedProducts.push(cartProduct);
         }
       }
-    
-      cart.products = [];
-      memoryDAO.carts[cartId] = cart;
-    
-      return "Checkout successful!";
-    }
+  
+      cart.products = cart.products.filter(product =>!removedProducts.includes(product));
+  
+      return { notProcessed };
+    }  
 }
 
 export default CartDao;

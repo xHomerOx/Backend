@@ -10,6 +10,7 @@ Mejorando la arquitectura del servidor.
 - Added ClearCart Function.
 - Added Amount calculator.
 - Fixed not clearcart after HBS Template.
+- Dismissed clearCart and used a filter to save only discarded products.
 
 ## 02-06-2024
 - Added Ticket Model with Mongoose.
