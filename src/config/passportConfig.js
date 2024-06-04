@@ -97,6 +97,11 @@ const initializePassport = () => {
                     }
 
                     let result = await userModel.create(newUser);
+                    const cart = await cartModel.create({});
+                    result.cart = cart._id;
+                    
+                    await result.save();
+                    
                     done(null, result);
                 } else {
                     done(null, myUser);
