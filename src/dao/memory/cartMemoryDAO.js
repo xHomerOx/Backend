@@ -5,7 +5,7 @@ class CartDao {
 
     static getInstance() {
         if (!CartDao.instance) {
-          CartDao.instance = new CartDAO();
+          CartDao.instance = new CartDao();
         }
         return CartDao.instance;
     }
