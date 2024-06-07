@@ -119,4 +119,8 @@ viewsRouter.get('/chatbox', isLoggedIn, async (req, res) => {
   }
 });
 
+viewsRouter.get("/mockingproducts", (req, res) => {
+  res.render('mockingView', { title: 'Mocking Products', failLogin: req.session.failLogin ?? false });
+});
+
 export default viewsRouter;
