@@ -5,6 +5,7 @@ import { cartModel } from '../models/cartModel.js';
 import passport from 'passport';
 import { auth } from '../middlewares/auth.js';
 import { isLoggedIn } from '../middlewares/guard.js';
+import { generateProducts } from "../utils/mockUtil.js";
 
 const viewsRouter = Router();
 
@@ -119,8 +120,12 @@ viewsRouter.get('/chatbox', isLoggedIn, async (req, res) => {
   }
 });
 
-viewsRouter.get("/mockingproducts", (req, res) => {
-  res.render('mockingView', { title: 'Mocking Products', failLogin: req.session.failLogin ?? false });
+viewsRouter.get("/mockingproducts", (_req, res) => {
+  let products = [];
+  for (let i = 0; i < 100; i++) {
+    products.push(generateProducts());
+  }
+  res.render('mockingView', { title: 'Mocking Products', products });
 });
 
 export default viewsRouter;
