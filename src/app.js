@@ -14,6 +14,8 @@ import productsRouter from './routes/productsRoute.js';
 import cartsRouter from './routes/cartsRoute.js';
 import dotenv from 'dotenv';
 import messageModel from './models/messageModel.js';
+import compression from 'express-compression';
+import errors from './middlewares/errors/index.js';
 
 dotenv.config();
 
@@ -30,6 +32,8 @@ app.set('views', path.join(__dirname, '../views'));
 app.use(express.static(path.join(__dirname, '../../public')));
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
+app.use(compression());
+app.use(errors);
 
 app.use(session({
     store: mongoStore.create(

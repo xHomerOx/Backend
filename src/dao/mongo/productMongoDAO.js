@@ -1,4 +1,7 @@
 import productModel from "../../models/productModel.js";
+import CustomError from "../../services/errors/CustomError.js";
+import EErrors from "../../services/errors/enums.js";
+import { generateProductsErrorInfo } from "../../services/errors/info.js";
 
 class ProductDao {
     constructor() {}
@@ -28,10 +31,20 @@ class ProductDao {
         const existingProduct = await productModel.findOne({ code });
 
         if (existingProduct) {
-            throw new Error('Code could not be the same as existent one!');
+            CustomError.createError({
+                name: "Product creation error.",
+                cause: generateProductsErrorInfo({code}),
+                message: "Couldn't add Product",
+                code: EErrors.INVALID_TYPE_ERROR
+            })
         }
         if (!title || !description || !code || !price || !stock || !category) {
-            throw new Error('Product could not be created!');
+            CustomError.createError({
+                name: "Product creation error.",
+                cause: generateProductsErrorInfo({code}),
+                message: "Couldn't add Product",
+                code: EErrors.INVALID_TYPE_ERROR
+            })
         }
         
         try {
@@ -39,7 +52,12 @@ class ProductDao {
 
             return result;
         } catch (error) {
-            throw new Error('Product could not be added!');
+            CustomError.createError({
+                name: "Product creation error.",
+                cause: generateProductsErrorInfo({code}),
+                message: "Couldn't add Product",
+                code: EErrors.DATABASE_ERROR
+            })
         }
     }
 
@@ -48,14 +66,26 @@ class ProductDao {
             const result = await productModel.updateOne({_id: pid}, productUpdate);
             return result;
         } catch(error) {
-            throw new Error('Error updating Product!');
+            CustomError.createError({
+                name: "Product creation error.",
+                cause: generateProductsErrorInfo({code}),
+                message: "Couldn't add Product",
+                code: EErrors.DATABASE_ERROR
+            })
         }
     }
 
     async deleteProduct(pid) {
         const result = await productModel.deleteOne({_id: pid});
 
-        if (result.deletedCount === 0) throw new Error(`Product with ID ${pid} does not exist!`);
+        if (result.deletedCount === 0) {
+            CustomError.createError({
+                name: "Product creation error.",
+                cause: generateProductsErrorInfo({code}),
+                message: "Couldn't delete Product",
+                code: EErrors.DATABASE_ERROR
+            })
+        }
 
         return result;
     }
