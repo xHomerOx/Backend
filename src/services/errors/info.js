@@ -10,3 +10,7 @@ export const generateProductsErrorInfo = (product) => {
     * category: needs to be a String, received ${product.category}
     * thumbnail: must end with .jpg, received ${product.thumbnail}`
 }
+
+export const updateorDeleteProductsErrorInfo = (product) => {
+    return `* id: not found, received ${product}`
+}

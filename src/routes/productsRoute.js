@@ -34,7 +34,12 @@ productsRouter.post("/", uploader.array('thumbnail', 3), isAdmin, async (req, re
         const products = await myProduct.addProducts(req.body);
         res.send({ status: 'success', payload: products });
     } catch (error) {
-        res.status(400).send({ status: 'error', message: error.message });
+        res.status(400).send({
+          status: 'error',
+          message: error.message,
+          cause: error.cause,
+          code: error.code
+        });
     }
 });
 
@@ -63,8 +68,13 @@ productsRouter.put("/:pid", uploader.array('thumbnail', 3), isAdmin, async (req,
     
         return res.status(200).send({ message: "Product updated successfully" });
     } catch (error) {
-        res.status(500).send({ message: 'Could not update product', error: error.message });
-    }
+        res.status(400).send({
+          status: 'error',
+          message: error.message,
+          cause: error.cause,
+          code: error.code
+        });
+      }
   });
 
  productsRouter.delete("/:pid", isAdmin, async (req, res) => {
@@ -81,8 +91,13 @@ productsRouter.put("/:pid", uploader.array('thumbnail', 3), isAdmin, async (req,
         
         return res.status(200).send({ message: "Product deleted successfully" });
     } catch (error) {
-        res.status(500).send('Could not delete product');
-    }    
+        res.status(400).send({
+          status: 'error',
+          message: error.message,
+          cause: error.cause,
+          code: error.code
+        });
+      } 
 });
 
 export default productsRouter;

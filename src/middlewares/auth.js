@@ -1,16 +1,18 @@
-export const auth = function (req, res, next) {
-  const { user } = req.body;
+import passport from "passport";
 
-  if (req.user && req.user.role === 'admin' && req.path !== '/') {
-    req.session.user = user;
-    req.session.admin = true;
-    
-    res.json({
-      status: 'success',
-      user: user,
-      admin: true
-    });
-  } else {
-    return next();
-  }
+export const auth = function (req, res, next) {
+  passport.authenticate('jwt', { session: true }, (err, user) => {
+
+    if (err) {
+      return next(err);
+    }
+
+    if (!user) {
+      return next();
+    }
+
+    req.user = user;
+
+    next();
+  })(req, res, next);
 }
