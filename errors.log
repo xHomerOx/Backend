@@ -44,3 +44,52 @@ http: GET in /login - 03:28:08
 http: POST in /login - 03:28:12
 http: GET in / - 03:28:12
 {"level":"info","message":"Server Started at 03:28:58"}
+info: Server Started at 03:40:30
+http: GET in /loggertesrt - 03:40:41
+http: GET in /loggertest - 03:40:44
+fatal: Logger test fatal message
+info: Server Started at 03:52:42
+http: GET in /loggertest - 03:52:51
+fatal: Logger test fatal message
+error: Logger test error message
+warning: Logger test warning message
+info: Logger test info message
+http: Logger test http message
+debug: Logger test debug message
+http: GET in /loggertest - 03:53:21
+fatal: Logger test fatal message
+error: Logger test error message
+warning: Logger test warning message
+info: Logger test info message
+http: Logger test http message
+debug: Logger test debug message
+info: Server Started at 03:53:29
+http: GET in /loggertest - 03:53:35
+fatal: Logger test fatal message
+error: Logger test error message
+warning: Logger test warning message
+info: Logger test info message
+http: Logger test http message
+debug: Logger test debug message
+http: GET in /loggertest - 03:54:48
+fatal: Logger test fatal message
+error: Logger test error message
+warning: Logger test warning message
+info: Logger test info message
+http: Logger test http message
+debug: Logger test debug message
+info: Server Started at 03:54:53
+http: GET in /loggertest - 03:54:54
+fatal: Logger test fatal message
+error: Logger test error message
+warning: Logger test warning message
+info: Logger test info message
+http: Logger test http message
+debug: Logger test debug message
+http: GET in /loggertest - 03:54:54
+fatal: Logger test fatal message
+error: Logger test error message
+warning: Logger test warning message
+info: Logger test info message
+http: Logger test http message
+debug: Logger test debug message
