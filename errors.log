@@ -29,21 +29,13 @@ info: Server Started at 02:25:20
 info: Server Started at 02:27:00
 info: Server Started at 03:04:06
 info: Server Started at 03:05:13
-info: Server Started at 03:06:12
-{"level":"info","message":"Server Started at 03:14:04"}
 info: Server Started at 03:19:39
-{"level":"info","message":"Server Started at 03:23:07"}
-{"level":"info","message":"Server Started at 03:24:04"}
 info: Server Started at 03:27:16
-{"level":"info","message":"Server Started at 03:27:23"}
-{"level":"info","message":"Server Started at 03:27:39"}
-{"level":"info","message":"Server Started at 03:27:44"}
 info: Server Started at 03:28:02
 http: GET in / - 03:28:06
 http: GET in /login - 03:28:08
 http: POST in /login - 03:28:12
 http: GET in / - 03:28:12
-{"level":"info","message":"Server Started at 03:28:58"}
 info: Server Started at 03:40:30
 http: GET in /loggertesrt - 03:40:41
 http: GET in /loggertest - 03:40:44
@@ -93,3 +85,8 @@ warning: Logger test warning message
 info: Logger test info message
 http: Logger test http message
 debug: Logger test debug message
+info: Server Started at 03:56:09
+fatal: Logger test fatal message
+error: Logger test error message
+warning: Logger test warning message
+info: Logger test info message

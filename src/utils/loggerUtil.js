@@ -52,7 +52,9 @@ const prodLogger = winston.createLogger({
             ) 
         }),
         new winston.transports.File({
-            filename: './errors.log'
+            filename: './errors.log',
+            level: "info",
+            format: winston.format.simple()
         })
     ]
 });
