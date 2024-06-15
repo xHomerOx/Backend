@@ -90,3 +90,10 @@ fatal: Logger test fatal message
 error: Logger test error message
 warning: Logger test warning message
 info: Logger test info message
+info: Server Started at 03:57:10
+http: GET in / - 03:57:12
+http: GET in /login - 03:57:16
+http: POST in /login - 03:57:18
+http: GET in /failLogin - 03:57:18
+warning: Login Failed
+http: GET in /login - 03:57:22
