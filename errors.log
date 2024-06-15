@@ -1,0 +1,29 @@
+info: Server Started at 02:10:57
+http: GET in /login - 02:11:02
+http: POST in /login - 02:11:08
+http: GET in /failLogin - 02:11:08
+http: GET in /login - 02:11:10
+http: POST in /login - 02:11:12
+http: GET in / - 02:11:12
+http: GET in /logout - 02:11:59
+http: GET in /login - 02:11:59
+info: Server Started at 02:18:01
+http: POST in /login - 02:18:03
+http: GET in /failLogin - 02:18:03
+http: GET in /login - 02:18:35
+http: POST in /login - 02:18:38
+http: GET in /failLogin - 02:18:38
+info: Server Started at 02:18:57
+http: GET in /login - 02:18:57
+http: POST in /login - 02:18:59
+http: GET in /failLogin - 02:18:59
+info: Server Started at 02:19:07
+http: GET in /login - 02:19:08
+http: POST in /login - 02:19:10
+http: GET in /failLogin - 02:19:10
+warning: Login Failed
+info: Server Started at 02:19:34
+info: Server Started at 02:21:08
+info: Server Started at 02:23:24
+info: Server Started at 02:25:20
+info: Server Started at 02:27:00

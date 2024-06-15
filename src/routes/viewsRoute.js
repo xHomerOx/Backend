@@ -70,7 +70,8 @@ viewsRouter.get("/login", (req, res) => {
   res.render('loginView', { title: 'Login Form', failLogin: req.session.failLogin ?? false })
 });
 
-viewsRouter.get("/failLogin", (_req, res) => {
+viewsRouter.get("/failLogin", (req, res) => {
+  req.logger.warning("Login Failed");
   res.render('failLoginView', { title: 'Login Failed' })
 });
 
@@ -78,14 +79,15 @@ viewsRouter.get("/register", (req, res) => {
   res.render('registerView', { title: 'Register Form', failRegister: req.session.failRegister ?? false })
 });
 
-viewsRouter.get("/failRegister", (_req, res) => {
+viewsRouter.get("/failRegister", (req, res) => {
+  req.logger.warning("Register Failed");
   res.render('failRegisterView', { title: 'Registration Failed' })
 });
 
 viewsRouter.get("/logout", (req, res) => {
   req.session.destroy((error) => {
     if (error) {
-      return console.log(error);
+      req.logger.error(error);
     }
     return res.redirect("/login");
   });
@@ -113,6 +115,7 @@ viewsRouter.get('/chatbox', isLoggedIn, async (req, res) => {
     const user = req.user;
     res.render('chatView', { title: 'ChatView', user: user.user });
   } catch (error) {
+    req.logger.error(`Error rendering chat: ${error.message}`);
     res.status(400).send({
       status: 'error',
       message: error.message

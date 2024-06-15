@@ -18,7 +18,6 @@ document.addEventListener("DOMContentLoaded", () => {
                 });
 
                 if (response.ok) {
-                    console.log(`Product ${productId} added successfully to ${cartId}`);
                     Swal.fire({
                         title: 'Product Added',
                         text: 'The product has been added to your cart',
@@ -27,7 +26,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     });
                 }
             } catch (error) {
-                console.error(error);
+                throw new error;
             }
         });
     });
@@ -47,12 +46,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
             if (response.ok) {
                 window.location.href = `/api/carts/${cartId}/purchase`;
-                console.log('Purchase completed');
             } else {
-                console.error('Error occurred while completing purchase');
+                throw new Error('Error occurred while completing purchase');
             }
         } catch (error) {
-            console.error('Error occurred while completing purchase:', error);
+            throw new Error('Error occurred while completing purchase:', error);
         }
         });
     });
@@ -81,7 +79,6 @@ document.addEventListener("DOMContentLoaded", () => {
                         icon: 'success',
                         confirmButtonText: 'OK'
                     });
-                    console.log("Product added successfully");
                 } else {
                     Swal.fire({
                         title: 'Error',
@@ -89,10 +86,10 @@ document.addEventListener("DOMContentLoaded", () => {
                         icon: 'error',
                         confirmButtonText: 'OK'
                     });
-                    console.error("Error adding product");
+                    throw new Error("Error adding product");
                 }
             } catch (error) {
-                console.error(error);
+                throw new Error(error);
             }
         });
 
@@ -115,7 +112,6 @@ document.addEventListener("DOMContentLoaded", () => {
                             icon: 'success',
                             confirmButtonText: 'OK'
                         });
-                        console.log("Product deleted successfully");
                     } else {
                         Swal.fire({
                             title: 'Error',
@@ -123,10 +119,10 @@ document.addEventListener("DOMContentLoaded", () => {
                             icon: 'error',
                             confirmButtonText: 'OK'
                         });
-                        console.error("Error deleting product");
+                        throw new Error("Error deleting product");
                     }
                 } catch (error) {
-                    console.error(error);
+                    throw new Error(error);
                 }
             }
         });
@@ -205,7 +201,6 @@ document.addEventListener("DOMContentLoaded", () => {
                                 });
                         
                                 if (response.ok) {
-                                    console.log("Product updated successfully");
                                     Swal.fire({
                                         title: 'Product Updated',
                                         text: 'The product has been updated successfully',
@@ -213,7 +208,6 @@ document.addEventListener("DOMContentLoaded", () => {
                                         confirmButtonText: 'OK'
                                     });
                                 } else {
-                                    console.error("Error updating product");
                                     Swal.fire({
                                         title: 'Error',
                                         text: 'There was an error updating the product',
@@ -222,7 +216,7 @@ document.addEventListener("DOMContentLoaded", () => {
                                     });
                                 }
                             } catch (error) {
-                                console.error(error);
+                                throw new Error(error);
                             }
                         });
                     }

@@ -16,6 +16,7 @@ import dotenv from 'dotenv';
 import messageModel from './models/messageModel.js';
 import compression from 'express-compression';
 import errors from './middlewares/errors/index.js';
+import { addLogger, startLogger } from './utils/loggerUtil.js';
 
 dotenv.config();
 
@@ -52,6 +53,7 @@ app.use(session({
 initializePassport();
 app.use(passport.initialize());
 app.use(passport.session());
+app.use(addLogger);
 
 app.use('/', viewsRouter);
 app.use('/api/carts/', cartsRouter);
@@ -61,7 +63,7 @@ app.use('/api/users/', usersRouter);
 const PORT = 8080;
 
 const httpServer = app.listen(PORT, () => {
-    console.log(`Server Started`);
+    startLogger(`Server Started at ${new Date().toLocaleTimeString()}`);
 });
 
 const socketServer = new Server(httpServer);
@@ -76,7 +78,7 @@ socketServer.on("connection", socket => {
             user: data.user,
             message: data.message
         });
-        chatLogs.save().then(() => console.log('Messages saved'));
+        chatLogs.save().then(() => startLogger(`Messages saved at ${new Date().toLocaleTimeString()}`));
     });
 });
 

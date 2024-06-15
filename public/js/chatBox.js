@@ -2,10 +2,6 @@ const socket = io();
 
 socket.emit("message", "Client connected to Socket");
 
-socket.on('connect', () => {
-    console.log('Client connected to Socket');
-});
-
 const userDataDiv = document.getElementById('userData');
 const user = userDataDiv.dataset.user;
 
@@ -17,7 +13,6 @@ async function startChat() {
         let messages = '';
         if (data && data.length > 0) {
             data.forEach(message => {
-                console.log(message);
                 if (message.user) {
                     messages += `${message.user}: ${message.message} <br>`;
                 } else {
