@@ -93,7 +93,7 @@ const initializePassport = () => {
                 if (!myUser) {
                     let newUser = {
                         user: profile._json.name,
-                        email: profile._json.email,
+                        email: profile._json.email || '',
                     }
 
                     let result = await userModel.create(newUser);
