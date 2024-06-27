@@ -3,7 +3,6 @@ import __dirname from '../utils/dirnameUtil.js';
 import ProductManager from '../dao/productManagerDB.js';
 import { socketServer } from '../app.js';
 import UserManager from '../dao/userManagerDB.js';
-import nodemailer from 'nodemailer';
 import { transport } from '../utils/mailerUtil.js';
 import { generateToken, createHash, isValidPassword } from '../utils/cryptoUtil.js';
 
