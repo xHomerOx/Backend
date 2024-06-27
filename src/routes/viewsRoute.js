@@ -3,6 +3,9 @@ import __dirname from '../utils/dirnameUtil.js';
 import ProductManager from '../dao/productManagerDB.js';
 import { socketServer } from '../app.js';
 import UserManager from '../dao/userManagerDB.js';
+import nodemailer from 'nodemailer';
+import { transport } from '../utils/mailerUtil.js';
+import { generateToken, createHash, isValidPassword } from '../utils/cryptoUtil.js';
 
 const myProduct = new ProductManager();
 const viewsRouter = Router();
@@ -90,8 +93,85 @@ viewsRouter.delete("/realtimeproducts/:id", async (req, res) => {
   }
 });
 
-viewsRouter.get('/recover', async (_req, res) => {
-  res.render('recoverView', { title: 'Recover' });
+viewsRouter.get('/recover', (_req, res) => {
+  res.render('recoverView', { title: 'Recover Password' });
+});
+
+viewsRouter.get('/recover/:token', async (req, res) => {
+  const { token } = req.params;
+
+  try {
+    const user = await myUsers.getUserEmail({ token });
+
+    if (!user) {
+      return res.status(404).render('recoverView', { error: 'Invalid token' });
+    }
+
+    res.render('changePasswordView', { user });
+  } catch (error) {
+    console.error(error);
+    res.status(500).render('changePasswordView', { error: 'Error recovering password' });
+  }
+});
+
+viewsRouter.post('/recover', async (req, res) => {
+  const { email } = req.body;
+  
+  try {
+    const user = await myUsers.getUserEmail(email);
+    
+    if (!user) {
+      return res.status(404).render('recoverView', { error: 'Email not found' });
+    }
+
+    const token = generateToken();
+    const link = `http://localhost:8080/products/recover/${token}`;
+    
+    const mailOptions = {
+      from: 'Node Products <homero.tw@gmail.com>',
+      to: email,
+      subject: 'Password Recovery',
+      text: `Click on this link to recover your password: ${link}`,
+      html: `<p>Click on this link to recover your password: <a href="${link}">${link}</a></p>`
+    };
+
+    transport.sendMail(mailOptions, (error) => {
+      if (error) {
+        console.log(error);
+        return res.status(500).json({ error: 'Error sending email' });
+      }
+
+      res.json({ success: 'Check your email for password recovery instructions' });
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: 'Error recovering password' });
+  }
+});
+
+viewsRouter.post('/changePassword', async (req, res) => {
+  const { token } = req.body;
+  const { oldPassword, newPassword } = req.body;
+
+  try {
+    const user = await myUsers.getUserEmail(token);
+
+    if (!user) {
+      return res.status(404).render('changePasswordView', { error: 'Invalid token' });
+    }
+
+    if (!isValidPassword(user, oldPassword)) {
+      return res.status(400).render('changePasswordView', { error: 'Invalid old password' });
+    }
+
+    const hashedPassword = createHash(newPassword);
+    await myUsers.updateUser(user._id, { password: hashedPassword });
+
+    res.render('loginView', { success: 'Password changed successfully' });
+  } catch (error) {
+    console.error(error);
+    res.status(500).render('changePasswordView', { error: 'Error changing password' });
+  }
 });
 
 export default viewsRouter;

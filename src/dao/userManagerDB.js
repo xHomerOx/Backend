@@ -20,6 +20,20 @@ class UserManager {
       }
     }
 
+    async getUserEmail(email) {
+      try {
+        const user = await userModel.findOne({ email }).lean();
+
+        if (!user) {
+          throw new Error("Email not found!");
+        }
+    
+        return user;
+      } catch (error) {
+        throw new Error("Email not found!");
+      }
+    }
+
     async addUser(user) {
         const { first_name, last_name, email, age, password } = user;
 
@@ -60,6 +74,28 @@ class UserManager {
         } catch (error) {
           throw new Error("Login Error!");
         }
+    }
+
+    async updatePassword(uid, oldPassword, newPassword) {
+      try {
+        const user = await userModel.findOne({ _id: uid }).lean();
+    
+        if (!user) {
+          throw new Error("User not found!");
+        }
+    
+        if (!isValidPassword(user, oldPassword)) {
+          throw new Error("Invalid old password!");
+        }
+    
+        const hashedPassword = createHash(newPassword);
+        user.password = hashedPassword;
+        await user.save();
+    
+        return "Password updated successfully!";
+      } catch (error) {
+        throw new Error("Error updating password!");
+      }
     }
 }
   
