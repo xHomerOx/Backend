@@ -101,7 +101,7 @@ viewsRouter.get('/recover/:token', async (req, res) => {
   const { token } = req.params;
 
   try {
-    const user = await myUsers.getUserEmail({ token });
+    const user = await myUsers.getUserEmail(token);
 
     if (!user) {
       return res.status(404).render('recoverView', { error: 'Invalid token' });
@@ -137,14 +137,12 @@ viewsRouter.post('/recover', async (req, res) => {
 
     transport.sendMail(mailOptions, (error) => {
       if (error) {
-        console.log(error);
         return res.status(500).json({ error: 'Error sending email' });
       }
 
       res.json({ success: 'Check your email for password recovery instructions' });
     });
   } catch (error) {
-    console.log(error);
     res.status(500).json({ error: 'Error recovering password' });
   }
 });
@@ -154,7 +152,7 @@ viewsRouter.post('/changePassword', async (req, res) => {
   const { oldPassword, newPassword } = req.body;
 
   try {
-    const user = await myUsers.getUserEmail(token);
+    const user = await myUsers.getUserByToken(token);
 
     if (!user) {
       return res.status(404).render('changePasswordView', { error: 'Invalid token' });
@@ -164,8 +162,8 @@ viewsRouter.post('/changePassword', async (req, res) => {
       return res.status(400).render('changePasswordView', { error: 'Invalid old password' });
     }
 
-    const hashedPassword = createHash(newPassword);
-    await myUsers.updateUser(user._id, { password: hashedPassword });
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+    await myUsers.updatePassword(user._id, { password: hashedPassword });
 
     res.render('loginView', { success: 'Password changed successfully' });
   } catch (error) {

@@ -30,6 +30,7 @@ class UserManager {
     
         return user;
       } catch (error) {
+        console.log(error);
         throw new Error("Email not found!");
       }
     }
@@ -95,6 +96,17 @@ class UserManager {
         return "Password updated successfully!";
       } catch (error) {
         throw new Error("Error updating password!");
+      }
+    }
+
+    async getUserByToken(token) {
+      try {
+        const decodedToken = jwt.verify(token, 'secretKey');
+        const email = decodedToken.email;
+        return await userModel.findOne({ email }).lean();
+      } catch (error) {
+        console.log(error);
+        throw new Error("Invalid token!");
       }
     }
 }
