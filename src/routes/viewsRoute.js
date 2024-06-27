@@ -90,4 +90,8 @@ viewsRouter.delete("/realtimeproducts/:id", async (req, res) => {
   }
 });
 
+viewsRouter.get('/recover', async (_req, res) => {
+  res.render('recoverView', { title: 'Recover' });
+});
+
 export default viewsRouter;

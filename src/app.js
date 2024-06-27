@@ -13,11 +13,21 @@ import passport from 'passport';
 import initializePassport from './config/passportConfig.js';
 import cookieParser from 'cookie-parser';
 import session from 'express-session';
+import nodemailer from 'nodemailer';
 
 const app = express();
 
 const uri = 'mongodb+srv://xHomerOx:oU4p3VvHAh11lf7s@ecommerce.ix5vqim.mongodb.net/ecommerce?retryWrites=true&w=majority';
 mongoose.connect(uri);
+
+const transport = nodemailer.createTransport({
+    service: 'gmail',
+    port: 587,
+    auth: {
+        user: 'homero.tw@gmail.com',
+        pass: 'xgec hatm jhwk otdc'
+    }
+});
 
 initializePassport();
 app.use(passport.initialize());
