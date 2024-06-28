@@ -1,16 +1,19 @@
+const form = document.querySelector('form');
+
 form.addEventListener('submit', async (event) => {
   event.preventDefault();
 
-  const email = document.querySelector('input[name="email"]').value;
+  const token = document.querySelector('input[name="token"]').value;
+  const newPassword = document.querySelector('input[name="newPassword"]').value;
 
   try {
-    const response = await fetch('/products/recover', {
+    const response = await fetch('/products/changePassword', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${localStorage.getItem('token')}`
       },
-      body: JSON.stringify({ email }),
+      body: JSON.stringify({ token, newPassword }),
     });
 
     const result = await response.json();
@@ -26,6 +29,8 @@ form.addEventListener('submit', async (event) => {
         icon: 'success',
         title: 'Success',
         text: result.success,
+      }).then(() => {
+        window.location.href = '/products/login';
       });
     }
   } catch (error) {

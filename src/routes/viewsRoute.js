@@ -4,7 +4,7 @@ import ProductManager from '../dao/productManagerDB.js';
 import { socketServer } from '../app.js';
 import UserManager from '../dao/userManagerDB.js';
 import { transport } from '../utils/mailerUtil.js';
-import { isValidPassword } from '../utils/cryptoUtil.js';
+import { createHash, isValidPassword } from '../utils/cryptoUtil.js';
 import jwt from 'jsonwebtoken';
 
 const myProduct = new ProductManager();
@@ -107,10 +107,10 @@ viewsRouter.get('/recover/:token', async (req, res) => {
       return res.status(404).render('recoverView', { error: 'Invalid token' });
     }
 
-    res.render('changePasswordView', { user });
+    res.render('changePasswordView', { user, token });
   } catch (error) {
     console.log(error);
-    res.status(500).render('changePasswordView', { error: 'Error recovering password' });
+    res.status(500).render('changePasswordView', { error: 'Error recovering password', token });
   }
 });
 
@@ -149,26 +149,25 @@ viewsRouter.post('/recover', async (req, res) => {
 
 viewsRouter.post('/changePassword', async (req, res) => {
   const { token } = req.body;
-  const { oldPassword, newPassword } = req.body;
+  const { newPassword } = req.body;
 
   try {
     const user = await myUsers.getUserByToken(token);
 
     if (!user) {
-      return res.status(404).render('changePasswordView', { error: 'Invalid token' });
+      return res.status(404).json({ error: 'Invalid token' });
     }
 
-    if (!isValidPassword(user, oldPassword)) {
-      return res.status(400).render('changePasswordView', { error: 'Invalid old password' });
+    if (isValidPassword(user, newPassword)) {
+      return res.status(400).json({ error: 'New password cannot be the same as old password' });
     }
+    
+    const hashedPassword = createHash(newPassword);
+    await myUsers.updatePassword(user._id, hashedPassword);
 
-    const hashedPassword = await bcrypt.hash(newPassword, 10);
-    await myUsers.updatePassword(user._id, { password: hashedPassword });
-
-    res.render('loginView', { success: 'Password changed successfully' });
+    res.json({ success: 'Password changed successfully' });
   } catch (error) {
-    console.log(error);
-    res.status(500).render('changePasswordView', { error: 'Error changing password' });
+    res.status(500).json({ error: 'Error changing password' });
   }
 });
 

@@ -76,21 +76,9 @@ class UserManager {
         }
     }
 
-    async updatePassword(uid, oldPassword, newPassword) {
+    async updatePassword(uid, newPassword) {
       try {
-        const user = await userModel.findOne({ _id: uid }).lean();
-    
-        if (!user) {
-          throw new Error("User not found!");
-        }
-    
-        if (!isValidPassword(user, oldPassword)) {
-          throw new Error("Invalid old password!");
-        }
-    
-        const hashedPassword = createHash(newPassword);
-        user.password = hashedPassword;
-        await user.save();
+        await userModel.updateOne({ _id: uid }, { $set: { password: newPassword } });
     
         return "Password updated successfully!";
       } catch (error) {
