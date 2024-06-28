@@ -30,7 +30,7 @@ class ProductManager {
         }
 
         try {
-            const result = await productModel.create({title, description, code, price, stock, category, thumbnail: thumbnail ?? []});
+            const result = await productModel.create({title, description, code, price, stock, category, thumbnail: thumbnail ?? [], owner: user.email || 'admin' });
 
             return result;
         } catch (error) {

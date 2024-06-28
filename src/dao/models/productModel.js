@@ -36,6 +36,11 @@ const productSchema = new mongoose.Schema({
         type: Array,
         require: false,
         default: []
+    },
+    owner: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'users',
+        require: true
     }
 });
 

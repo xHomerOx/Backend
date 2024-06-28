@@ -6,6 +6,7 @@ import UserManager from '../dao/userManagerDB.js';
 import { transport } from '../utils/mailerUtil.js';
 import { createHash, isValidPassword } from '../utils/cryptoUtil.js';
 import jwt from 'jsonwebtoken';
+import roleHelper from '../helpers/roleHelper.js';
 
 const myProduct = new ProductManager();
 const viewsRouter = Router();
@@ -66,8 +67,11 @@ viewsRouter.post('/login', async (req, res) => {
 
 viewsRouter.get('/realtimeproducts', async (req, res) => {
   const user = req.session.user; 
+  const isAdmin = roleHelper.isAdmin(user);
+  const isPremium = roleHelper.isPremium(user);
   const products = await myProduct.getProducts();
-  res.render('realTimeProductsView', { title: 'Products', user: user, products: products });
+  
+  res.render('realTimeProductsView', { title: 'Products', user: user, products: products, isAdmin, isPremium });
 });
 
 viewsRouter.post("/realtimeproducts", async (req, res) => {
