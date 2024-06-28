@@ -109,8 +109,11 @@ viewsRouter.get('/recover/:token', async (req, res) => {
 
     res.render('changePasswordView', { user, token });
   } catch (error) {
-    console.log(error);
-    res.status(500).render('changePasswordView', { error: 'Error recovering password', token });
+    if (error instanceof jwt.TokenExpiredError) {
+      return res.status(401).render('recoverView', { error: 'Token has expired. Please request a new password recovery link.' });
+    } else {
+      return res.status(401).render('recoverView', { error: 'Invalid token' });
+    }
   }
 });
 
@@ -124,7 +127,7 @@ viewsRouter.post('/recover', async (req, res) => {
       return res.status(404).render('recoverView', { error: 'Email not found' });
     }
     
-    const token = jwt.sign(user, "secretKey", { expiresIn: "1h" });
+    const token = jwt.sign(user, "secretKey", { expiresIn: "10s" });
     const link = `http://localhost:8080/products/recover/${token}`;
     
     const mailOptions = {

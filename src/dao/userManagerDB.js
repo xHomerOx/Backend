@@ -93,7 +93,6 @@ class UserManager {
 
         return await userModel.findOne({ email }).lean();
       } catch (error) {
-        console.log(error);
         throw new Error("Invalid token!");
       }
     }
