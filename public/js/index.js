@@ -17,6 +17,7 @@ socket.on("productAdded", (newProduct) => {
       <p>Product Code: ${newProduct.code}</p>
       <p>Stock: ${newProduct.stock}</p>
       <p>Category: ${newProduct.category}</p>
+      <p>Owner: ${newProduct.owner}</p>
       <button class="deleteButton" data-id="${newProduct.id}">Delete Product</button>
     `;
     productList.appendChild(listItem);
@@ -45,18 +46,24 @@ addProductForm.addEventListener("submit", async (event) => {
     const stock = document.getElementById("stock").value;
     const category = document.getElementById("category").value;
     
-    const response = await fetch("/products/realtimeproducts", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify({ title, description, price, thumbnail, code, status, stock, category })
-    });
-    
-    if (response.ok) {
-        console.log("Product added successfully");
-    } else {
-        console.error(error);
+    try {
+        const response = await fetch("/products/realtimeproducts", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ title, description, price, thumbnail, code, status, stock, category })
+        });
+
+        console.log(response);
+        
+        if (response.ok) {
+            console.log("Product added successfully");
+        } else {
+            console.error(error);
+        }
+    } catch (error) {
+        console.error("Error fetching:", error);
     }
 });
 
