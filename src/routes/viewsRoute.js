@@ -4,7 +4,8 @@ import ProductManager from '../dao/productManagerDB.js';
 import { socketServer } from '../app.js';
 import UserManager from '../dao/userManagerDB.js';
 import { transport } from '../utils/mailerUtil.js';
-import { generateToken, createHash, isValidPassword } from '../utils/cryptoUtil.js';
+import { isValidPassword } from '../utils/cryptoUtil.js';
+import jwt from 'jsonwebtoken';
 
 const myProduct = new ProductManager();
 const viewsRouter = Router();
@@ -98,9 +99,9 @@ viewsRouter.get('/recover', (_req, res) => {
 
 viewsRouter.get('/recover/:token', async (req, res) => {
   const { token } = req.params;
-
+  
   try {
-    const user = await myUsers.getUserEmail(token);
+    const user = await myUsers.getUserByToken(token);
 
     if (!user) {
       return res.status(404).render('recoverView', { error: 'Invalid token' });
@@ -108,7 +109,7 @@ viewsRouter.get('/recover/:token', async (req, res) => {
 
     res.render('changePasswordView', { user });
   } catch (error) {
-    console.error(error);
+    console.log(error);
     res.status(500).render('changePasswordView', { error: 'Error recovering password' });
   }
 });
@@ -122,8 +123,8 @@ viewsRouter.post('/recover', async (req, res) => {
     if (!user) {
       return res.status(404).render('recoverView', { error: 'Email not found' });
     }
-
-    const token = generateToken();
+    
+    const token = jwt.sign(user, "secretKey", { expiresIn: "1h" });
     const link = `http://localhost:8080/products/recover/${token}`;
     
     const mailOptions = {
@@ -166,7 +167,7 @@ viewsRouter.post('/changePassword', async (req, res) => {
 
     res.render('loginView', { success: 'Password changed successfully' });
   } catch (error) {
-    console.error(error);
+    console.log(error);
     res.status(500).render('changePasswordView', { error: 'Error changing password' });
   }
 });

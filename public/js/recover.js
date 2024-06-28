@@ -1,14 +1,17 @@
 const form = document.querySelector('form');
 
-form.addEventListener('submit', async (e) => {
-  e.preventDefault();
+form.addEventListener('submit', async (event) => {
+  event.preventDefault();
 
   const email = document.querySelector('input[name="email"]').value;
 
   try {
     const response = await fetch('/products/recover', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${localStorage.getItem('token')}`
+      },
       body: JSON.stringify({ email }),
     });
 

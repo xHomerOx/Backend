@@ -30,7 +30,6 @@ class UserManager {
     
         return user;
       } catch (error) {
-        console.log(error);
         throw new Error("Email not found!");
       }
     }
@@ -101,8 +100,9 @@ class UserManager {
 
     async getUserByToken(token) {
       try {
-        const decodedToken = jwt.verify(token, 'secretKey');
-        const email = decodedToken.email;
+        const myToken = jwt.verify(token, 'secretKey');
+        const email = myToken.email;
+
         return await userModel.findOne({ email }).lean();
       } catch (error) {
         console.log(error);
