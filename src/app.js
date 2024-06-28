@@ -13,6 +13,7 @@ import passport from 'passport';
 import initializePassport from './config/passportConfig.js';
 import cookieParser from 'cookie-parser';
 import session from 'express-session';
+import roleHelper from './helpers/roleHelper.js';
 
 const app = express();
 
@@ -22,7 +23,7 @@ mongoose.connect(uri);
 initializePassport();
 app.use(passport.initialize());
 
-app.engine('handlebars', exphbs.engine({ defaultLayout: false }));
+app.engine('handlebars', exphbs.engine({ defaultLayout: false, helpers: roleHelper }));
 
 app.set('view engine', 'handlebars');
 app.set('views', path.join(__dirname, '../views'));
