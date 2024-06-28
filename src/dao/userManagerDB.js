@@ -42,7 +42,7 @@ class UserManager {
         }
 
         const emailExists = await userModel.findOne({email}).lean();
-
+        
         if (emailExists) {
           new Error("User already exists");
         }
@@ -93,7 +93,11 @@ class UserManager {
 
         return await userModel.findOne({ email }).lean();
       } catch (error) {
-        throw new Error("Invalid token!");
+        if (error instanceof jwt.TokenExpiredError) {
+          throw new Error("Token has expired. Please request a new password recovery link.");
+        } else {
+          throw new Error("Invalid token!");
+        }
       }
     }
 }

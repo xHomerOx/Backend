@@ -24,18 +24,17 @@ form.addEventListener('submit', async (event) => {
       });
     } else {
       if (result.error === 'Token has expired. Please request a new password recovery link.') {
+        window.location.href = '/products/recover';
         Swal.fire({
           icon: 'error',
           title: 'Error',
           text: result.error,
-        }).then(() => {
-          window.location.href = '/recover';
         });
       } else {
         Swal.fire({
           icon: 'error',
           title: 'Error',
-          text: 'An unexpected error occurred',
+          text: 'Wrong Email'
         });
       }
     }
@@ -43,7 +42,7 @@ form.addEventListener('submit', async (event) => {
     Swal.fire({
       icon: 'error',
       title: 'Error',
-      text: 'An unexpected error occurred',
+      text: 'An unexpected error occurred'
     });
   }
 });

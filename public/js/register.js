@@ -4,6 +4,12 @@ document.addEventListener('DOMContentLoaded', () => {
     registerForm.addEventListener('submit', async (event) => {
         event.preventDefault();
 
+        const password = document.getElementById('password').value;
+        if (password.length < 6) {
+          alert('Password must have 6 characters at least');
+          e.preventDefault();
+        }
+
         const formData = new FormData(registerForm);
         const userData = {
             first_name: formData.get('first_name'),
