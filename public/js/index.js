@@ -32,6 +32,49 @@ socket.on("productDeleted", (deletedProduct) => {
     }
 });
 
+document.addEventListener("DOMContentLoaded", () => {
+    const addToCartButtons = document.querySelectorAll(".add-to-cart-btn");
+    const productList = document.getElementById("product-list");
+    const cartId = productList.dataset.cartId;
+
+    addToCartButtons.forEach(button => {
+        button.addEventListener("click", async (event) => {
+            event.preventDefault();
+            const productId = button.dataset.productId;
+
+            try {
+                const response = await fetch(`/products/${cartId}/product/${productId}`, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({ productId, cartId })
+                });
+
+                if (response.ok) {
+                    Swal.fire({
+                        title: 'Product Added',
+                        text: 'The product has been added to your cart',
+                        icon: 'success',
+                        confirmButtonText: 'OK'
+                    });
+                } else {
+                    const responseData = await response.json();
+                    throw new Error(responseData.message);
+                }
+            } catch (error) {
+                console.error('Error adding product to cart:', error);
+                Swal.fire({
+                    title: 'Error',
+                    text: 'Failed to add product to cart',
+                    icon: 'error',
+                    confirmButtonText: 'OK'
+                });
+            }
+        });
+    });
+});
+
 const addProductForm = document.getElementById("addProductForm");
 
 addProductForm.addEventListener("submit", async (event) => {
@@ -85,47 +128,4 @@ document.addEventListener("click", async (event) => {
             console.error(error);
         }
     }
-});
-
-document.addEventListener("DOMContentLoaded", () => {
-    const addToCartButtons = document.querySelectorAll(".add-to-cart-btn");
-    const productList = document.getElementById("product-list");
-    const cartId = productList.dataset.cartId;
-
-    addToCartButtons.forEach(button => {
-        button.addEventListener("click", async (event) => {
-            event.preventDefault();
-            const productId = button.dataset.productId;
-
-            try {
-                const response = await fetch(`/realtimeproducts/${cartId}/product/${productId}`, {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
-                    body: JSON.stringify({ productId, cartId })
-                });
-
-                if (response.ok) {
-                    Swal.fire({
-                        title: 'Product Added',
-                        text: 'The product has been added to your cart',
-                        icon: 'success',
-                        confirmButtonText: 'OK'
-                    });
-                } else {
-                    const responseData = await response.json();
-                    throw new Error(responseData.message);
-                }
-            } catch (error) {
-                console.error('Error adding product to cart:', error);
-                Swal.fire({
-                    title: 'Error',
-                    text: 'Failed to add product to cart',
-                    icon: 'error',
-                    confirmButtonText: 'OK'
-                });
-            }
-        });
-    });
 });

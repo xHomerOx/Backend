@@ -72,8 +72,9 @@ viewsRouter.get('/realtimeproducts', async (req, res) => {
   const isAdmin = roleHelper.isAdmin(user);
   const isPremium = roleHelper.isPremium(user);
   const products = await myProduct.getProducts();
-  
-  res.render('realTimeProductsView', { title: 'Products', user: user, products: products, isAdmin, isPremium });
+  const cart = await myCart.addCart();
+  req.session.cartId = cart._id;
+  res.render('realTimeProductsView', { title: 'Products', user: user, products: products, cartId: cart._id, isAdmin, isPremium });
 });
 
 viewsRouter.post("/realtimeproducts", async (req, res) => {
@@ -88,14 +89,18 @@ viewsRouter.post("/realtimeproducts", async (req, res) => {
   }
 });
 
-viewsRouter.post('/realtimeproducts/:cid/product/:pid', async (req, res) => {
-  const { cid, pid } = req.params;
-
+viewsRouter.post('/:cid/product/:pid', async (req, res) => {
   try {
-    await myCart.addProduct(cid, pid);
-    res.status(200).json({ status: 'success', message: 'Product added to cart' });
+      const results = await myCart.addProduct(req.params.cid, req.params.pid);
+      res.send({
+          status: 'success',
+          payload: results
+      });
   } catch (error) {
-    res.status(400).json({ status: 'error', message: error.message });
+      res.status(400).send({
+          status: 'error',
+          message: error.message
+      });
   }
 });
 
