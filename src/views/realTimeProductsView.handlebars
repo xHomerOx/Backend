@@ -46,7 +46,7 @@
         {{/if}}
 
         <h1>Product List</h1>
-        <ul id="productList">
+        <ul id="product-list" data-cart-id="{{cartId}}">
             {{#each products}}
                 <li id="{{this._id}}">
                     <h2>Title: {{this.title}}</h2>
