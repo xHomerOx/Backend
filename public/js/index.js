@@ -85,18 +85,20 @@ document.addEventListener("click", async (event) => {
             console.error(error);
         }
     }
+});
 
+document.addEventListener("DOMContentLoaded", () => {
+    const addToCartButtons = document.querySelectorAll(".add-to-cart-btn");
     const productList = document.getElementById("product-list");
     const cartId = productList.dataset.cartId;
 
-    const addToCartButtons = document.querySelectorAll(".add-to-cart-btn");
     addToCartButtons.forEach(button => {
         button.addEventListener("click", async (event) => {
             event.preventDefault();
             const productId = button.dataset.productId;
 
             try {
-                const response = await fetch(`/api/carts/${cartId}/products/${productId}`, {
+                const response = await fetch(`/realtimeproducts/${cartId}/product/${productId}`, {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json"
@@ -111,9 +113,18 @@ document.addEventListener("click", async (event) => {
                         icon: 'success',
                         confirmButtonText: 'OK'
                     });
+                } else {
+                    const responseData = await response.json();
+                    throw new Error(responseData.message);
                 }
             } catch (error) {
-                throw new error;
+                console.error('Error adding product to cart:', error);
+                Swal.fire({
+                    title: 'Error',
+                    text: 'Failed to add product to cart',
+                    icon: 'error',
+                    confirmButtonText: 'OK'
+                });
             }
         });
     });

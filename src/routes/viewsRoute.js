@@ -7,11 +7,13 @@ import { transport } from '../utils/mailerUtil.js';
 import { createHash, isValidPassword } from '../utils/cryptoUtil.js';
 import jwt from 'jsonwebtoken';
 import roleHelper from '../helpers/roleHelper.js';
+import CartManager from '../dao/cartManagerDB.js';
 
 const myProduct = new ProductManager();
 const viewsRouter = Router();
 viewsRouter.use(express.json());
 const myUsers = new UserManager();
+const myCart = new CartManager();
 
 viewsRouter.get('/', async (_req, res) => {
   const products = await myProduct.getProducts();
@@ -83,6 +85,17 @@ viewsRouter.post("/realtimeproducts", async (req, res) => {
     res.status(201).send(newProduct);
   } catch (error) {
     res.status(400).send(error.message);
+  }
+});
+
+viewsRouter.post('/realtimeproducts/:cid/product/:pid', async (req, res) => {
+  const { cid, pid } = req.params;
+
+  try {
+    await myCart.addProduct(cid, pid);
+    res.status(200).json({ status: 'success', message: 'Product added to cart' });
+  } catch (error) {
+    res.status(400).json({ status: 'error', message: error.message });
   }
 });
 
