@@ -17,7 +17,7 @@ class ProductManager {
         return product;
     }
 
-    async addProducts(product) {
+    async addProducts(product, user) {
         const {title, description, code, price, stock, category, thumbnail} = product;
         const existingProduct = await productModel.findOne({ code });
 

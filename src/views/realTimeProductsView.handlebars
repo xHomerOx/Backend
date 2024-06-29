@@ -56,7 +56,9 @@
                     <p>Stock: {{this.stock}}</p>
                     <p>Category: {{this.category}}</p>
                     <p>Owner: {{this.owner}}</p>
-                    <button class="deleteButton" data-id="{{this._id}}">Delete Product</button>
+                    {{#if (isAdmin user)}}
+                        <button class="deleteButton" data-id="{{this._id}}">Delete Product</button>
+                    {{/if}}
                 </li>
             {{/each}}
         </ul>

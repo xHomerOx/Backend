@@ -76,7 +76,8 @@ viewsRouter.get('/realtimeproducts', async (req, res) => {
 
 viewsRouter.post("/realtimeproducts", async (req, res) => {
   try {
-    const newProduct = await myProduct.addProducts(req.body);
+    const user = req.session.user;
+    const newProduct = await myProduct.addProducts(req.body, user);
     socketServer.emit("productAdded", newProduct);
 
     res.status(201).send(newProduct);
