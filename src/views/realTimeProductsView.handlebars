@@ -56,7 +56,7 @@
                     <p>Stock: {{this.stock}}</p>
                     <p>Category: {{this.category}}</p>
                     <p>Owner: {{this.owner}}</p>
-                    {{#if (isAdmin user)}}
+                    {{#if (or (isAdmin ../user) (and (isPremium ../user) (eq this.owner ../user.email)))}}
                         <button class="deleteButton" data-id="{{this._id}}">Delete Product</button>
                     {{/if}}
                 </li>
