@@ -13,5 +13,8 @@ export default {
     },
     eq: function(a, b) {
         return a === b;
+    },
+    not: function(value) {
+        return !value;
     }
 };
