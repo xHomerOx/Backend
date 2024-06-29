@@ -85,4 +85,36 @@ document.addEventListener("click", async (event) => {
             console.error(error);
         }
     }
+
+    const productList = document.getElementById("product-list");
+    const cartId = productList.dataset.cartId;
+
+    const addToCartButtons = document.querySelectorAll(".add-to-cart-btn");
+    addToCartButtons.forEach(button => {
+        button.addEventListener("click", async (event) => {
+            event.preventDefault();
+            const productId = button.dataset.productId;
+
+            try {
+                const response = await fetch(`/api/carts/${cartId}/products/${productId}`, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({ productId, cartId })
+                });
+
+                if (response.ok) {
+                    Swal.fire({
+                        title: 'Product Added',
+                        text: 'The product has been added to your cart',
+                        icon: 'success',
+                        confirmButtonText: 'OK'
+                    });
+                }
+            } catch (error) {
+                throw new error;
+            }
+        });
+    });
 });
