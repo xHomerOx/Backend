@@ -58,6 +58,8 @@ app.get('/', (_req, res) => {
         <p>/products/realtimeproducts</p>
         <p>/products/register</p>
         <p>/products/login</p>
+        <p>/products/recover</p>
+        <p>/products/changepassword</p>
     </body>
     `);
 });

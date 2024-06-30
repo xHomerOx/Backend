@@ -67,4 +67,10 @@ sessionRouter.get('/:uid', passport.authenticate('jwt', {session: false}), isAdm
     }
 });
 
+sessionRouter.get('/premium/:uid', passport.authenticate('jwt', {session: false}), async (req, res) => {
+    res.send({
+        user: req.user
+    })
+});
+
 export default sessionRouter;

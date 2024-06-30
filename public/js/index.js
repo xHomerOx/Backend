@@ -25,7 +25,7 @@ socket.on("productAdded", (newProduct) => {
 
 socket.on("productDeleted", (deletedProduct) => {
     const productList = document.getElementById("productList");
-    const deletedListItem = document.getElementById(deletedProduct);
+    const deletedListItem = document.getElementById(deletedProduct._id);
 
     if (deletedListItem) {
         productList.removeChild(deletedListItem);
@@ -120,6 +120,12 @@ document.addEventListener("click", async (event) => {
             });
 
             if (response.ok) {
+                Swal.fire({
+                    title: "Product Deleted",
+                    text: "The product has been deleted successfully.",
+                    icon: "success",
+                    confirmButtonText: "OK",
+                });
                 console.log("Product deleted successfully");
             } else {
                 console.error("Error deleting product");
