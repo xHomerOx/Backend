@@ -1,6 +1,7 @@
 import { Router } from "express";
 import UserManager from "../dao/userManagerDB.js";
 import passport from "passport";
+import { authenticate } from "../config/authenticationConfig.js";
 
 const sessionRouter = Router();
 const UserService =  new UserManager();
@@ -67,16 +68,14 @@ sessionRouter.get('/:uid', passport.authenticate('jwt', {session: false}), isAdm
     }
 });
 
-sessionRouter.get('/premium/:uid', async (req, res) => {
+sessionRouter.get('/premium/:uid', authenticate, async (req, res) => {
     const user = await UserService.getUser(req.params.uid);
     const roles = ['user', 'premium'];
-    if (user.role === 'premium') {
+    
+    if (user.role === 'premium' || user.role === 'user') {
         res.render('switchRoleView', { title: 'Role Switcher', user: user, role: roles });
     }else{
-        res.status(400).send({
-            status: 'Unauthorized',
-            message: error.message
-        });
+        res.status(401).json({ error: 'Unauthorized', message: 'You do not have permission to access this page.' });
     }
 });
 

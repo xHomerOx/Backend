@@ -50,16 +50,14 @@ app.get('/', (_req, res) => {
         <h1>Welcome to the root path!</h1>
         <p>Go to /products to see content! (ChatBox is in /products/chatbox)</p>
         <p>Endpoints:</p>
-        <p>/api/users/register</p>
-        <p>/api/users/login</p>
-        <p>/api/users/current</p>
-        <p>/api/users/:uid</p>
         <p>/products</p>
         <p>/products/realtimeproducts</p>
         <p>/products/register</p>
         <p>/products/login</p>
         <p>/products/recover</p>
         <p>/products/changepassword</p>
+        <p>/api/users/premium/:uid</p>
+        PREMIUM DEFAULT USER UID = 66801cd61f5f7e41242cd863
     </body>
     `);
 });
