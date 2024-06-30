@@ -67,10 +67,10 @@ sessionRouter.get('/:uid', passport.authenticate('jwt', {session: false}), isAdm
     }
 });
 
-sessionRouter.get('/premium/:uid', passport.authenticate('jwt', {session: false}), async (req, res) => {
-    res.send({
-        user: req.user
-    })
+sessionRouter.get('/premium/:uid', async (req, res) => {
+    const user = await UserService.getUser(req.params.uid);
+
+    res.render('switchRoleView', { title: 'Role Switcher', user: user });
 });
 
 export default sessionRouter;
