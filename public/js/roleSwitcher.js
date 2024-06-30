@@ -1,12 +1,13 @@
 const form = document.getElementById('role-switch-form');
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
-    const roleId = document.getElementById('role').value;
+    const userId = document.getElementById('role').dataset.userId;
+    const newRole = document.getElementById('role').value;
     try {
-      const response = await fetch('/premium/{{uid}}/role', {
+      const response = await fetch(`/api/users/premium/${userId}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ roleId }),
+        body: JSON.stringify({ role: newRole }),
       });
       if (response.ok) {
         Swal.fire({

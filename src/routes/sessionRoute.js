@@ -69,8 +69,27 @@ sessionRouter.get('/:uid', passport.authenticate('jwt', {session: false}), isAdm
 
 sessionRouter.get('/premium/:uid', async (req, res) => {
     const user = await UserService.getUser(req.params.uid);
-
-    res.render('switchRoleView', { title: 'Role Switcher', user: user });
+    const roles = ['user', 'premium'];
+    if (user.role === 'premium') {
+        res.render('switchRoleView', { title: 'Role Switcher', user: user, role: roles });
+    }else{
+        res.status(400).send({
+            status: 'Unauthorized',
+            message: error.message
+        });
+    }
 });
+
+sessionRouter.put('/premium/:uid', async (req, res) => {
+    const uid = req.params.uid;
+    const newRole = req.body.role;
+
+    try {
+      await UserService.updateRole(uid, newRole);
+      res.status(200).send("Role updated successfully!");
+    } catch (error) {
+      res.status(500).send("Error updating role!");
+    }
+  });
 
 export default sessionRouter;

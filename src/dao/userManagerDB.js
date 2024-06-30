@@ -100,6 +100,16 @@ class UserManager {
         }
       }
     }
+
+    async updateRole(uid, newRole ) {
+      try {
+        await userModel.updateOne({ _id: uid }, { $set: { role: newRole } });
+        
+        return "Role updated successfully!";
+      } catch (error) {
+        throw new Error("Error updating role!");
+      }
+    }
 }
   
 export default UserManager;
