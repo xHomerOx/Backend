@@ -138,22 +138,38 @@ components:
     Product:
       type: object
       required:
-        - name
+        - title
+        - description
+        - code
         - price
+        - stock
+        - category
       properties:
         id:
           type: string
           description: The unique identifier for the product.
-        name:
+        title:
           type: string
-          description: The name of the product.
+          description: The title or name of the product.
         description:
           type: string
           description: The description of the product.
+        code:
+          type: string
+          description: The unique code or SKU of the product.
         price:
           type: number
           format: float
           description: The price of the product.
+        status:
+          type: boolean
+          description: The status of the product (true for active, false for inactive).
+        stock:
+          type: integer
+          description: The available stock quantity of the product.
+        category:
+          type: string
+          description: The category or type of the product.
         thumbnail:
           type: array
           items:
