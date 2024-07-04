@@ -17,6 +17,8 @@ import messageModel from './models/messageModel.js';
 import compression from 'express-compression';
 import errors from './middlewares/errors/index.js';
 import { addLogger, startLogger } from './utils/loggerUtil.js';
+import swaggerJsdoc from 'swagger-jsdoc';
+import swaggerUiExpress from 'swagger-ui-express';
 
 dotenv.config();
 
@@ -50,6 +52,20 @@ app.use(session({
     failRegister: false
 }));
 
+const swaggerOptions = {
+    definition: {
+        openapi: '3.1.0',
+        info: {
+            title: 'Ecommerce',
+            version: '1.0.0',
+            description: 'API for ecommerce'
+        } 
+    },
+    apis: [`${__dirname}/../docs/**/*.yaml`]
+}
+
+const specs = swaggerJsdoc(swaggerOptions);
+
 initializePassport();
 app.use(passport.initialize());
 app.use(passport.session());
@@ -59,6 +75,8 @@ app.use('/', viewsRouter);
 app.use('/api/carts/', cartsRouter);
 app.use('/api/products/', productsRouter);
 app.use('/api/users/', usersRouter);
+
+app.use('/apidocs', swaggerUiExpress.serve, swaggerUiExpress.setup(specs));
 
 const PORT = 8080;
 

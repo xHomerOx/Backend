@@ -1,0 +1,161 @@
+openapi: 3.1.0
+info:
+  title: Product API
+  description: API for managing products in an ecommerce system
+  version: 1.0.0
+
+paths:
+  /api/products:
+    get:
+      summary: Get all products
+      description: Retrieves a list of all available products.
+      responses:
+        '200':
+          description: A list of products.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Product'
+        '404':
+          description: No products found.
+
+    post:
+      summary: Create a new product
+      description: Creates a new product in the database.
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: The name of the product.
+                description:
+                  type: string
+                  description: The description of the product.
+                price:
+                  type: number
+                  format: float
+                  description: The price of the product.
+                thumbnail:
+                  type: array
+                  items:
+                    type: string
+                  description: Array of filenames for product thumbnails.
+      responses:
+        '201':
+          description: Product created successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+        '400':
+          description: Invalid request, please check product data.
+
+  /api/products/{pid}:
+    get:
+      summary: Get a product by ID
+      description: Retrieves details of a specific product by its ID.
+      parameters:
+        - in: path
+          name: pid
+          required: true
+          schema:
+            type: string
+          description: The ID of the product to retrieve.
+      responses:
+        '200':
+          description: Details of the requested product.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+        '404':
+          description: Product not found.
+
+    put:
+      summary: Update a product by ID
+      description: Updates details of a specific product by its ID.
+      parameters:
+        - in: path
+          name: pid
+          required: true
+          schema:
+            type: string
+          description: The ID of the product to update.
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: The updated name of the product.
+                description:
+                  type: string
+                  description: The updated description of the product.
+                price:
+                  type: number
+                  format: float
+                  description: The updated price of the product.
+                thumbnail:
+                  type: array
+                  items:
+                    type: string
+                  description: Array of filenames for updated product thumbnails.
+      responses:
+        '200':
+          description: Product updated successfully.
+        '400':
+          description: Invalid request, please check product data.
+        '404':
+          description: Product not found.
+
+    delete:
+      summary: Delete a product by ID
+      description: Deletes a specific product by its ID.
+      parameters:
+        - in: path
+          name: pid
+          required: true
+          schema:
+            type: string
+          description: The ID of the product to delete.
+      responses:
+        '200':
+          description: Product deleted successfully.
+        '404':
+          description: Product not found.
+
+components:
+  schemas:
+    Product:
+      type: object
+      required:
+        - name
+        - price
+      properties:
+        id:
+          type: string
+          description: The unique identifier for the product.
+        name:
+          type: string
+          description: The name of the product.
+        description:
+          type: string
+          description: The description of the product.
+        price:
+          type: number
+          format: float
+          description: The price of the product.
+        thumbnail:
+          type: array
+          items:
+            type: string
+          description: Array of filenames for product thumbnails.
