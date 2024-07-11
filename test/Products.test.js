@@ -16,7 +16,7 @@ const requester = supertest('http://localhost:8080');
 const uri = process.env.DB_CONNECTION;
 
 const isAdmin = {
-    email: 'xhomerox@admin.com',
+    user: 'admin',
     password: 'admin'
   };
 
@@ -45,8 +45,8 @@ before(async () => {
 
 describe('Testing login endpoint', () => {
     it('Login credentials', async () => {
-        const response = await requester.post('/api/login').send(isAdmin).set('Accept', 'application/json');
-
+        const response = await requester.post('/api/users/login').send(isAdmin).set('Accept', 'application/json');
+        console.log(response.body);
         expect(response.statusCode).to.equal(200);
         expect(response.body).to.have.property('token');
     });
