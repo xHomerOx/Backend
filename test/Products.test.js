@@ -15,6 +15,11 @@ const expect = chai.expect;
 const requester = supertest('http://localhost:8080');
 const uri = process.env.DB_CONNECTION;
 
+const isAdmin = {
+    email: 'xhomerox@admin.com',
+    password: 'admin'
+  };
+
 export const generateProducts =() => {
   return {
     id: fakerES_MX.string.uuid(),
@@ -36,6 +41,15 @@ before(async () => {
     } catch (error) {
         startLogger(`DB connection failed`);
     }
+});
+
+describe('Testing login endpoint', () => {
+    it('Login credentials', async () => {
+        const response = await requester.post('/api/login').send(isAdmin).set('Accept', 'application/json');
+
+        expect(response.statusCode).to.equal(200);
+        expect(response.body).to.have.property('token');
+    });
 });
 
 describe('Testing products routes', () => {

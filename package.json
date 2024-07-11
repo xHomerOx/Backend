@@ -6,7 +6,8 @@
   "type": "module",
   "scripts": {
     "start": "node -e \"process.env.NODE_ENV='development'; import('./src/app.js')\"",
-    "start:prod": "node -e \"process.env.NODE_ENV='production'; import('./src/app.js')\""
+    "start:prod": "node -e \"process.env.NODE_ENV='production'; import('./src/app.js')\"",
+    "test": "mocha --timeout 5000"
   },
   "keywords": [],
   "author": "",
