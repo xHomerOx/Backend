@@ -39,13 +39,13 @@ describe('Testing carts routes', () => {
     });
 
     it('PUT Operation for Carts Endpoint', async() => {
-        const response = await requester.put('/api/carts/665e6bb198648608ad3c3af1');
+        const response = await requester.put('/api/carts/66919d2eeef71e51df84d2b2');
         
         expect(response.statusCode).to.be.eql(200);
     });
 
     it('DELETE Operation for Carts Endpoint', async() => {
-        const response = await requester.delete('/api/carts/665e6bb198648608ad3c3af1');
+        const response = await requester.delete('/api/carts/66919d2eeef71e51df84d2b2');
         
         expect(response.statusCode).to.be.eql(200);
     });

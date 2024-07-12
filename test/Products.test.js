@@ -74,16 +74,16 @@ describe('Testing products routes', () => {
     });
 
     it('PUT Operation for Products Endpoint', async () => {
-        await requester.get('/api/products/668140f0586f527717d76ff2');
+        await requester.get('/api/products/66919e0eeef71e51df84d2d0');
 
         const updatedProduct = { title: 'New Title' };
-        const response = await requester.put('/api/products/668140f0586f527717d76ff2').send(updatedProduct).set('Accept', 'application/json').set('Authorization', `Bearer ${authToken}`);
+        const response = await requester.put('/api/products/66919e0eeef71e51df84d2d0').send(updatedProduct).set('Accept', 'application/json').set('Authorization', `Bearer ${authToken}`);
         
         expect(response.status).to.equal(200);
     });
 
     it('DELETE Operation for Products Endpoint', async () => {
-        const response = await requester.delete('/api/products/6690825232c768f5521f6a6d').set('Accept', 'application/json').set('Authorization', `Bearer ${authToken}`);
+        const response = await requester.delete('/api/products/66919e0eeef71e51df84d2d0').set('Accept', 'application/json').set('Authorization', `Bearer ${authToken}`);
         
         expect(response.status).to.equal(200);
     });

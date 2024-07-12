@@ -30,8 +30,6 @@ export const generateUsers = () => {
 
 const newUser = generateUsers();
 
-console.log(newUser);
-
 before(async function () {
     this.timeout(10000);
 
