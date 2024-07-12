@@ -18,7 +18,7 @@ const uri = process.env.DB_CONNECTION;
 const isAdmin = {
     user: 'admin',
     password: 'admin'
-  };
+};
 
 export const generateProducts =() => {
   return {
