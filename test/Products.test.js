@@ -46,7 +46,6 @@ before(async () => {
     }
 }, 10000);
 
-
 describe('Testing login endpoint', () => {
     it('Login credentials', async () => {
         const response = await requester.post('/api/users/login').send(isAdmin).set('Accept', 'application/json');
