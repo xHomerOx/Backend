@@ -39,19 +39,12 @@ let authToken, myProduct;
 before(async () => {
     try {
         await mongoose.connect(uri);
+
         startLogger(`DB connection successful`);
-
-        const response = await requester.get('/api/products').set('Accept', 'application/json').set('Authorization', `Bearer ${authToken}`);
-
-        expect(response.statusCode).to.equal(200);
-        expect(response.body.payload).to.have.property('_id');
-
-        myProduct = response.body._id;
-        console.log(myProduct);
     } catch (error) {
         startLogger(`Error during setup: ${error.message}`);
     }
-});
+}, 10000);
 
 
 describe('Testing login endpoint', () => {
@@ -63,7 +56,7 @@ describe('Testing login endpoint', () => {
 
         authToken = response.body.token;
     });
-});
+}, 10000);
 
 describe('Testing products routes', () => {
     it('GET Operation for Products Endpoint', async() => {
@@ -79,15 +72,22 @@ describe('Testing products routes', () => {
         expect(response.statusCode).to.be.eql(200);
     })
 
-    it('PUT Operation for Products Endpoint', async() => {
-        const updatedProduct = { ...generateProducts(), title: 'My New Title' };
-        const response = await requester.put(`/api/products/${myProduct}`).send(updatedProduct).set('Accept', 'application/json').set('Authorization', `Bearer ${authToken}`);
+    it('PUT Operation for Products Endpoint', async () => {
+        const products = await requester.get('/api/products');
 
-        expect(response.statusCode).to.be.eql(200);
-    })
-});
+        myProduct = products.body.payload[0].title;
+        console.log(myProduct)
+
+        const newTitle = { title: 'My New Title' };
+        const response = await requester.put(myProduct).send(newTitle).set('Accept', 'application/json').set('Authorization', `Bearer ${authToken}`);
+        console.log(response);
+
+        expect(response.status).to.equal(200);
+        expect(response.body).to.have.property(myProduct, 'My New Title');
+      });
+}, 10000);
 
 after(async () => {
     await mongoose.disconnect();
     startLogger('DB disconnected');
-});
+}, 10000);
