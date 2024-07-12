@@ -38,7 +38,7 @@ let authToken;
 
 before(async function () {
     this.timeout(10000);
-    
+
     try {
         await mongoose.connect(uri);
 
@@ -46,7 +46,7 @@ before(async function () {
     } catch (error) {
         startLogger(`Error during setup: ${error.message}`);
     }
-}, 10000);
+});
 
 describe('Testing login endpoint', () => {
     it('Login credentials', async () => {
@@ -57,7 +57,7 @@ describe('Testing login endpoint', () => {
 
         authToken = response.body.token;
     });
-}, 10000);
+});
 
 describe('Testing products routes', () => {
     it('GET Operation for Products Endpoint', async() => {
@@ -87,9 +87,9 @@ describe('Testing products routes', () => {
         
         expect(response.status).to.equal(200);
     });
-}, 10000);
+});
 
 after(async () => {
     await mongoose.disconnect();
     startLogger('DB disconnected');
-}, 10000);
+});
