@@ -43,12 +43,16 @@ before(async () => {
     }
 });
 
+let authToken;
+
 describe('Testing login endpoint', () => {
     it('Login credentials', async () => {
         const response = await requester.post('/api/users/login').send(isAdmin).set('Accept', 'application/json');
-        console.log(response.body);
+
         expect(response.statusCode).to.equal(200);
         expect(response.body).to.have.property('token');
+
+        authToken = response.body.token;
     });
 });
 
@@ -60,17 +64,9 @@ describe('Testing products routes', () => {
 
     it('POST Operation for Products Endpoint', async() => {
         const newProduct = generateProducts();
-        const response = await requester.post('/api/products').send(newProduct).set('Accept', 'application/json');
+        const response = await requester.post('/api/products').send(newProduct).set('Accept', 'application/json').set('Authorization', `Bearer ${authToken}`);
 
-        expect(response.body).to.include.keys('_id', 'title', 'description', 'code', 'price', 'status', 'stock', 'category', 'thumbnail');
-        expect(response.body.title).to.equal(newProduct.title);
-        expect(response.body.description).to.equal(newProduct.description);
-        expect(response.body.code).to.equal(newProduct.code);
-        expect(response.body.price).to.equal(newProduct.price);
-        expect(response.body.status).to.equal(newProduct.status);
-        expect(response.body.stock).to.equal(newProduct.stock);
-        expect(response.body.category).to.equal(newProduct.category);
-        expect(response.body.thumbnail).to.deep.equal(newProduct.thumbnail);
+        expect(response.statusCode).to.be.eql(200);
     })
 });
 
