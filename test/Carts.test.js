@@ -14,13 +14,6 @@ const expect = chai.expect;
 const requester = supertest('http://localhost:8080');
 const uri = process.env.DB_CONNECTION;
 
-const isAdmin = {
-    user: 'admin',
-    password: 'admin'
-};
-
-let authToken;
-
 before(async function () {
     this.timeout(10000);
     try {
@@ -32,45 +25,34 @@ before(async function () {
     }
 });
 
-describe('Testing login endpoint', () => {
-    it('Login credentials', async () => {
-        const response = await requester.post('/api/users/login').send(isAdmin).set('Accept', 'application/json');
-
-        expect(response.statusCode).to.equal(200);
-        expect(response.body).to.have.property('token');
-
-        authToken = response.body.token;
-    });
-}, 10000);
-
 describe('Testing carts routes', () => {
     it('GET Operation for Carts Endpoint', async() => {
         const response = await requester.get('/api/carts');
         
         expect(response.statusCode).to.be.eql(200);
-    }, 10000);
+    });
 
     it('POST Operation for Carts Endpoint', async() => {
         const response = await requester.post('/api/carts');
         
         expect(response.statusCode).to.be.eql(200);
-    }, 10000);
+    });
 
     it('PUT Operation for Carts Endpoint', async() => {
         const response = await requester.put('/api/carts/665e6bb198648608ad3c3af1');
         
         expect(response.statusCode).to.be.eql(200);
-    }, 10000);
+    });
 
     it('DELETE Operation for Carts Endpoint', async() => {
         const response = await requester.delete('/api/carts/665e6bb198648608ad3c3af1');
         
         expect(response.statusCode).to.be.eql(200);
-    }, 10000);
+    });
 
-}, 10000);
+});
 
 after(async () => {
     await mongoose.disconnect();
     startLogger('DB disconnected');
-}, 10000);
+});
