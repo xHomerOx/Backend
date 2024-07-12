@@ -36,7 +36,9 @@ export const generateProducts =() => {
 
 let authToken;
 
-before(async () => {
+before(async function () {
+    this.timeout(10000);
+    
     try {
         await mongoose.connect(uri);
 
@@ -62,14 +64,14 @@ describe('Testing products routes', () => {
         const response = await requester.get('/api/products');
         
         expect(response.statusCode).to.be.eql(200);
-    }, 10000);
+    });
 
     it('POST Operation for Products Endpoint', async() => {
         const newProduct = generateProducts();
         const response = await requester.post('/api/products').send(newProduct).set('Accept', 'application/json').set('Authorization', `Bearer ${authToken}`);
 
         expect(response.statusCode).to.be.eql(200);
-    }, 10000);
+    });
 
     it('PUT Operation for Products Endpoint', async () => {
         await requester.get('/api/products/668140f0586f527717d76ff2');
@@ -78,10 +80,10 @@ describe('Testing products routes', () => {
         const response = await requester.put('/api/products/668140f0586f527717d76ff2').send(updatedProduct).set('Accept', 'application/json').set('Authorization', `Bearer ${authToken}`);
         
         expect(response.status).to.equal(200);
-    }, 10000);
+    });
 
     it('DELETE Operation for Products Endpoint', async () => {
-        const response = await requester.delete('/api/products/668140f0586f527717d76fec').set('Accept', 'application/json').set('Authorization', `Bearer ${authToken}`);
+        const response = await requester.delete('/api/products/6690825232c768f5521f6a6d').set('Accept', 'application/json').set('Authorization', `Bearer ${authToken}`);
         
         expect(response.status).to.equal(200);
     });

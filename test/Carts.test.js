@@ -21,7 +21,8 @@ const isAdmin = {
 
 let authToken;
 
-before(async () => {
+before(async function () {
+    this.timeout(10000);
     try {
         await mongoose.connect(uri);
 
@@ -29,7 +30,7 @@ before(async () => {
     } catch (error) {
         startLogger(`Error during setup: ${error.message}`);
     }
-}, 10000);
+});
 
 describe('Testing login endpoint', () => {
     it('Login credentials', async () => {
@@ -48,7 +49,26 @@ describe('Testing carts routes', () => {
         
         expect(response.statusCode).to.be.eql(200);
     }, 10000);
-});
+
+    it('POST Operation for Carts Endpoint', async() => {
+        const response = await requester.post('/api/carts');
+        
+        expect(response.statusCode).to.be.eql(200);
+    }, 10000);
+
+    it('PUT Operation for Carts Endpoint', async() => {
+        const response = await requester.put('/api/carts/665e6bb198648608ad3c3af1');
+        
+        expect(response.statusCode).to.be.eql(200);
+    }, 10000);
+
+    it('DELETE Operation for Carts Endpoint', async() => {
+        const response = await requester.delete('/api/carts/665e6bb198648608ad3c3af1');
+        
+        expect(response.statusCode).to.be.eql(200);
+    }, 10000);
+
+}, 10000);
 
 after(async () => {
     await mongoose.disconnect();
