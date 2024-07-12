@@ -8,9 +8,11 @@ import { isAdmin } from '../middlewares/guard.js';
 const usersRouter = Router();
 const myUser = new UserController(userService);
 
-usersRouter.post("/register", passport.authenticate('register', {failureRedirect: '/failRegister'}), async (req, res) => {
+usersRouter.post("/register", async (req, res) => {
     try {
-        const result = await myUser.addUser(req.body);
+        const { user, email, password } = req.body;
+        const result = await myUser.addUser(user, email, password);
+
         res.send({
             status: 'success',
             payload: result
