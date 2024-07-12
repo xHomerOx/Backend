@@ -34,16 +34,25 @@ export const generateProducts =() => {
   };
 }
 
+let authToken, myProduct;
+
 before(async () => {
     try {
-        await mongoose.connect(uri)
+        await mongoose.connect(uri);
         startLogger(`DB connection successful`);
+
+        const response = await requester.get('/api/products').set('Accept', 'application/json').set('Authorization', `Bearer ${authToken}`);
+
+        expect(response.statusCode).to.equal(200);
+        expect(response.body.payload).to.have.property('_id');
+
+        myProduct = response.body._id;
+        console.log(myProduct);
     } catch (error) {
-        startLogger(`DB connection failed`);
+        startLogger(`Error during setup: ${error.message}`);
     }
 });
 
-let authToken;
 
 describe('Testing login endpoint', () => {
     it('Login credentials', async () => {
@@ -59,12 +68,20 @@ describe('Testing login endpoint', () => {
 describe('Testing products routes', () => {
     it('GET Operation for Products Endpoint', async() => {
         const response = await requester.get('/api/products');
+        
         expect(response.statusCode).to.be.eql(200);
     })
 
     it('POST Operation for Products Endpoint', async() => {
         const newProduct = generateProducts();
         const response = await requester.post('/api/products').send(newProduct).set('Accept', 'application/json').set('Authorization', `Bearer ${authToken}`);
+
+        expect(response.statusCode).to.be.eql(200);
+    })
+
+    it('PUT Operation for Products Endpoint', async() => {
+        const updatedProduct = { ...generateProducts(), title: 'My New Title' };
+        const response = await requester.put(`/api/products/${myProduct}`).send(updatedProduct).set('Accept', 'application/json').set('Authorization', `Bearer ${authToken}`);
 
         expect(response.statusCode).to.be.eql(200);
     })
