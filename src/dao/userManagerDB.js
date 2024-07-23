@@ -1,6 +1,7 @@
 import userModel from "./models/userModel.js";
 import { isValidPassword } from "../utils/cryptoUtil.js";
 import jwt from "jsonwebtoken";
+import moment from 'moment-timezone';
 
 class UserManager {
 
@@ -14,7 +15,7 @@ class UserManager {
 
     async getUser(uid) {
       try {
-        return await userModel.findOne({_id: uid}).lean();
+        return await userModel.findOne({ _id: uid }).lean();
       } catch (error) {
         throw new Error("User not found!");
       }
@@ -41,7 +42,7 @@ class UserManager {
             throw new Error('User could not be created!');
         }
 
-        const emailExists = await userModel.findOne({email}).lean();
+        const emailExists = await userModel.findOne({ email }).lean();
         
         if (emailExists) {
           new Error("User already exists");
@@ -61,12 +62,20 @@ class UserManager {
           throw new Error("Invalid credentials!");
         }
         try {
-          const user = await userModel.findOne({email}).lean();
+          const user = await userModel.findOne({ email }).lean();
           
           if (!user) throw new Error('Invalid user!');
 
           if (isValidPassword(user, password)) {
+            
+            const timeZone = moment().tz('America/Argentina/Buenos_Aires');
+            const utcOffset = timeZone.utcOffset();
+            const lastConnection = new Date(timeZone.valueOf() + utcOffset * 60000);
+
+            await userModel.findByIdAndUpdate(user._id, { last_connection: lastConnection });
+
             const token = jwt.sign(user, "secretKey", { expiresIn: "1h" });
+
             return { token, user };
           }else{
             throw new Error("Invalid Password!");
