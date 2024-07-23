@@ -4,7 +4,7 @@ const form = document.getElementById('role-switch-form');
     const userId = document.getElementById('role').dataset.userId;
     const newRole = document.getElementById('role').value;
     try {
-      const response = await fetch(`/api/users/premium/${userId}`, {
+      const response = await fetch(`/api/users/`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ role: newRole }),
