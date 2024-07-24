@@ -111,8 +111,13 @@ sessionRouter.post('/:uid/documents', uploader, async (req, res) => {
     const user = req.session.user;
     const newRole = 'premium';
     
-    if (req.files && req.files.docs && req.files.profileImage && req.files.productImage) {
-        const uploadedDocs = req.files.docs.map(file => file.originalname);
+    if (req.files) {
+        let uploadedDocs = {};
+        
+        uploadedDocs.idDocument = req.files.idDocument[0].originalname;
+        uploadedDocs.addressDocument = req.files.addressDocument[0].originalname;
+        uploadedDocs.statementDocument = req.files.statementDocument[0].originalname;
+
         const profileImage = req.files.profileImage[0].originalname;
         const productImage = req.files.productImage[0].originalname;
 

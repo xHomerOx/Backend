@@ -1,21 +1,30 @@
 import multer from 'multer';
 
+let counter = 1;
+
 const storage = multer.diskStorage({
     destination: (_req, file, cb) => {
-      if (file.fieldname === 'profileImage') {
-        cb(null, 'public/img/profiles');
-      } else if (file.fieldname === 'productImage') {
-        cb(null, 'public/img/products');
-      } else if (file.fieldname === 'docs') {
-        cb(null, 'public/img/documents');
-      }
+        if (file.fieldname === 'profileImage') {
+            cb(null, 'public/img/profiles');
+        } else if (file.fieldname === 'productImage') {
+            cb(null, 'public/img/products');
+        } else if (file.fieldname === 'idDocument') {
+            cb(null, 'public/img/documents');
+        } else if (file.fieldname === 'addressDocument') {
+            cb(null, 'public/img/documents');
+        } else if (file.fieldname === 'statementDocument') {
+            cb(null, 'public/img/documents');
+        }
     },
     filename: (_req, file, cb) => {
-      cb(null, file.originalname);
+        const extension = file.originalname.split('.').pop();
+        const newFilename = `${file.fieldname}_${counter}.${extension}`;
+        counter++;
+        cb(null, newFilename);
     }
 });
-  
-const fileFilter = (req, file, cb) => {
+
+const fileFilter = (_req, file, cb) => {
     const allowedImageTypes = ['image/jpeg', 'image/png'];
     const allowedDocumentTypes = ['application/pdf', 'text/plain'];
     
@@ -25,21 +34,22 @@ const fileFilter = (req, file, cb) => {
         } else {
             cb(new Error('Only PNG and JPEG are allowed for profileImage and productImage.'));
         }
-    } else if (file.fieldname === 'docs') {
+    } else if (file.fieldname === 'idDocument' || file.fieldname === 'addressDocument' || file.fieldname === 'statementDocument') {
         if (allowedDocumentTypes.includes(file.mimetype)) {
             cb(null, true);
         } else {
             cb(new Error('Only PDF and text files are allowed for documents.'));
         }
-    } else {
-        cb(new Error('Campo de archivo no reconocido.'));
     }
 };
 
 export const uploader = multer({
-    storage, fileFilter
+    storage,
+    fileFilter
 }).fields([
     { name: 'profileImage', maxCount: 1 },
     { name: 'productImage', maxCount: 1 },
-    { name: 'docs', maxCount: 3 }
+    { name: 'idDocument', maxCount: 1 },
+    { name: 'addressDocument', maxCount: 1 },
+    { name: 'statementDocument', maxCount: 1 }
 ]);

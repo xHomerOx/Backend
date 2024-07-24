@@ -6,22 +6,31 @@ form.addEventListener('submit', async (event) => {
     event.preventDefault();
 
     const formData = new FormData(form);
-    const files = document.getElementById('docs').files;
+    const profileImage = document.getElementById('profileImage').files;
+    const productImage = document.getElementById('productImage').files;
+    const docs = document.querySelectorAll('.docs');
+    let hasDocs = false;
 
-    if (files.length === 0) {
+    docs.forEach((doc) => {
+        if (doc.files.length > 0) {
+            hasDocs = true;
+        }
+    });
+
+    if (profileImage.length === 0 || productImage.length === 0 || !hasDocs) {
         await Swal.fire({
             icon: 'error',
             title: 'Error!',
-            text: 'No documents were uploaded.',
+            text: 'Not all required files have been uploaded.',
         });
         return;
     }
-  
+
     try {
-      const response = await fetch(`/api/users/${userId}/documents`, {
-        method: 'POST',
-        body: formData
-      });
+        const response = await fetch(`/api/users/${userId}/documents`, {
+            method: 'POST',
+            body: formData
+        });
 
         if (!response.ok) {
             const responseData = await response.json();
@@ -31,7 +40,7 @@ form.addEventListener('submit', async (event) => {
         await Swal.fire({
             icon: 'success',
             title: 'Success!',
-            text: 'Documents uploaded successfully. User upgraded to premium. Log out and Log in again to apply changes',
+            text: 'Documents uploaded successfully. User upgraded to premium. Log out and log in again to apply changes.',
         });
 
         form.reset();
