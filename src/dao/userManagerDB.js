@@ -85,6 +85,14 @@ class UserManager {
         }
     }
 
+    async logoutUser(user) {
+      const timeZone = moment().tz('America/Argentina/Buenos_Aires');
+      const utcOffset = timeZone.utcOffset();
+      const lastConnection = new Date(timeZone.valueOf() + utcOffset * 60000);
+
+      await userModel.findByIdAndUpdate(user._id, { last_connection: lastConnection });
+    }
+
     async updatePassword(uid, newPassword) {
       try {
         await userModel.updateOne({ _id: uid }, { $set: { password: newPassword } });

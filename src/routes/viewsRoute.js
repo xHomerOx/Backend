@@ -67,6 +67,23 @@ viewsRouter.post('/login', async (req, res) => {
   }
 });
 
+viewsRouter.get('/logout', async (req, res) => {
+  const user = req.session.user;
+
+  req.session.destroy(async error => {
+    if (error) {
+      console.error('Error:', error);
+      res.status(500).send('Internal Server Error');
+    } else {
+      if (user) {
+        await myUsers.logoutUser(user);
+      }
+
+      res.render('loginView', { title: 'Login' });
+    }
+  });
+});
+
 viewsRouter.get('/realtimeproducts', async (req, res) => {
   const user = req.session.user; 
   const isAdmin = roleHelper.isAdmin(user);
