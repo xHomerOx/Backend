@@ -69,14 +69,26 @@ sessionRouter.get('/:uid', passport.authenticate('jwt', {session: false}), isAdm
     }
 });
 
-sessionRouter.get('/', authenticate, async (req, res) => {
-    const user = req.session.user;
+sessionRouter.get('/premium/:uid', authenticate, async (req, res) => {
+    const user = await UserService.getUser(req.params.uid);
     const roles = ['user', 'premium'];
     
-    if (user.role === 'premium' || user.role === 'user') {
+    if (user.role === 'premium') {
         res.render('switchRoleView', { title: 'Role Switcher', user: user, role: roles });
     }else{
         res.status(401).json({ error: 'Unauthorized', message: 'You do not have permission to access this page.' });
+    }
+});
+
+sessionRouter.put('/premium/:uid', async (req, res) => {
+    const uid = req.params.uid;
+    const newRole = req.body.role;
+
+    try {
+      await UserService.updateRole(uid, newRole);
+      res.status(200).send("Role updated successfully!");
+    } catch (error) {
+      res.status(500).send("Error updating role!");
     }
 });
 
