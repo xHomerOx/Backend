@@ -9,6 +9,7 @@
         <h1>Add Product</h1>
         {{#if user}}
             <h3>Welcome back, {{ user.first_name }} {{ user.last_name }}</h3>
+            <div><a href='/api/users/{{user._id}}/documents'>Upgrade</a></div>
             <div><a href="/products/logout">Logout</a></div>
         {{else}}
             <h3>Welcome, Guest</h3>

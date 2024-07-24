@@ -118,7 +118,7 @@ class UserManager {
       }
     }
 
-    async updateRole(uid, newRole ) {
+    async updateRole(uid, newRole) {
       try {
         await userModel.updateOne({ _id: uid }, { $set: { role: newRole } });
         

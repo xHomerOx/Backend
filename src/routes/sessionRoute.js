@@ -2,6 +2,7 @@ import { Router } from "express";
 import UserManager from "../dao/userManagerDB.js";
 import passport from "passport";
 import { authenticate } from "../config/authenticationConfig.js";
+import { uploader } from "../utils/multerUtil.js";
 
 const sessionRouter = Router();
 const UserService =  new UserManager();
@@ -79,16 +80,31 @@ sessionRouter.get('/', authenticate, async (req, res) => {
     }
 });
 
-sessionRouter.put('/', async (req, res) => {
+sessionRouter.get('/:uid/documents', (req, res) => {
+    const user = req.session.user;
+    const userId = req.params.uid;
+
+    if (user) {
+        res.render('documentsView', { title: 'Documents Uploader', user: user, userId: userId });
+    }else{
+        res.status(401).json({ error: 'Unauthorized', message: 'You do not have permission to access this page.' });
+    }  
+});
+
+sessionRouter.post('/:uid/documents', uploader.array('docs', 3), async (req, res) => {
     const user = req.session.user;
     const newRole = req.body.role;
 
-    try {
-      await UserService.updateRole(user, newRole);
-      res.status(200).send("Role updated successfully!");
-    } catch (error) {
-      res.status(500).send("Error updating role!");
+    if (req.files) {
+        const documents = req.files.map((file) => file.filename);
+
+        req.body.documents = documents;
+
+        await UserService.updateRole(user, newRole);
+        return res.status(200).json({ message: 'Documents uploaded successfully. User upgraded to premium.' });
+    }else{
+        return res.status(400).json({ error: 'Bad Request', message: 'No documents were uploaded.' });
     }
-  });
+});
 
 export default sessionRouter;
