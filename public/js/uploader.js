@@ -6,15 +6,22 @@ form.addEventListener('submit', async (event) => {
     event.preventDefault();
 
     const formData = new FormData(form);
+    const files = document.getElementById('docs').files;
 
-    try {
-        const response = await fetch(`/api/users/${userId}/documents`, {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(formData)
+    if (files.length === 0) {
+        await Swal.fire({
+            icon: 'error',
+            title: 'Error!',
+            text: 'No documents were uploaded.',
         });
+        return;
+    }
+  
+    try {
+      const response = await fetch(`/api/users/${userId}/documents`, {
+        method: 'POST',
+        body: formData
+      });
 
         if (!response.ok) {
             const responseData = await response.json();
@@ -24,7 +31,7 @@ form.addEventListener('submit', async (event) => {
         await Swal.fire({
             icon: 'success',
             title: 'Success!',
-            text: 'Documents uploaded successfully. User upgraded to premium.',
+            text: 'Documents uploaded successfully. User upgraded to premium. Log out and Log in again to apply changes',
         });
 
         form.reset();
@@ -35,7 +42,8 @@ form.addEventListener('submit', async (event) => {
         await Swal.fire({
             icon: 'error',
             title: 'Error!',
-            text: 'Failed to upload documents. Please try again.',
+            html: 'Failed to upload documents.<br>' + 
+            'Error: Only PNG and JPEG are allowed for profileImage and productImage. Only PDF and text files are allowed for documents.',
         });
     }
 });

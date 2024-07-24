@@ -84,24 +84,28 @@ sessionRouter.get('/:uid/documents', (req, res) => {
     const user = req.session.user;
     const userId = req.params.uid;
 
-    if (user) {
-        res.render('documentsView', { title: 'Documents Uploader', user: user, userId: userId });
-    }else{
-        res.status(401).json({ error: 'Unauthorized', message: 'You do not have permission to access this page.' });
-    }  
+    if (!user) {
+        return res.status(401).json({ error: 'Unauthorized', message: 'You do not have permission to access this page.' });
+    }
+
+    if (user.role === 'premium') {
+        return res.status(400).json({ error: 'You cannot upgrade anymore', message: 'You are Premium User now.' });
+    }
+
+    res.render('documentsView', { title: 'Documents Uploader', user: user, userId: userId });  
 });
 
-sessionRouter.post('/:uid/documents', uploader.array('docs', 3), async (req, res) => {
+sessionRouter.post('/:uid/documents', uploader, async (req, res) => {
     const user = req.session.user;
-    const newRole = req.body.role;
-
-    if (req.files) {
-        const documents = req.files.map((file) => file.filename);
-
-        req.body.documents = documents;
+    const newRole = 'premium';
+    
+    if (req.files && req.files.docs && req.files.profileImage && req.files.productImage) {
+        const uploadedDocs = req.files.docs.map(file => file.originalname);
+        const profileImage = req.files.profileImage[0].originalname;
+        const productImage = req.files.productImage[0].originalname;
 
         await UserService.updateRole(user, newRole);
-        return res.status(200).json({ message: 'Documents uploaded successfully. User upgraded to premium.' });
+        return res.status(200).json({ message: 'Documents uploaded successfully. User upgraded to premium.', uploadedDocs, profileImage, productImage });
     }else{
         return res.status(400).json({ error: 'Bad Request', message: 'No documents were uploaded.' });
     }

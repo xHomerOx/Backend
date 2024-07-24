@@ -22,7 +22,7 @@ productsRouter.get('/:pid', async (req, res) => {
     }
 });
 
-productsRouter.post("/", uploader.array('thumbnail', 3), async (req, res) => {
+productsRouter.post("/", uploader, async (req, res) => {
     if (req.files) {
         const thumbnails = req.files.map((file) => file.filename);
         req.body.thumbnail = thumbnails;
@@ -36,7 +36,7 @@ productsRouter.post("/", uploader.array('thumbnail', 3), async (req, res) => {
     }
 });
 
-productsRouter.put("/:pid", uploader.array('thumbnail', 3), async (req, res) => {
+productsRouter.put("/:pid", uploader, async (req, res) => {
     try {
         const pid = req.params.pid;
   

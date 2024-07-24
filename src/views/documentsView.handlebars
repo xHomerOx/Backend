@@ -1,25 +1,26 @@
 <!DOCTYPE html>
 <html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{title}}</title>
-</head>
-<body>
-    <div id="userId" data-user-id="{{userId}}">
-        <form id="uploadForm">
-            <label for="profileImage">Profile Image:</label>
-            <input type="file" id="profileImage" name="profileImage"><br><br>
-            
-            <label for="productImage">Products Image:</label>
-            <input type="file" id="productImage" name="productImage"><br><br>
-            
-            <label for="docs">Documents (max 3):</label>
-            <input type="file" id="docs" name="docs" multiple><br><br>
-            
-            <button type="submit">Subir archivos</button>
-        </form>
-    </div>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>{{title}}</title>
+    </head>
+    <body>
+        <div id="userId" data-user-id="{{userId}}">
+            <form id="uploadForm">
+                <label for="profileImage">Profile Image:</label>
+                <input type="file" id="profileImage" name="profileImage"><br><br>
+                
+                <label for="productImage">Products Image:</label>
+                <input type="file" id="productImage" name="productImage"><br><br>
+                
+                <label for="docs">Documents (max 3):</label>
+                <input type="file" id="docs" name="docs" multiple><br><br>
+                
+                <button type="submit">Subir archivos</button>
+            </form>
+        </div>
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
         <script src="/js/uploader.js"></script>
-</body>
+    </body>
+</html>
