@@ -57,7 +57,8 @@ app.get('/', (_req, res) => {
         <p>/products/recover</p>
         <p>/products/changepassword</p>
         <p>/api/users/premium/:uid</p>
-        PREMIUM DEFAULT USER UID = 66801cd61f5f7e41242cd863
+        <p>/api/users/:uid/documents</p>
+        Relog on each POST or PUT operation.
     </body>
     `);
 });

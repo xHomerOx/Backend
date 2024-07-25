@@ -83,9 +83,10 @@ sessionRouter.get('/premium/:uid', authenticate, async (req, res) => {
 sessionRouter.put('/premium/:uid', async (req, res) => {
     const uid = req.params.uid;
     const newRole = req.body.role;
+    const documents = [];
 
     try {
-      await UserService.updateRole(uid, newRole);
+      await UserService.updateRole(uid, newRole, documents);
       res.status(200).send("Role updated successfully!");
     } catch (error) {
       res.status(500).send("Error updating role!");
@@ -114,14 +115,20 @@ sessionRouter.post('/:uid/documents', uploader, async (req, res) => {
     if (req.files) {
         let uploadedDocs = {};
         
-        uploadedDocs.idDocument = req.files.idDocument[0].originalname;
-        uploadedDocs.addressDocument = req.files.addressDocument[0].originalname;
-        uploadedDocs.statementDocument = req.files.statementDocument[0].originalname;
+        uploadedDocs.idDocument = req.files.idDocument[0].filename;
+        uploadedDocs.addressDocument = req.files.addressDocument[0].filename;
+        uploadedDocs.statementDocument = req.files.statementDocument[0].filename;
 
-        const profileImage = req.files.profileImage[0].originalname;
-        const productImage = req.files.productImage[0].originalname;
+        const profileImage = req.files.profileImage[0].filename;
+        const productImage = req.files.productImage[0].filename;
 
-        await UserService.updateRole(user, newRole);
+        const documents = [
+            { name: uploadedDocs.idDocument, reference: `/public/img/documents/${uploadedDocs.idDocument}` },
+            { name: uploadedDocs.idDocument, reference: `/public/img/documents/${uploadedDocs.addressDocument}` },
+            { name: uploadedDocs.idDocument, reference: `/public/img/documents/${uploadedDocs.statementDocument}` }
+        ];
+
+        await UserService.updateRole(user, newRole, documents);
         return res.status(200).json({ message: 'Documents uploaded successfully. User upgraded to premium.', uploadedDocs, profileImage, productImage });
     }else{
         return res.status(400).json({ error: 'Bad Request', message: 'No documents were uploaded.' });

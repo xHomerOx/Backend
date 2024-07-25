@@ -118,12 +118,14 @@ class UserManager {
       }
     }
 
-    async updateRole(uid, newRole) {
+    async updateRole(uid, newRole, documents) {
       try {
         await userModel.updateOne({ _id: uid }, { $set: { role: newRole } });
-        
+        await userModel.findByIdAndUpdate(uid, { $set: { documents: documents } });
+
         return "Role updated successfully!";
       } catch (error) {
+        console.log(error);
         throw new Error("Error updating role!");
       }
     }
