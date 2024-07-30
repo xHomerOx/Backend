@@ -10,6 +10,7 @@ class TicketRepository {
             const ticket = await this.dao.createTicket(purchaser, amount, cart);        
             return new TicketDto(ticket);
         } catch (error) {
+            console.log(error);
             throw new Error(`Could not get Ticket`);
         }
     }

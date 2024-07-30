@@ -156,7 +156,7 @@ cartsRouter.post('/:cid/purchase', async (req, res) => {
 
 cartsRouter.get('/:cid/purchase', async (req, res) => {
     try {
-        const purchaser = req.user.email;
+        const purchaser = req.user.email || req.user.user;
         const cart = await myCart.getProductsFromCart(req.params.cid);
         
         let amount = 0;
