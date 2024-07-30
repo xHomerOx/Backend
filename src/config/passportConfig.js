@@ -115,16 +115,21 @@ const initializePassport = () => {
     passport.use("jwt", new JWTStrategy(
         {
           jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-          secretOrKey: "secretKey"
+          secretOrKey: process.env.JWT_SECRET
         },
         async (jwt_payload, done) => {
-          try {
-            return done(null, jwt_payload);
-          } catch (error) {
-            return done(error)
-          }
+            try {
+                const user = await userModel.findById(jwt_payload.id);
+                if (user) {
+                    return done(null, user);
+                } else {
+                    return done(null, false);
+                }
+            } catch (error) {
+                return done(error);
+            }
         }
-    ))
+    ));
     
     passport.serializeUser(async (user, done) => {
         done(null, user._id);

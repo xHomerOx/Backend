@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 
 const userCollection = "users";
 
-const userSchema = mongoose.Schema({
+const userSchema = new mongoose.Schema({
     user: {
         type: String,
         minLength: 3,
