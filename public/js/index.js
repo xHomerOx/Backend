@@ -56,6 +56,43 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     if (user.role === 'admin') {
+
+        const addThumbnailBtn = document.getElementById('addThumbnailBtn');
+        const thumbnailsContainer = document.getElementById('thumbnailsContainer');
+        let thumbnailCount = 1;
+    
+        addThumbnailBtn.addEventListener('click', () => {
+            if (thumbnailCount < 3) {
+                thumbnailCount++;
+    
+                const newThumbnailDiv = document.createElement('div');
+                newThumbnailDiv.className = 'mb-3';
+    
+                const newLabel = document.createElement('label');
+                newLabel.className = 'form-label';
+                newLabel.setAttribute('for', `thumbnail${thumbnailCount}`);
+                newLabel.textContent = `Thumbnail ${thumbnailCount}:`;
+                newThumbnailDiv.appendChild(newLabel);
+    
+                const newInput = document.createElement('input');
+                newInput.type = 'file';
+                newInput.id = `thumbnail${thumbnailCount}`;
+                newInput.name = 'thumbnail';
+                newInput.className = 'form-control';
+                newInput.required = true;
+                newThumbnailDiv.appendChild(newInput);
+    
+                thumbnailsContainer.appendChild(newThumbnailDiv);
+            } else {
+                Swal.fire({
+                    title: 'Limit Reached',
+                    text: 'Maximum of three thumbnails allowed',
+                    icon: 'error',
+                    confirmButtonText: 'OK'
+                });
+            }
+        });
+
         const addProductForm = document.getElementById("addProductForm");
         addProductForm.addEventListener("submit", async (event) => {
             event.preventDefault();

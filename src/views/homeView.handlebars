@@ -74,8 +74,11 @@
                     <input type="number" id="price" name="price" class="form-control" required>
                 </div>
                 <div class="mb-3">
-                    <label for="thumbnail" class="form-label">Thumbnail:</label>
-                    <input type="file" id="thumbnail" name="thumbnail" class="form-control" multiple required>
+                    <div id="thumbnailsContainer" class="mb-3">
+                        <label for="thumbnail" class="form-label">Thumbnail:</label>
+                        <input type="file" id="thumbnail" name="thumbnail" class="form-control" required>
+                        <button type="button" id="addThumbnailBtn" class="btn btn-secondary mt-3">Add Another Thumbnail</button>
+                    </div>
                 </div>
                 <div class="mb-3">
                     <label for="code" class="form-label">Product Code:</label>
