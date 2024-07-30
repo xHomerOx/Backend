@@ -123,11 +123,15 @@ viewsRouter.get('/chatbox', isLoggedIn, async (req, res) => {
   }
 });
 
-viewsRouter.get("/mockingproducts", (_req, res) => {
+viewsRouter.get("/mockingproducts", async (_req, res) => {
   let products = [];
-  for (let i = 0; i < 100; i++) {
+
+  for (let i = 0; i < 30; i++) {
     products.push(generateProducts());
   }
+
+  await productModel.insertMany(products);
+  
   res.render('mockingView', { title: 'Mocking Products', products });
 });
 
