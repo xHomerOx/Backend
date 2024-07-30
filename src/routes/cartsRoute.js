@@ -20,6 +20,7 @@ cartsRouter.get('/:cid', async (req, res) => {
             payload: results
         });
     } catch (error) {
+        req.logger.warning("Cannot get Products from cart");
         res.status(400).send({
             status: 'error',
             message: error.message
@@ -36,6 +37,7 @@ cartsRouter.post('/', async (_req, res) => {
             payload: results
         });
     } catch (error) {
+        req.logger.warning("Cannot add Cart");
         res.status(400).send({
             status: 'error',
             message: error.message
@@ -52,6 +54,7 @@ cartsRouter.post('/:cid/products/:pid', async (req, res) => {
             payload: results
         });
     } catch (error) {
+        req.logger.warning("Cannot add Product to cart");
         res.status(400).send({
             status: 'error',
             message: error.message
@@ -68,6 +71,7 @@ cartsRouter.delete('/:cid/products/:pid', async (req, res) => {
             payload: results
         });
     } catch (error) {
+        req.logger.warning("Cannot delete Product from cart");
         res.status(400).send({
             status: 'error',
             message: error.message
@@ -87,6 +91,7 @@ cartsRouter.put('/:cid', async (req, res) => {
             payload: results
         });
     } catch (error) {
+        req.logger.warning("Cannot update Product");
         res.status(400).send({
             status: 'error',
             message: error.message
@@ -107,6 +112,7 @@ cartsRouter.put('/:cid/products/:pid', async (req, res) => {
             payload: results
         });
     } catch (error) {
+        req.logger.warning("Cannot update Product from this cart");
         res.status(400).send({
             status: 'error',
             message: error.message
@@ -123,6 +129,7 @@ cartsRouter.delete('/:cid', async (req, res) => {
             payload: results
         });
     } catch (error) {
+        req.logger.warning("Cannot delete cart");
         res.status(400).send({
             status: 'error',
             message: error.message
@@ -139,6 +146,7 @@ cartsRouter.post('/:cid/purchase', async (req, res) => {
             payload: results
         });
     } catch (error) {
+        req.logger.warning("Purchase Failed");
         res.status(400).send({
             status: 'error',
             message: error.message
@@ -163,6 +171,7 @@ cartsRouter.get('/:cid/purchase', async (req, res) => {
 
         res.render('ticketView', { title: 'Ticket', ticket: ticket, notProcessed: notProcessed });
     } catch (error) {
+        req.logger.warning("Cannot generate Ticket");
         res.status(400).send({
             status: 'error',
             message: error.message

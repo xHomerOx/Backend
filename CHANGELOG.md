@@ -1,6 +1,9 @@
-# Tercera Pre-entrega Proyecto Final
+# Proyecto Final Backend
 
-Mejorando la arquitectura del servidor.
+## 30-07-2024
+
+
+----------------------------------------------------------------------------------------
 
 ## 03-06-2024
 - Prevented Cart to keep products after logged in.

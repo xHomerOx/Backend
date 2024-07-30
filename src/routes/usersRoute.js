@@ -16,6 +16,7 @@ usersRouter.post("/register", passport.authenticate('register', {failureRedirect
             payload: result
         });
     } catch (error) {
+        req.logger.warning("Registration Failed");
         res.status(400).send({
             status: 'error',
             message: error.message
@@ -35,6 +36,7 @@ usersRouter.post("/login", auth, async (req, res) => {
             role: token.role
         });
     } catch (error) {
+        req.logger.warning("Login Failed");
         res.status(400).send({
             status: 'error',
             message: error.message
@@ -59,6 +61,7 @@ usersRouter.get('/:uid', passport.authenticate('jwt', {session: false}), isAdmin
             payload: result.payload
         });
     } catch (error) {
+        req.logger.warning("Unknown User");
         res.status(400).send({
             status: 'error',
             message: error.message

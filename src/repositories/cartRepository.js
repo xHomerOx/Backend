@@ -55,7 +55,6 @@ class CartRepository {
             const results = await this.dao.updateProduct(cid, quantity);
             return new CartDto(results);
         } catch (error) {
-            console.log(error);
             throw new Error(`Could not update products in cart ${cid}`);
         }
     };

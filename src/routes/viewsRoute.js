@@ -5,6 +5,7 @@ import { cartModel } from '../models/cartModel.js';
 import passport from 'passport';
 import { auth } from '../middlewares/auth.js';
 import { isLoggedIn } from '../middlewares/guard.js';
+import { generateProducts } from "../utils/mockUtil.js";
 
 const viewsRouter = Router();
 
@@ -69,7 +70,8 @@ viewsRouter.get("/login", (req, res) => {
   res.render('loginView', { title: 'Login Form', failLogin: req.session.failLogin ?? false })
 });
 
-viewsRouter.get("/failLogin", (_req, res) => {
+viewsRouter.get("/failLogin", (req, res) => {
+  req.logger.warning("Login Failed");
   res.render('failLoginView', { title: 'Login Failed' })
 });
 
@@ -77,14 +79,15 @@ viewsRouter.get("/register", (req, res) => {
   res.render('registerView', { title: 'Register Form', failRegister: req.session.failRegister ?? false })
 });
 
-viewsRouter.get("/failRegister", (_req, res) => {
+viewsRouter.get("/failRegister", (req, res) => {
+  req.logger.warning("Register Failed");
   res.render('failRegisterView', { title: 'Registration Failed' })
 });
 
 viewsRouter.get("/logout", (req, res) => {
   req.session.destroy((error) => {
     if (error) {
-      return console.log(error);
+      req.logger.error(error);
     }
     return res.redirect("/login");
   });
@@ -112,11 +115,31 @@ viewsRouter.get('/chatbox', isLoggedIn, async (req, res) => {
     const user = req.user;
     res.render('chatView', { title: 'ChatView', user: user.user });
   } catch (error) {
+    req.logger.error(`Error rendering chat: ${error.message}`);
     res.status(400).send({
       status: 'error',
       message: error.message
     });
   }
+});
+
+viewsRouter.get("/mockingproducts", (_req, res) => {
+  let products = [];
+  for (let i = 0; i < 100; i++) {
+    products.push(generateProducts());
+  }
+  res.render('mockingView', { title: 'Mocking Products', products });
+});
+
+viewsRouter.get("/loggerTest", (req, res) => {
+  req.logger.fatal("Logger test fatal message");
+  req.logger.error("Logger test error message");
+  req.logger.warning("Logger test warning message");
+  req.logger.info("Logger test info message");
+  req.logger.http("Logger test http message");
+  req.logger.debug("Logger test debug message");
+
+  res.send("Logger test completed!"); 
 });
 
 export default viewsRouter;

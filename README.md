@@ -1,3 +1,6 @@
 # Proyecto Final Backend.
 
-Desarrollar un E-Commerce desde un Backend en NodeJS.
+Backend de una aplicación ecommerce.
+
+- Deploy into Railway.app.
+
