@@ -10,6 +10,6 @@ export const generateProducts =() => {
     status: fakerES_MX.datatype.boolean(0.5),
     stock: fakerES_MX.number.int(100),
     category: fakerES_MX.commerce.productAdjective(),
-    thumbnail: fakerES_MX.image.url({height: 100, width: 100})
+    thumbnail: fakerES_MX.image.urlPicsumPhotos({ height: 100, width: 100 })
   };
 }
