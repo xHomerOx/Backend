@@ -3,6 +3,7 @@ import passport from "passport";
 passport.authenticate('jwt', { session: false });
 
 export const isAdmin = (req, res, next) => {
+  console.log('User:', req.user);
   if (req.user && req.user.role === 'admin') {
     next();
   } else {

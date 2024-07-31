@@ -69,4 +69,20 @@ usersRouter.get('/:uid', passport.authenticate('jwt', {session: false}), isAdmin
     }
 });
 
+usersRouter.get('/', passport.authenticate('jwt', {session: false}), isAdmin, async (req, res) => { 
+    try {
+        const result = await myUser.getUsers();
+        res.send({
+            status: 'success',
+            payload: result.payload
+        });
+    } catch (error) {
+        req.logger.warning("Unknown User");
+        res.status(400).send({
+            status: 'error',
+            message: error.message
+        });
+    }
+});
+
 export default usersRouter;

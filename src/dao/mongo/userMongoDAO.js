@@ -76,6 +76,19 @@ class UserDao {
             throw new Error("Error getting user!");
         }
     }
+
+    async getUsers() { 
+      try {
+        const users = await userModel.find().exec();
+
+        return {
+            status: 'success',
+            payload: users
+        };
+      } catch (error) {
+          throw new Error("Error getting users!");
+      }
+  }
 }
 
 export default UserDao;

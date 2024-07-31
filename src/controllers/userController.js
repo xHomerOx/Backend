@@ -13,6 +13,10 @@ class UserController {
     async addUser(user, email, password) {
         return await userService.addUser(user, email, password);
     }
+
+    async getUsers() {
+        return await userService.getUsers();
+    }
 }
 
 export default UserController;

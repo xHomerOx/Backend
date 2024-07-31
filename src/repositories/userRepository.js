@@ -31,6 +31,15 @@ class UserRepository {
         throw new Error(error.message);
     }
   }
+
+  async getUsers() {
+    try {
+        const myUsers = await this.dao.getUsers();
+        return myUsers;
+    } catch (error) {
+        throw new Error(error.message);
+    }
+  }
 }
 
 export default UserRepository;
