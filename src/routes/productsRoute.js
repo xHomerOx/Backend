@@ -27,8 +27,12 @@ productsRouter.get('/:pid', async (req, res) => {
 
 productsRouter.post("/", uploader.array('thumbnail', 3), isAdmin, async (req, res) => {
     if (req.files) {
-        const thumbnails = req.files.map((file) => file.filename);
-        req.body.thumbnail = thumbnails;
+        const thumbnails = req.files.map((file) => {
+            const url = `/img/${file.filename}`;
+            return url;
+        });
+
+        req.body.thumbnail = thumbnails[0];
     }
   
     try {

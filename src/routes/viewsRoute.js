@@ -12,7 +12,7 @@ const viewsRouter = Router();
 viewsRouter.get('/', auth, async (req, res) => {
   try {
 
-    const { _id, user, role, cart } = req.user || {};
+    const { user, role, cart } = req.user || {};
     const cartId = cart ? cart._id : null;
 
     const limit = parseInt(req.query.limit) || 10;

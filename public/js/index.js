@@ -56,7 +56,6 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     if (user.role === 'admin') {
-
         const addThumbnailBtn = document.getElementById('addThumbnailBtn');
         const thumbnailsContainer = document.getElementById('thumbnailsContainer');
         let thumbnailCount = 1;
@@ -98,15 +97,11 @@ document.addEventListener("DOMContentLoaded", () => {
             event.preventDefault();
 
             const formData = new FormData(addProductForm);
-            const productData = Object.fromEntries(formData);
 
             try {
                 const response = await fetch("/api/products", {
                     method: "POST",
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
-                    body: JSON.stringify(productData)
+                    body: formData
                 });
 
                 if (response.ok) {
