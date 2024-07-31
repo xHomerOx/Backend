@@ -25,6 +25,10 @@ class UserController {
     async deleteUsers() {
         return await userService.deleteUsers();
     }
+
+    async getUserByToken(token) {
+        return await userService.getUserByToken(token);
+    }
 }
 
 export default UserController;

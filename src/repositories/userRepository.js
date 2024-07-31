@@ -58,6 +58,19 @@ class UserRepository {
         throw new Error(error.message);
     }
   }
+
+  async getUserByToken(token) {
+    try {
+        const myUsers = await this.dao.getUserByToken(token);
+        return myUsers;
+    } catch (error) {
+        throw new Error(error.message);
+    }
+  }
+
+  async updateRole() {
+
+  }
 }
 
 export default UserRepository;

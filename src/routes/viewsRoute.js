@@ -170,4 +170,81 @@ viewsRouter.get("/loggerTest", (req, res) => {
   res.send("Logger test completed!"); 
 });
 
+viewsRouter.get('/recover', (_req, res) => {
+    res.render('recoverView', { title: 'Recover Password' });
+});
+
+viewsRouter.get('/recover/:token', async (req, res) => {
+    const { token } = req.params;
+  
+    try {
+      const user = await myUser.getUserByToken(token);
+
+      if (!user) {
+        return res.status(404).render('recoverView', { error: 'Invalid token' });
+      }
+
+      res.render('changePasswordView', { user, token });
+    } catch (error) {
+      res.status(500).render('recoverView', { error: 'Token has expired. Please request a new password recovery link.', token });
+    }
+});
+
+viewsRouter.post('/recover', async (req, res) => {
+    const { email } = req.body;
+    
+    try {
+      const user = await myUser.getUserEmail(email);
+      
+      if (!user) {
+        return res.status(404).render('recoverView', { error: 'Email not found' });
+      }
+      
+      const token = jwt.sign(user, "secretKey", { expiresIn: "1h" });
+      const link = `http://localhost:8080/recover/${token}`;
+      
+      const mailOptions = {
+        from: 'Node Products <homero.tw@gmail.com>',
+        to: email,
+        subject: 'Password Recovery',
+        text: `Click on this link to recover your password: ${link}`,
+        html: `<p>Click on this link to recover your password: <a href="${link}">${link}</a></p>`
+      };
+
+      transport.sendMail(mailOptions, (error) => {
+        if (error) {
+          return res.status(500).json({ error: 'Error sending email' });
+        }
+
+        res.json({ success: 'Check your email for password recovery instructions' });
+      });
+    } catch (error) {
+      res.status(500).json({ error: 'Error recovering password' });
+    }
+});
+
+viewsRouter.post('/changePassword', async (req, res) => {
+    const { token } = req.body;
+    const { newPassword } = req.body;
+
+    try {
+      const user = await myUser.getUserByToken(token);
+
+      if (!user) {
+        return res.status(404).json({ error: 'Invalid token' });
+      }
+
+      if (isValidPassword(user, newPassword)) {
+        return res.status(400).json({ error: 'New password cannot be the same as old password' });
+      }
+      
+      const hashedPassword = createHash(newPassword);
+      await myUser.updatePassword(user._id, hashedPassword);
+
+      res.json({ success: 'Password changed successfully' });
+    } catch (error) {
+      res.status(500).json({ error: 'Token has expired. Please request a new password recovery link.' });
+    }
+});
+
 export default viewsRouter;
