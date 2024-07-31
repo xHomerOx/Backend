@@ -6,31 +6,40 @@ const userDataDiv = document.getElementById('userData');
 const user = userDataDiv.dataset.user;
 
 const chatBox = document.getElementById('chatBox');
+const messageInput = document.getElementById('messageInput');
+const sendButton = document.getElementById('sendButton');
 
 async function startChat() {
     socket.on("messages", data => {
-        const logs = document.getElementById("message");
         let messages = '';
-        if (data && data.length > 0) {
+        if (Array.isArray(data)) {
             data.forEach(message => {
-                if (message.user) {
-                    messages += `${message.user}: ${message.message} <br>`;
-                } else {
-                    messages += `<br>`;
+                if (message && typeof message.message === 'string') {
+                    const userName = message.user ? `<strong>${message.user}:</strong> ` : '';
+                    messages += `<p class="border-bottom py-2">${userName}${message.message}</p>`;
                 }
-            })
+            });
         }
-        logs.innerHTML = messages;
-    })
+        chatBox.innerHTML = messages;
+        chatBox.scrollTop = chatBox.scrollHeight;
+    });
 
-    chatBox.addEventListener('keyup', e => {
-        if(e.key === "Enter") {
-            if (chatBox.value.trim().length > 0) {
-                socket.emit("message", {user: user, message: chatBox.value});
-                chatBox.value = '';
-            }
+    messageInput.addEventListener('keyup', e => {
+        if (e.key === "Enter") {
+            sendMessage();
         }
     });
+
+    sendButton.addEventListener('click', () => {
+        sendMessage();
+    });
+
+    function sendMessage() {
+        if (messageInput.value.trim().length > 0) {
+            socket.emit("message", { user: user, message: messageInput.value });
+            messageInput.value = '';
+        }
+    }
 }
 
 startChat();

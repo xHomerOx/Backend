@@ -177,8 +177,8 @@ document.addEventListener("DOMContentLoaded", () => {
                         '<label for="price">Price:</label>' +
                         '<input type="number" id="price" name="price" required>' +
                         '<br>' +
-                        '<label for="thumbnail">Thumbnail:</label>' +
-                        '<input type="text" id="thumbnail" name="thumbnail" required>' +
+                        '<label for="thumbnail" class="form-label">Thumbnail:</label>' +
+                        '<input type="file" id="thumbnail" name="thumbnail" class="form-control">' +
                         '<br>' +
                         '<label for="code">Product Code:</label>' +
                         '<input type="text" id="code" name="code" required>' +
@@ -201,37 +201,16 @@ document.addEventListener("DOMContentLoaded", () => {
                     didOpen: () => {
                         const form = document.getElementById('updateProductForm');
                         const updateButton = document.getElementById('updateProductBtn');
-                
+                    
                         updateButton.addEventListener('click', async function(e) {
                             const formData = new FormData(form);
-                            const productId = formData.get('productId');
-                            const title = formData.get('title');
-                            const description = formData.get('description');
-                            const price = formData.get('price');
-                            const thumbnail = formData.get('thumbnail');
-                            const code = formData.get('code');
-                            const stock = formData.get('stock');
-                            const status = formData.get('status') === 'true';
-                            const category = formData.get('category');
-                        
+        
                             try {
                                 const response = await fetch(`/api/products/${productId}`, {
                                     method: "PUT",
-                                    headers: {
-                                        "Content-Type": "application/json"
-                                    },
-                                    body: JSON.stringify({
-                                        title,
-                                        description,
-                                        price,
-                                        thumbnail,
-                                        code,
-                                        stock,
-                                        status,
-                                        category
-                                    })
+                                    body: formData
                                 });
-                        
+        
                                 if (response.ok) {
                                     Swal.fire({
                                         title: 'Product Updated',
@@ -248,12 +227,18 @@ document.addEventListener("DOMContentLoaded", () => {
                                     });
                                 }
                             } catch (error) {
-                                throw new Error(error);
+                                Swal.fire({
+                                    title: 'Error',
+                                    text: 'There was an error updating the product',
+                                    icon: 'error',
+                                    confirmButtonText: 'OK'
+                                });
                             }
                         });
                     }
                 });
             }
         });
+        
     }
 });

@@ -52,37 +52,47 @@ productsRouter.post("/", uploader.array('thumbnail', 3), isAdmin, async (req, re
 productsRouter.put("/:pid", uploader.array('thumbnail', 3), isAdmin, async (req, res) => {
     try {
         const pid = req.params.pid;
-    
-        if (req.files) {
-            const thumbnails = req.files.map((file) => file.filename);
-            req.body.thumbnail = thumbnails;
-        }
-    
+
         const existingProduct = await myProduct.getProductById(pid);
-    
+
         if (!existingProduct) {
             return res.status(404).send({ message: "Product not found" });
         }
-    
-        if (req.body.id && req.body.id!== pid) {
+
+        let updatedProduct = { ...existingProduct };
+
+        if (req.files && req.files.length > 0) {
+            const thumbnails = req.files.map((file) => `/img/${file.filename}`);
+            updatedProduct.thumbnail = thumbnails[0];
+        }
+
+        if (req.body) {
+            Object.keys(req.body).forEach((key) => {
+                if (req.body[key] !== undefined && req.body[key] !== '') {
+                    updatedProduct[key] = req.body[key];
+                }
+            });
+        }
+
+        if (req.body.id && req.body.id !== pid) {
             return res.status(400).send({ message: "Product ID in body must match URL ID" });
         }
-    
-        delete req.body._id;
-    
-        await myProduct.updateProduct(pid, req.body);
-    
+
+        delete updatedProduct._id;
+
+        await myProduct.updateProduct(pid, updatedProduct);
+
         return res.status(200).send({ message: "Product updated successfully" });
     } catch (error) {
         req.logger.warning("Cannot update Product");
         res.status(400).send({
-          status: 'error',
-          message: error.message,
-          cause: error.cause,
-          code: error.code
+            status: 'error',
+            message: error.message,
+            cause: error.cause,
+            code: error.code
         });
-      }
-  });
+    }
+});
 
  productsRouter.delete("/:pid", isAdmin, async (req, res) => {
     try {
