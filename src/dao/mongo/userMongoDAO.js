@@ -155,7 +155,6 @@ class UserDao {
           deletedCount: result.deletedCount
         };
       } catch (error) {
-        console.log(error);
         throw new Error("Error deleting users!");
       }
     }
@@ -184,6 +183,20 @@ class UserDao {
       } catch (error) {
         console.log(error);
         throw new Error("Error updating role!");
+      }
+    }
+
+    async getUserEmail(email) {
+      try {
+        const user = await userModel.findOne({ email }).lean();
+
+        if (!user) {
+          throw new Error("Email not found!");
+        }
+    
+        return user;
+      } catch (error) {
+        throw new Error("Email not found!");
       }
     }
 }

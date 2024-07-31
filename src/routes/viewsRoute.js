@@ -2,13 +2,14 @@ import { Router } from 'express';
 import __dirname from '../utils/dirnameUtil.js';
 import productModel from '../models/productModel.js';
 import { cartModel } from '../models/cartModel.js';
-import userModel from '../models/userModel.js';
 import passport from 'passport';
 import { auth } from '../middlewares/auth.js';
 import { isLoggedIn } from '../middlewares/guard.js';
 import { generateProducts } from "../utils/mockUtil.js";
 import { userService } from '../repositories/index.js';
 import UserController from '../controllers/userController.js';
+import jwt from 'jsonwebtoken';
+import { transport } from '../utils/mailerUtil.js';
 
 const viewsRouter = Router();
 const myUser = new UserController(userService);
@@ -186,6 +187,7 @@ viewsRouter.get('/recover/:token', async (req, res) => {
 
       res.render('changePasswordView', { user, token });
     } catch (error) {
+      console.log(error);
       res.status(500).render('recoverView', { error: 'Token has expired. Please request a new password recovery link.', token });
     }
 });
@@ -195,7 +197,7 @@ viewsRouter.post('/recover', async (req, res) => {
     
     try {
       const user = await myUser.getUserEmail(email);
-      
+
       if (!user) {
         return res.status(404).render('recoverView', { error: 'Email not found' });
       }

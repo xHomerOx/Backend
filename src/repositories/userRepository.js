@@ -61,15 +61,25 @@ class UserRepository {
 
   async getUserByToken(token) {
     try {
-        const myUsers = await this.dao.getUserByToken(token);
-        return myUsers;
+        const myUser = await this.dao.getUserByToken(token);
+        return myUser;
     } catch (error) {
+        console.log(error);
         throw new Error(error.message);
     }
   }
 
   async updateRole() {
 
+  }
+
+  async getUserEmail(email) {
+    try {
+        const myUser = await this.dao.getUserEmail(email);
+        return myUser;
+    } catch (error) {
+        throw new Error(error.message);
+    }
   }
 }
 

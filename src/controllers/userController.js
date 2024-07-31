@@ -29,6 +29,10 @@ class UserController {
     async getUserByToken(token) {
         return await userService.getUserByToken(token);
     }
+
+    async getUserEmail(email) {
+        return await userService.getUserEmail(email);
+    }
 }
 
 export default UserController;
