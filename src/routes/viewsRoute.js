@@ -117,7 +117,7 @@ viewsRouter.post("/login", passport.authenticate('login', { failureRedirect: '/f
     const result = await myUser.loginUser(user, password);
     req.user = result.user;
     req.role = result.role;
-    res.render('homeView', { title: 'Products Page', products: req.products, isLoggedIn: true, user: req.user, role: req.role });
+    res.redirect('/')
   } catch (error) {
     res.redirect('/failLogin');
   }
