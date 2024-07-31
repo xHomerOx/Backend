@@ -23,6 +23,15 @@ class UserRepository {
       }
   }
 
+  async logoutUser(user) {
+    try {
+        const myUser = await this.dao.logoutUser(user);
+        return myUser;
+    } catch (error) {
+        throw new Error(error.message);
+    }
+}
+
   async getUser(user) {
     try {
         const myUser = await this.dao.getUser(user);
@@ -35,6 +44,15 @@ class UserRepository {
   async getUsers() {
     try {
         const myUsers = await this.dao.getUsers();
+        return myUsers;
+    } catch (error) {
+        throw new Error(error.message);
+    }
+  }
+
+  async deleteUsers() {
+    try {
+        const myUsers = await this.dao.deleteUsers();
         return myUsers;
     } catch (error) {
         throw new Error(error.message);

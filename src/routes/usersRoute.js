@@ -85,4 +85,21 @@ usersRouter.get('/', passport.authenticate('jwt', {session: false}), isAdmin, as
     }
 });
 
+usersRouter.delete('/', async (req, res) => { 
+    try {
+        const result = await myUser.deleteUsers();
+
+        res.send({
+            status: 'success',
+            payload: result.payload
+        });
+    } catch (error) {
+        req.logger.warning("Could not delete Users");
+        res.status(400).send({
+            status: 'error',
+            message: error.message
+        });
+    }
+});
+
 export default usersRouter;

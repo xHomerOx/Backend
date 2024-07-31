@@ -6,6 +6,10 @@ class UserController {
         return await userService.loginUser(user, password);
     }
 
+    async logoutUser(user) {
+        return await userService.logoutUser(user);
+    }
+
     async getUser(user) {
         return await userService.getUser(user);
     }
@@ -16,6 +20,10 @@ class UserController {
 
     async getUsers() {
         return await userService.getUsers();
+    }
+
+    async deleteUsers() {
+        return await userService.deleteUsers();
     }
 }
 

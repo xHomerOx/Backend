@@ -2,12 +2,16 @@ import { Router } from 'express';
 import __dirname from '../utils/dirnameUtil.js';
 import productModel from '../models/productModel.js';
 import { cartModel } from '../models/cartModel.js';
+import userModel from '../models/userModel.js';
 import passport from 'passport';
 import { auth } from '../middlewares/auth.js';
 import { isLoggedIn } from '../middlewares/guard.js';
 import { generateProducts } from "../utils/mockUtil.js";
+import { userService } from '../repositories/index.js';
+import UserController from '../controllers/userController.js';
 
 const viewsRouter = Router();
+const myUser = new UserController(userService);
 
 viewsRouter.get('/', auth, async (req, res) => {
   try {
@@ -88,19 +92,35 @@ viewsRouter.get("/failRegister", (req, res) => {
   res.render('failRegisterView', { title: 'Registration Failed' })
 });
 
-viewsRouter.get("/logout", (req, res) => {
-  req.session.destroy((error) => {
-    if (error) {
+viewsRouter.get("/logout", async (req, res) => {
+  try {
+      await myUser.logoutUser(req.user);
+
+      req.session.destroy((error) => {
+          if (error) {
+            req.logger.error(error);
+          }
+      });
+
+      res.redirect("/login");
+    } catch (error) {
       req.logger.error(error);
+      res.redirect("/login");
     }
-    return res.redirect("/login");
-  });
 });
 
-viewsRouter.post("/login", passport.authenticate('login', { failureRedirect: '/failLogin', successRedirect: '/' }), (req, res) => {
-  const user = req.user;
-  const role = req.user.role;
-  res.render('homeView', { title: 'Products Page', products: req.products, isLoggedIn: true, user: user, role: role });
+viewsRouter.post("/login", passport.authenticate('login', { failureRedirect: '/failLogin' }), async (req, res) => {
+  const user = req.body.user;
+  const password = req.body.password;
+
+  try {
+    const result = await myUser.loginUser(user, password);
+    req.user = result.user;
+    req.role = result.role;
+    res.render('homeView', { title: 'Products Page', products: req.products, isLoggedIn: true, user: req.user, role: req.role });
+  } catch (error) {
+    res.redirect('/failLogin');
+  }
 });
 
 viewsRouter.post("/register", passport.authenticate('register', { failureRedirect: '/failRegister' }), (req, res) => {

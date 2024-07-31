@@ -1,6 +1,7 @@
 import userModel from '../../models/userModel.js';
 import { createHash, isValidPassword } from '../../utils/cryptoUtil.js';
 import jwt from "jsonwebtoken";
+import moment from 'moment-timezone';
 
 class UserDao {
     constructor() {}
@@ -43,6 +44,12 @@ class UserDao {
           if (!myUser) throw new Error('Invalid user!');
       
           if (isValidPassword(myUser, password)) {
+            const timeZone = moment().tz('America/Argentina/Buenos_Aires');
+            const utcOffset = timeZone.utcOffset();
+            const lastConnection = new Date(timeZone.valueOf() + utcOffset * 60000);
+
+            await userModel.findByIdAndUpdate(myUser._id, { last_connection: lastConnection });
+
             const token = jwt.sign(myUser, "secretKey", { expiresIn: "1h" });
       
             return {
@@ -56,6 +63,24 @@ class UserDao {
           }
         } catch (error) {
           throw new Error("Login Error!");
+        }
+      }
+
+      async logoutUser(user) {
+        const timeZone = moment().tz('America/Argentina/Buenos_Aires');
+        const utcOffset = timeZone.utcOffset();
+        const lastConnection = new Date(timeZone.valueOf() + utcOffset * 60000);
+  
+        await userModel.findByIdAndUpdate(user._id, { last_connection: lastConnection });
+      }
+  
+      async updatePassword(uid, newPassword) {
+        try {
+          await userModel.updateOne({ _id: uid }, { $set: { password: newPassword } });
+      
+          return "Password updated successfully!";
+        } catch (error) {
+          throw new Error("Error updating password!");
         }
       }
 
@@ -95,6 +120,19 @@ class UserDao {
           throw new Error("Error getting users!");
       }
     }
+
+    async deleteUsers() { 
+      try {
+        const users = await userModel.deleteOne();
+
+        return {
+            status: 'success',
+            payload: users
+        };
+      } catch (error) {
+          throw new Error("Error getting users!");
+      }
+  }
 }
 
 export default UserDao;
