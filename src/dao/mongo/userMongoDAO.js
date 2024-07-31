@@ -127,12 +127,11 @@ class UserDao {
         const utcOffset = timeZone.utcOffset();
         const lastConnection = new Date(timeZone.valueOf() + utcOffset * 60000);
         const twoMinutesAgo = new Date(lastConnection.getTime() - 2 * 60 * 1000);
-        
+
         const result = await userModel.deleteMany({ last_connection: { $lte: twoMinutesAgo } });
-        console.log("Users to delete:", result);
         
         return {
-          status: 'uccess',
+          status: 'success',
           deletedCount: result.deletedCount
         };
       } catch (error) {
