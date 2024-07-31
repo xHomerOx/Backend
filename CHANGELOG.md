@@ -4,6 +4,8 @@
 - Added BS5 por Handlebars.
 - Fixed Multer filehandlers from Frontend to work.
 - Added abstract faker new images randomly.
+- Fixed ChatBox template and undefined message at start.
+- Changed PUT Endpoint for Products to update only the selected field.
 
 ----------------------------------------------------------------------------------------
 
