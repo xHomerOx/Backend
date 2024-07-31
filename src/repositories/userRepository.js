@@ -64,7 +64,6 @@ class UserRepository {
         const myUser = await this.dao.getUserByToken(token);
         return myUser;
     } catch (error) {
-        console.log(error);
         throw new Error(error.message);
     }
   }

@@ -181,7 +181,6 @@ class UserDao {
 
         return "Role updated successfully!";
       } catch (error) {
-        console.log(error);
         throw new Error("Error updating role!");
       }
     }

@@ -187,7 +187,6 @@ viewsRouter.get('/recover/:token', async (req, res) => {
 
       res.render('changePasswordView', { user, token });
     } catch (error) {
-      console.log(error);
       res.status(500).render('recoverView', { error: 'Token has expired. Please request a new password recovery link.', token });
     }
 });
