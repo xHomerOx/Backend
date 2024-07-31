@@ -75,20 +75,26 @@ class UserDao {
         } catch (error) {
             throw new Error("Error getting user!");
         }
-    }
+      }
 
     async getUsers() { 
       try {
         const users = await userModel.find().exec();
 
+        const userData = users.map(user => ({
+          user: user.user,
+          email: user.email,
+          role: user.role
+        }));
+
         return {
             status: 'success',
-            payload: users
+            payload: userData
         };
       } catch (error) {
           throw new Error("Error getting users!");
       }
-  }
+    }
 }
 
 export default UserDao;
