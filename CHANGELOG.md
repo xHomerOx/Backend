@@ -2,6 +2,9 @@
 
 ## 31-07-2024
 - Fixed True/False status in entire instance of the App.
+- Added GET all Users with Auth Bearer.
+- Fixed JWT for retrieve users with token if is Admin.
+- Added Login and Logout Functions.
 
 ## 30-07-2024
 - Added BS5 por Handlebars.
