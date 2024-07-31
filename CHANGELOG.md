@@ -2,6 +2,8 @@
 
 ## 30-07-2024
 - Added BS5 por Handlebars.
+- Fixed Multer filehandlers from Frontend to work.
+- Added abstract faker new images randomly.
 
 ----------------------------------------------------------------------------------------
 
