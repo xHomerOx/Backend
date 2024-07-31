@@ -64,43 +64,43 @@ class UserDao {
         } catch (error) {
           throw new Error("Login Error!");
         }
-      }
+    }
 
-      async logoutUser(user) {
-        const timeZone = moment().tz('America/Argentina/Buenos_Aires');
-        const utcOffset = timeZone.utcOffset();
-        const lastConnection = new Date(timeZone.valueOf() + utcOffset * 60000);
-  
-        await userModel.findByIdAndUpdate(user._id, { last_connection: lastConnection });
+    async logoutUser(user) {
+      const timeZone = moment().tz('America/Argentina/Buenos_Aires');
+      const utcOffset = timeZone.utcOffset();
+      const lastConnection = new Date(timeZone.valueOf() + utcOffset * 60000);
+
+      await userModel.findByIdAndUpdate(user._id, { last_connection: lastConnection });
+    }
+
+    async updatePassword(uid, newPassword) {
+      try {
+        await userModel.updateOne({ _id: uid }, { $set: { password: newPassword } });
+    
+        return "Password updated successfully!";
+      } catch (error) {
+        throw new Error("Error updating password!");
       }
-  
-      async updatePassword(uid, newPassword) {
-        try {
-          await userModel.updateOne({ _id: uid }, { $set: { password: newPassword } });
+    }  
+
+    async getUser(uid) {
+      if (!uid) {
+          throw new Error("Invalid user ID!");
+      }
       
-          return "Password updated successfully!";
-        } catch (error) {
-          throw new Error("Error updating password!");
-        }
+      try {
+          const user = await userModel.findOne({ _id: uid }).lean();
+          if (!user) throw new Error('User not found!');
+      
+          return {
+              status: 'success',
+              payload: user
+          };
+      } catch (error) {
+          throw new Error("Error getting user!");
       }
-
-      async getUser(uid) {
-        if (!uid) {
-            throw new Error("Invalid user ID!");
-        }
-        
-        try {
-            const user = await userModel.findOne({ _id: uid }).lean();
-            if (!user) throw new Error('User not found!');
-        
-            return {
-                status: 'success',
-                payload: user
-            };
-        } catch (error) {
-            throw new Error("Error getting user!");
-        }
-      }
+    }  
 
     async getUsers() { 
       try {
@@ -121,18 +121,25 @@ class UserDao {
       }
     }
 
-    async deleteUsers() { 
+    async deleteUsers() {
       try {
-        const users = await userModel.deleteOne();
-
+        const timeZone = moment().tz('America/Argentina/Buenos_Aires');
+        const utcOffset = timeZone.utcOffset();
+        const lastConnection = new Date(timeZone.valueOf() + utcOffset * 60000);
+        const twoMinutesAgo = new Date(lastConnection.getTime() - 2 * 60 * 1000);
+        
+        const result = await userModel.deleteMany({ last_connection: { $lte: twoMinutesAgo } });
+        console.log("Users to delete:", result);
+        
         return {
-            status: 'success',
-            payload: users
+          status: 'uccess',
+          deletedCount: result.deletedCount
         };
       } catch (error) {
-          throw new Error("Error getting users!");
+        console.log(error);
+        throw new Error("Error deleting users!");
       }
-  }
+    }
 }
 
 export default UserDao;
