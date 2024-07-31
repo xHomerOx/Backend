@@ -33,9 +33,11 @@ class ProductDao {
         if (!title || !description || !code || !price || !stock || !category) {
             throw new Error('Product could not be created!');
         }
-        
+
+        const status = stock > 0;
+
         try {
-            const result = await productModel.create({title, description, code, price, stock, category, thumbnail: thumbnail ?? []});
+            const result = await productModel.create({title, description, code, price, stock, status, category, thumbnail: thumbnail ?? []});
 
             return result;
         } catch (error) {
@@ -45,6 +47,13 @@ class ProductDao {
 
     async updateProduct(pid, productUpdate) {
         try {
+
+            const { stock } = productUpdate;
+
+            if (stock !== undefined) {
+                productUpdate.status = stock > 0;
+            }
+            
             const result = await productModel.updateOne({_id: pid}, productUpdate);
             return result;
         } catch(error) {

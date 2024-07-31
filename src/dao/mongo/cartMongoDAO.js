@@ -143,6 +143,10 @@ class CartDao {
           
           if (product.stock >= cartProduct.quantity) {
             product.stock -= cartProduct.quantity;
+            
+            if (product.stock === 0) {
+              product.status = false;
+            }
           }else{
             notProcessed.push(product.id + ', ');
             removedProducts.push(cartProduct);

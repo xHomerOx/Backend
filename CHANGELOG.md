@@ -1,5 +1,8 @@
 # Proyecto Final Backend
 
+## 31-07-2024
+- Fixed True/False status in entire instance of the App.
+
 ## 30-07-2024
 - Added BS5 por Handlebars.
 - Fixed Multer filehandlers from Frontend to work.

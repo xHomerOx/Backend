@@ -186,12 +186,6 @@ document.addEventListener("DOMContentLoaded", () => {
                         '<label for="stock">Stock:</label>' +
                         '<input type="number" id="stock" name="stock" required>' +
                         '<br>' +
-                        '<label for="status">Status:</label>' +
-                        '<select id="status" name="status" required>' +
-                            '<option value="true">Available</option>' +
-                            '<option value="false">Not Available</option>' +
-                        '</select>' +
-                        '<br>' +
                         '<label for="category">Category:</label>' +
                         '<input type="text" id="category" name="category" required>' +
                         '<br>' +

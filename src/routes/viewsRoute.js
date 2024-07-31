@@ -30,6 +30,10 @@ viewsRouter.get('/', auth, async (req, res) => {
 
     const products = await productModel.find(query).skip(skip).limit(limit).sort(sortOptions).lean();
 
+    products.forEach(product => {
+      product.status = product.status ? "Available" : "Not Available";
+    });
+    
     const prevPage = page > 1 ? `?page=${page - 1}` : null;
     const nextPage = page < totalPages ? `?page=${page + 1}` : null;
 
