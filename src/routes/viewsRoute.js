@@ -251,13 +251,37 @@ viewsRouter.post('/changePassword', async (req, res) => {
 
 viewsRouter.get('/switcher', isAdmin, async (req, res) => {
     const { user, role } = req.user;
-    const roles = ['user', 'premium', 'admin'];
-    console.log(user);
+    const roles = ['user', 'premium'];
+    const result = await myUser.getUsers();
+    const users = result.payload;
+
+    for (let userList of users) {
+        userList.roles = roles;
+    }
+
+    const isLoggedIn = req.user ? true : false;
+    const isAdmin = req.user && req.user.role === 'admin' ? true : false;
 
     if (role === 'admin') {
-        res.render('switchRoleView', { title: 'Role Switcher', user: user, role: roles });
-    }else{
-        res.status(401).json({ error: 'Unauthorized', message: 'You do not have permission to access this page.' });
+        res.render('switchRoleView', { title: 'Role Switcher', user: user,  role: role, users: users, roles: roles, isAdmin, isLoggedIn });
+    } else {
+        res.status(401).json({ 
+            error: 'Unauthorized', 
+            message: 'You do not have permission to access this page.' 
+        });
+    }
+});
+
+viewsRouter.put('/switcher/:uid', async (req, res) => {
+    const uid = req.params.uid;
+    const newRole = req.body.role;
+    const documents = [];
+
+    try {
+      await myUser.updateRole(uid, newRole, documents);
+      res.status(200).send("Role updated successfully!");
+    } catch (error) {
+      res.status(500).send("Error updating role!");
     }
 });
 

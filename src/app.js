@@ -19,6 +19,7 @@ import errors from './middlewares/errors/index.js';
 import { addLogger, startLogger } from './utils/loggerUtil.js';
 import swaggerJsdoc from 'swagger-jsdoc';
 import swaggerUiExpress from 'swagger-ui-express';
+import roleHelper from './helpers/roleHelper.js';
 
 dotenv.config();
 
@@ -27,7 +28,7 @@ const app = express();
 const uri = process.env.DB_CONNECTION;
 mongoose.connect(uri);
 
-app.engine('handlebars', exphbs.engine({ defaultLayout: false }));
+app.engine('handlebars', exphbs.engine({ defaultLayout: false, helpers: roleHelper }));
 
 app.set('view engine', 'handlebars');
 app.set('views', path.join(__dirname, '../views'));
