@@ -279,21 +279,29 @@ viewsRouter.get('/switcher', isAdmin, async (req, res) => {
 
 viewsRouter.put('/switcher/:uid', isAdmin, async (req, res) => {
   const userId = req.params.uid;
-  const { role } = req.body;
-
-  if (role === 'user') {
-      const documents = '';
-      await myUser.updateRole(userId, 'user', documents);
-      return res.json({ message: 'Role updated successfully' });
-  }
+  const role = req.user.role;
+  const newRole = req.body.role;
+  const documents = [];
 
   try {
-      return res.redirect(`/${userId}/documents`);
-  } catch (error) {
-      console.error(error);
-      return res.status(500).json({ error: 'Internal Server Error' });
-  }
+      if (newRole === role) {
+          return res.json({ message: 'Role is already set to the selected role' });
+      }
+
+      if (newRole === 'premium') {
+          return res.redirect(`/${userId}/documents`);
+      } else {
+          await myUser.updateRole(userId, newRole, documents);
+          return res.json({ message: 'Role updated successfully' });
+      }
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ error: 'Internal Server Error' });
+    }
 });
+
+
+
 
 
 viewsRouter.delete('/switcher/:uid', async (req, res) => {

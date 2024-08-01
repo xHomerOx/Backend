@@ -14,7 +14,6 @@ form.addEventListener('submit', async (event) => {
         if (doc.files.length > 0) {
             hasDocs = true;
         }
-        console.log(doc.files.length);
     });
 
     if (profileImage.length === 0 || !hasDocs) {
@@ -32,8 +31,6 @@ form.addEventListener('submit', async (event) => {
             body: formData
         });
 
-        console.log(response);
-
         if (!response.ok) {
             const responseData = await response.json();
             throw new Error(responseData.message || 'Failed to upload documents.');
@@ -45,7 +42,7 @@ form.addEventListener('submit', async (event) => {
             text: 'Documents uploaded successfully. User upgraded to premium. Log out and log in again to apply changes.',
         });
 
-        form.reset();
+        window.location.href = '/login';
 
     } catch (error) {
         console.error('Error uploading documents:', error.message);

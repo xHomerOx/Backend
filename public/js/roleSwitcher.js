@@ -19,19 +19,34 @@ document.addEventListener('DOMContentLoaded', () => {
         if (response.redirected) {
           window.location.href = response.url;
         } else if (response.ok) {
-          Swal.fire({
-            title: 'Role updated successfully',
-            icon: 'success',
-          });
+          const result = await response.json();
+          if (result.message === 'Role is already set to the selected role') {
+            Swal.fire({
+              title: 'No changes made',
+              text: 'The selected role is already applied to this user. No updates were made.',
+              icon: 'info',
+            });
+          } else {
+            Swal.fire({
+              title: 'Role updated successfully',
+              icon: 'success',
+            });
+          }
         } else {
+          const result = await response.json();
           Swal.fire({
             title: 'Error updating role',
-            text: 'Selected Role is already applied to that user, select a different Role',
+            text: result.message || 'Failed to update the role. Please try again.',
             icon: 'error',
           });
         }
       } catch (error) {
         console.error(error);
+        Swal.fire({
+          title: 'Error',
+          text: 'An error occurred while updating the role. Please try again.',
+          icon: 'error',
+        });
       }
     });
   });
