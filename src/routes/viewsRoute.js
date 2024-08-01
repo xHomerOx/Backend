@@ -10,6 +10,7 @@ import { userService } from '../repositories/index.js';
 import UserController from '../controllers/userController.js';
 import jwt from 'jsonwebtoken';
 import { transport } from '../utils/mailerUtil.js';
+import { createHash, isValidPassword } from '../utils/cryptoUtil.js';
 
 const viewsRouter = Router();
 const myUser = new UserController(userService);

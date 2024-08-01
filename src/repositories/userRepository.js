@@ -68,6 +68,16 @@ class UserRepository {
     }
   }
 
+  async updatePassword(uid, newPassword) {
+    try {
+        const myUser = await this.dao.updatePassword(uid, newPassword);
+        return myUser;
+    } catch (error) {
+        throw new Error(error.message);
+    }
+  }
+
+
   async updateRole() {
 
   }

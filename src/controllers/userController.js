@@ -30,6 +30,10 @@ class UserController {
         return await userService.getUserByToken(token);
     }
 
+    async updatePassword(uid, newPassword) {
+        return await userService.updatePassword(uid, newPassword);
+    }
+
     async getUserEmail(email) {
         return await userService.getUserEmail(email);
     }

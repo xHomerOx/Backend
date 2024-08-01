@@ -159,6 +159,16 @@ class UserDao {
       }
     }
 
+    async updatePassword(uid, newPassword) {
+      try {
+        await userModel.updateOne({ _id: uid }, { $set: { password: newPassword } });
+    
+        return "Password updated successfully!";
+      } catch (error) {
+        throw new Error("Error updating password!");
+      }
+    }
+    
     async getUserByToken(token) {
       try {
         const myToken = jwt.verify(token, 'secretKey');

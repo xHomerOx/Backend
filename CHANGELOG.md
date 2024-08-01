@@ -9,6 +9,7 @@
 - Fixed TimeZone.
 - Added Recover and Change Password View.
 - Fixed Redirect to Home after Succesfull Login.
+- Fixed Password Function to update.
 
 ## 30-07-2024
 - Added BS5 por Handlebars.
