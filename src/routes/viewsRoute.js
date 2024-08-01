@@ -120,6 +120,8 @@ viewsRouter.post("/login", passport.authenticate('login', { failureRedirect: '/f
     const result = await myUser.loginUser(user, password);
     req.user = result.user;
     req.role = result.role;
+    req.session.user = user;
+
     res.redirect('/')
   } catch (error) {
     res.redirect('/failLogin');
@@ -275,70 +277,76 @@ viewsRouter.get('/switcher', isAdmin, async (req, res) => {
     }
 });
 
-viewsRouter.put('/switcher/:uid', async (req, res) => {
-    const uid = req.params.uid;
-    const newRole = req.body.role;
-    const documents = [];
-
-    try {
-      await myUser.updateRole(uid, newRole, documents);
-      res.status(200).send("Role updated successfully!");
-    } catch (error) {
-      res.status(500).send("Error updating role!");
-    }
-});
-
-viewsRouter.delete('/switcher/:uid', async (req, res) => {
+viewsRouter.put('/switcher/:uid', isAdmin, async (req, res) => {
   const userId = req.params.uid;
+  const { role } = req.body;
+
+  if (role !== 'premium') {
+      return res.status(400).json({ error: 'Invalid role' });
+  }
 
   try {
-    await myUser.deleteUser(userId);
-    res.status(200).send("User deleted successfully!");
+      return res.redirect(`../${userId}/documents`);
   } catch (error) {
-    res.status(500).send("Error deleting user!");
+      console.error(error);
+      return res.status(500).json({ error: 'Internal Server Error' });
   }
 });
 
-viewsRouter.get('/:uid/documents', (req, res) => {
-  const user = req.session.user;
-  const userId = req.params.uid;
 
+viewsRouter.delete('/switcher/:uid', async (req, res) => {
+    const userId = req.params.uid;
+
+    try {
+      await myUser.deleteUser(userId);
+      res.status(200).send("User deleted successfully!");
+    } catch (error) {
+      res.status(500).send("Error deleting user!");
+    }
+});
+
+viewsRouter.get('/:uid/documents', isAdmin, async (req, res) => {
+  const userId = req.params.uid;
+  const user = req.session.user;
+  
   if (!user) {
       return res.status(401).json({ error: 'Unauthorized', message: 'You do not have permission to access this page.' });
   }
 
   if (user.role === 'premium') {
-      return res.status(400).json({ error: 'You cannot upgrade anymore', message: 'You are Premium User now.' });
+      return res.status(400).json({ error: 'Already Premium', message: 'You are already a Premium User.' });
   }
 
   res.render('documentsView', { title: 'Documents Uploader', user: user, userId: userId });  
 });
 
 viewsRouter.post('/:uid/documents', uploader, async (req, res) => {
-  const user = req.session.user;
-  const newRole = 'premium';
-  
-  if (req.files) {
-      let uploadedDocs = {};
-      
-      uploadedDocs.idDocument = req.files.idDocument[0].filename;
-      uploadedDocs.addressDocument = req.files.addressDocument[0].filename;
-      uploadedDocs.statementDocument = req.files.statementDocument[0].filename;
+  const userId = req.params.uid;
 
-      const profileImage = req.files.profileImage[0].filename;
-      const productImage = req.files.productImage[0].filename;
-
-      const documents = [
-          { name: uploadedDocs.idDocument, reference: `/public/img/documents/${uploadedDocs.idDocument}` },
-          { name: uploadedDocs.idDocument, reference: `/public/img/documents/${uploadedDocs.addressDocument}` },
-          { name: uploadedDocs.idDocument, reference: `/public/img/documents/${uploadedDocs.statementDocument}` }
-      ];
-
-      await UserService.updateRole(user, newRole, documents);
-      return res.status(200).json({ message: 'Documents uploaded successfully. User upgraded to premium.', uploadedDocs, profileImage, productImage });
-  }else{
+  if (!req.files) {
       return res.status(400).json({ error: 'Bad Request', message: 'No documents were uploaded.' });
   }
+
+  try {
+        const uploadedDocs = {
+            idDocument: req.files.idDocument[0].filename,
+            addressDocument: req.files.addressDocument[0].filename,
+            statementDocument: req.files.statementDocument[0].filename
+        };
+
+        const documents = [
+            { name: uploadedDocs.idDocument, reference: `/public/img/documents/${uploadedDocs.idDocument}` },
+            { name: uploadedDocs.addressDocument, reference: `/public/img/documents/${uploadedDocs.addressDocument}` },
+            { name: uploadedDocs.statementDocument, reference: `/public/img/documents/${uploadedDocs.statementDocument}` }
+        ];
+
+        await myUser.updateRole(userId, 'premium', documents);
+
+        return res.status(200).json({ message: 'Documents uploaded successfully. User upgraded to premium.', uploadedDocs });
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ error: 'Internal Server Error', message: 'Failed to update role.' });
+    }
 });
 
 export default viewsRouter;

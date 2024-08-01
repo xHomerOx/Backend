@@ -16,7 +16,9 @@ document.addEventListener('DOMContentLoaded', () => {
           body: JSON.stringify({ role: newRole }),
         });
 
-        if (response.ok) {
+        if (response.redirected) {
+          window.location.href = response.url;
+        } else if (response.ok) {
           Swal.fire({
             title: 'Role updated successfully',
             icon: 'success',
