@@ -103,6 +103,15 @@ class UserRepository {
         throw new Error(error.message);
     }
   }
+
+  async deleteUser(uid) {
+    try {
+        const myUser = await this.dao.deleteUser(uid);
+        return myUser;
+    } catch (error) {
+        throw new Error(error.message);
+    }
+  }
 }
 
 export default UserRepository;

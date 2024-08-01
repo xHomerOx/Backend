@@ -45,6 +45,10 @@ class UserController {
     async updateRole(uid, newRole, documents) {
         return await userService.updateRole(uid, newRole, documents);
     }
+
+    async deleteUser(uid) {
+        return await userService.deleteUser(uid);
+    }
 }
 
 export default UserController;

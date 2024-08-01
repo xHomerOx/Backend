@@ -221,6 +221,20 @@ class UserDao {
         throw new Error("Email not found!");
       }
     }
+
+    async deleteUser(uid) {
+      try {
+        const result = await userModel.deleteOne({ _id: uid });
+    
+        if (result.deletedCount === 0) {
+          throw new Error("User not found!");
+        }
+    
+        return `User with UID ${uid} deleted successfully!`;
+      } catch (error) {
+        throw new Error("Error deleting user: " + error.message);
+      }
+    }
 }
 
 export default UserDao;

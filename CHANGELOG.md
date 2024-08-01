@@ -4,6 +4,8 @@
 - Added RoleSwitcher for All Users.
 - Splitted Multer into two File Uploaders.
 - Added New Function to get the IDs of the Users.
+- Fixed Users updating all instead of selected ones.
+- Added DELETE endpoint for deleting Single User.
 
 ## 31-07-2024
 - Fixed True/False status in entire instance of the App.

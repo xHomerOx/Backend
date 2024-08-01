@@ -260,10 +260,7 @@ viewsRouter.get('/switcher', isAdmin, async (req, res) => {
       const userData = user._doc;
       userData.roles = roles;
       return userData;
-    });
-
-    console.log(myUsers);
-    
+    }); 
 
     const isLoggedIn = req.user ? true : false;
     const isAdmin = req.user && req.user.role === 'admin' ? true : false;
@@ -289,6 +286,17 @@ viewsRouter.put('/switcher/:uid', async (req, res) => {
     } catch (error) {
       res.status(500).send("Error updating role!");
     }
+});
+
+viewsRouter.delete('/switcher/:uid', async (req, res) => {
+  const userId = req.params.uid;
+
+  try {
+    await myUser.deleteUser(userId);
+    res.status(200).send("User deleted successfully!");
+  } catch (error) {
+    res.status(500).send("Error deleting user!");
+  }
 });
 
 viewsRouter.get('/:uid/documents', (req, res) => {
