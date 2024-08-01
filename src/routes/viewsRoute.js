@@ -279,11 +279,13 @@ viewsRouter.get('/switcher', isAdmin, async (req, res) => {
 
 viewsRouter.put('/switcher/:uid', isAdmin, async (req, res) => {
   const userId = req.params.uid;
-  const role = req.user.role;
   const newRole = req.body.role;
   const documents = [];
 
   try {
+      const user = await myUser.getUser(userId);
+      const role = user.payload.role;
+
       if (newRole === role) {
           return res.json({ message: 'Role is already set to the selected role' });
       }
@@ -300,10 +302,6 @@ viewsRouter.put('/switcher/:uid', isAdmin, async (req, res) => {
     }
 });
 
-
-
-
-
 viewsRouter.delete('/switcher/:uid', async (req, res) => {
     const userId = req.params.uid;
 
@@ -316,21 +314,21 @@ viewsRouter.delete('/switcher/:uid', async (req, res) => {
 });
 
 viewsRouter.get('/:uid/documents', isAdmin, async (req, res) => {
-  const userId = req.params.uid;
-  const { user, role } = req.user;
+    const userId = req.params.uid;
+    const { user, role } = req.user;
 
-  const isLoggedIn = req.user ? true : false;
-  const isAdmin = req.user && req.user.role === 'admin' ? true : false;
-  
-  if (!user) {
-      return res.status(401).json({ error: 'Unauthorized', message: 'You do not have permission to access this page.' });
-  }
+    const isLoggedIn = req.user ? true : false;
+    const isAdmin = req.user && req.user.role === 'admin' ? true : false;
+    
+    if (!user) {
+        return res.status(401).json({ error: 'Unauthorized', message: 'You do not have permission to access this page.' });
+    }
 
-  if (user.role === 'premium') {
-      return res.status(400).json({ error: 'Already Premium', message: 'You are already a Premium User.' });
-  }
+    if (user.role === 'premium') {
+        return res.status(400).json({ error: 'Already Premium', message: 'You are already a Premium User.' });
+    }
 
-  res.render('documentsView', { title: 'Documents Uploader', user: user, role: role, userId: userId, isAdmin, isLoggedIn });  
+    res.render('documentsView', { title: 'Documents Uploader', user: user, role: role, userId: userId, isAdmin, isLoggedIn });  
 });
 
 viewsRouter.post('/:uid/documents', uploader, async (req, res) => {
