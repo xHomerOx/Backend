@@ -268,7 +268,7 @@ viewsRouter.get('/switcher', isAdmin, async (req, res) => {
     const isAdmin = req.user && req.user.role === 'admin' ? true : false;
 
     if (role === 'admin') {
-        res.render('switchRoleView', { title: 'Role Switcher', user: user,  role: role, users: myUsers, roles: roles, isAdmin, isLoggedIn });
+        res.render('switchRoleView', { title: 'Role Switcher', user: user, role: role, users: myUsers, roles: roles, isAdmin, isLoggedIn });
     } else {
         res.status(401).json({ 
             error: 'Unauthorized', 
@@ -281,12 +281,14 @@ viewsRouter.put('/switcher/:uid', isAdmin, async (req, res) => {
   const userId = req.params.uid;
   const { role } = req.body;
 
-  if (role !== 'premium') {
-      return res.status(400).json({ error: 'Invalid role' });
+  if (role === 'user') {
+      const documents = '';
+      await myUser.updateRole(userId, 'user', documents);
+      return res.json({ message: 'Role updated successfully' });
   }
 
   try {
-      return res.redirect(`../${userId}/documents`);
+      return res.redirect(`/${userId}/documents`);
   } catch (error) {
       console.error(error);
       return res.status(500).json({ error: 'Internal Server Error' });
@@ -307,7 +309,10 @@ viewsRouter.delete('/switcher/:uid', async (req, res) => {
 
 viewsRouter.get('/:uid/documents', isAdmin, async (req, res) => {
   const userId = req.params.uid;
-  const user = req.session.user;
+  const { user, role } = req.user;
+
+  const isLoggedIn = req.user ? true : false;
+  const isAdmin = req.user && req.user.role === 'admin' ? true : false;
   
   if (!user) {
       return res.status(401).json({ error: 'Unauthorized', message: 'You do not have permission to access this page.' });
@@ -317,7 +322,7 @@ viewsRouter.get('/:uid/documents', isAdmin, async (req, res) => {
       return res.status(400).json({ error: 'Already Premium', message: 'You are already a Premium User.' });
   }
 
-  res.render('documentsView', { title: 'Documents Uploader', user: user, userId: userId });  
+  res.render('documentsView', { title: 'Documents Uploader', user: user, role: role, userId: userId, isAdmin, isLoggedIn });  
 });
 
 viewsRouter.post('/:uid/documents', uploader, async (req, res) => {
@@ -335,14 +340,14 @@ viewsRouter.post('/:uid/documents', uploader, async (req, res) => {
         };
 
         const documents = [
-            { name: uploadedDocs.idDocument, reference: `/public/img/documents/${uploadedDocs.idDocument}` },
-            { name: uploadedDocs.addressDocument, reference: `/public/img/documents/${uploadedDocs.addressDocument}` },
-            { name: uploadedDocs.statementDocument, reference: `/public/img/documents/${uploadedDocs.statementDocument}` }
+            { name: uploadedDocs.idDocument, reference: `/public/uploads/documents/${uploadedDocs.idDocument}` },
+            { name: uploadedDocs.addressDocument, reference: `/public/uploads/documents/${uploadedDocs.addressDocument}` },
+            { name: uploadedDocs.statementDocument, reference: `/public/uploads/documents/${uploadedDocs.statementDocument}` }
         ];
 
         await myUser.updateRole(userId, 'premium', documents);
 
-        return res.status(200).json({ message: 'Documents uploaded successfully. User upgraded to premium.', uploadedDocs });
+        return res.redirect('/login');
     } catch (error) {
         console.error(error);
         return res.status(500).json({ error: 'Internal Server Error', message: 'Failed to update role.' });

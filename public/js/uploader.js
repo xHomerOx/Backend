@@ -7,7 +7,6 @@ form.addEventListener('submit', async (event) => {
 
     const formData = new FormData(form);
     const profileImage = document.getElementById('profileImage').files;
-    const productImage = document.getElementById('productImage').files;
     const docs = document.querySelectorAll('.docs');
     let hasDocs = false;
 
@@ -15,9 +14,10 @@ form.addEventListener('submit', async (event) => {
         if (doc.files.length > 0) {
             hasDocs = true;
         }
+        console.log(doc.files.length);
     });
 
-    if (profileImage.length === 0 || productImage.length === 0 || !hasDocs) {
+    if (profileImage.length === 0 || !hasDocs) {
         await Swal.fire({
             icon: 'error',
             title: 'Error!',
@@ -31,6 +31,8 @@ form.addEventListener('submit', async (event) => {
             method: 'POST',
             body: formData
         });
+
+        console.log(response);
 
         if (!response.ok) {
             const responseData = await response.json();

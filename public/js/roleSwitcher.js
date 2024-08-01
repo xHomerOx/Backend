@@ -26,7 +26,7 @@ document.addEventListener('DOMContentLoaded', () => {
         } else {
           Swal.fire({
             title: 'Error updating role',
-            text: 'Please try again',
+            text: 'Selected Role is already applied to that user, select a different Role',
             icon: 'error',
           });
         }

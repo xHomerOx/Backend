@@ -5,15 +5,15 @@ let counter = 1;
 const storage = multer.diskStorage({
     destination: (_req, file, cb) => {
         if (file.fieldname === 'profileImage') {
-            cb(null, 'public/img/profiles');
+            cb(null, 'public/uploads/profiles');
         } else if (file.fieldname === 'productImage') {
-            cb(null, 'public/img/products');
+            cb(null, 'public/uploads/profiles');
         } else if (file.fieldname === 'idDocument') {
-            cb(null, 'public/img/documents');
+            cb(null, 'public/uploads/documents');
         } else if (file.fieldname === 'addressDocument') {
-            cb(null, 'public/img/documents');
+            cb(null, 'public/uploads/documents');
         } else if (file.fieldname === 'statementDocument') {
-            cb(null, 'public/img/documents');
+            cb(null, 'public/uploads/documents');
         }
     },
     filename: (_req, file, cb) => {
