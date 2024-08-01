@@ -1,42 +1,37 @@
-const form = document.getElementById('role-switch-form');
+document.addEventListener('DOMContentLoaded', () => {
+  const form = document.getElementById('role-switch-form');
 
-form.addEventListener('submit', async (e) => {
-    e.preventDefault();
-
-    const selects = form.querySelectorAll('select[name^="role-"]');
-    const updates = [];
-
-    selects.forEach(select => {
-        const userId = select.name.replace('role-', '');
-        const newRole = select.value;
-        updates.push({ userId, role: newRole });
-    });
-
-    try {
-        const response = await fetch(`/switcher/${userId}`, {
-            method: 'PUT',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(updates),
-        });
-
-        if (response.ok) {
-            Swal.fire({
-                title: 'Roles updated successfully',
-                icon: 'success',
-            });
-        } else {
-            Swal.fire({
-                title: 'Error updating roles',
-                text: 'Please try again',
-                icon: 'error',
-            });
-        }
-    } catch (error) {
-        console.error(error);
-        Swal.fire({
-            title: 'Error',
-            text: 'An error occurred while updating roles',
-            icon: 'error',
-        });
-    }
+  form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      
+      const selectElements = form.querySelectorAll('select[name="role"]');
+      
+      for (let select of selectElements) {
+          const userId = select.dataset.userId;
+          const newRole = select.value;
+          
+          try {
+              const response = await fetch(`/switcher/${userId}`, {
+                  method: 'PUT',
+                  headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify({ role: newRole }),
+              });
+              
+              if (response.ok) {
+                  Swal.fire({
+                      title: 'Role updated successfully',
+                      icon: 'success',
+                  });
+              } else {
+                  Swal.fire({
+                      title: 'Error updating role',
+                      text: 'Please try again',
+                      icon: 'error',
+                  });
+              }
+          } catch (error) {
+              console.error(error);
+          }
+      }
+  });
 });

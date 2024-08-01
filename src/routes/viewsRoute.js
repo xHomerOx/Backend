@@ -11,6 +11,7 @@ import UserController from '../controllers/userController.js';
 import jwt from 'jsonwebtoken';
 import { transport } from '../utils/mailerUtil.js';
 import { createHash, isValidPassword } from '../utils/cryptoUtil.js';
+import { uploader } from "../utils/documentsUtil.js";
 
 const viewsRouter = Router();
 const myUser = new UserController(userService);
@@ -255,15 +256,13 @@ viewsRouter.get('/switcher', isAdmin, async (req, res) => {
     const result = await myUser.getUsers();
     const users = result.payload;
 
-    for (let userList of users) {
-        userList.roles = roles;
-    }
+    const usersId = users.map(userData => ({ ...userData, _id: userData._id }));
 
     const isLoggedIn = req.user ? true : false;
     const isAdmin = req.user && req.user.role === 'admin' ? true : false;
 
     if (role === 'admin') {
-        res.render('switchRoleView', { title: 'Role Switcher', user: user,  role: role, users: users, roles: roles, isAdmin, isLoggedIn });
+        res.render('switchRoleView', { title: 'Role Switcher', user: user,  role: role, users: usersId, roles: roles, isAdmin, isLoggedIn });
     } else {
         res.status(401).json({ 
             error: 'Unauthorized', 
@@ -283,6 +282,48 @@ viewsRouter.put('/switcher/:uid', async (req, res) => {
     } catch (error) {
       res.status(500).send("Error updating role!");
     }
+});
+
+viewsRouter.get('/:uid/documents', (req, res) => {
+  const user = req.session.user;
+  const userId = req.params.uid;
+
+  if (!user) {
+      return res.status(401).json({ error: 'Unauthorized', message: 'You do not have permission to access this page.' });
+  }
+
+  if (user.role === 'premium') {
+      return res.status(400).json({ error: 'You cannot upgrade anymore', message: 'You are Premium User now.' });
+  }
+
+  res.render('documentsView', { title: 'Documents Uploader', user: user, userId: userId });  
+});
+
+viewsRouter.post('/:uid/documents', uploader, async (req, res) => {
+  const user = req.session.user;
+  const newRole = 'premium';
+  
+  if (req.files) {
+      let uploadedDocs = {};
+      
+      uploadedDocs.idDocument = req.files.idDocument[0].filename;
+      uploadedDocs.addressDocument = req.files.addressDocument[0].filename;
+      uploadedDocs.statementDocument = req.files.statementDocument[0].filename;
+
+      const profileImage = req.files.profileImage[0].filename;
+      const productImage = req.files.productImage[0].filename;
+
+      const documents = [
+          { name: uploadedDocs.idDocument, reference: `/public/img/documents/${uploadedDocs.idDocument}` },
+          { name: uploadedDocs.idDocument, reference: `/public/img/documents/${uploadedDocs.addressDocument}` },
+          { name: uploadedDocs.idDocument, reference: `/public/img/documents/${uploadedDocs.statementDocument}` }
+      ];
+
+      await UserService.updateRole(user, newRole, documents);
+      return res.status(200).json({ message: 'Documents uploaded successfully. User upgraded to premium.', uploadedDocs, profileImage, productImage });
+  }else{
+      return res.status(400).json({ error: 'Bad Request', message: 'No documents were uploaded.' });
+  }
 });
 
 export default viewsRouter;
