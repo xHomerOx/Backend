@@ -77,14 +77,18 @@ class UserRepository {
     }
   }
 
-
-  async updateRole() {
-
-  }
-
   async getUserEmail(email) {
     try {
         const myUser = await this.dao.getUserEmail(email);
+        return myUser;
+    } catch (error) {
+        throw new Error(error.message);
+    }
+  }
+
+  async updateRole(uid, newRole, documents) {
+    try {
+        const myUser = await this.dao.updateRole(uid, newRole, documents);
         return myUser;
     } catch (error) {
         throw new Error(error.message);

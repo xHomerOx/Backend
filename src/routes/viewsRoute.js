@@ -4,7 +4,7 @@ import productModel from '../models/productModel.js';
 import { cartModel } from '../models/cartModel.js';
 import passport from 'passport';
 import { auth } from '../middlewares/auth.js';
-import { isLoggedIn } from '../middlewares/guard.js';
+import { isAdmin, isLoggedIn } from '../middlewares/guard.js';
 import { generateProducts } from "../utils/mockUtil.js";
 import { userService } from '../repositories/index.js';
 import UserController from '../controllers/userController.js';
@@ -246,6 +246,18 @@ viewsRouter.post('/changePassword', async (req, res) => {
       res.json({ success: 'Password changed successfully' });
     } catch (error) {
       res.status(500).json({ error: 'Token has expired. Please request a new password recovery link.' });
+    }
+});
+
+viewsRouter.get('/switcher', isAdmin, async (req, res) => {
+    const { user, role } = req.user;
+    const roles = ['user', 'premium', 'admin'];
+    console.log(user);
+
+    if (role === 'admin') {
+        res.render('switchRoleView', { title: 'Role Switcher', user: user, role: roles });
+    }else{
+        res.status(401).json({ error: 'Unauthorized', message: 'You do not have permission to access this page.' });
     }
 });
 

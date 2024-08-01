@@ -37,6 +37,10 @@ class UserController {
     async getUserEmail(email) {
         return await userService.getUserEmail(email);
     }
+
+    async updateRole(uid, newRole, documents) {
+        return await userService.updateRole(uid, newRole, documents);
+    }
 }
 
 export default UserController;
