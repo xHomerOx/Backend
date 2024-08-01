@@ -50,6 +50,15 @@ class UserRepository {
     }
   }
 
+  async getUsersById() {
+    try {
+        const myUsers = await this.dao.getUsersById();
+        return myUsers;
+    } catch (error) {
+        throw new Error(error.message);
+    }
+  }
+
   async deleteUsers() {
     try {
         const myUsers = await this.dao.deleteUsers();

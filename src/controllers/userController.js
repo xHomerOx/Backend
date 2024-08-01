@@ -22,6 +22,10 @@ class UserController {
         return await userService.getUsers();
     }
 
+    async getUsersById() {
+        return await userService.getUsersById();
+    }
+
     async deleteUsers() {
         return await userService.deleteUsers();
     }

@@ -150,7 +150,7 @@ viewsRouter.get('/chatbox', isLoggedIn, async (req, res) => {
   }
 });
 
-viewsRouter.get("/mockingproducts", async (_req, res) => {
+viewsRouter.get("/mockingproducts", isAdmin, async (_req, res) => {
   let products = [];
 
   for (let i = 0; i < 30; i++) {
@@ -253,16 +253,23 @@ viewsRouter.post('/changePassword', async (req, res) => {
 viewsRouter.get('/switcher', isAdmin, async (req, res) => {
     const { user, role } = req.user;
     const roles = ['user', 'premium'];
-    const result = await myUser.getUsers();
+    const result = await myUser.getUsersById();
     const users = result.payload;
 
-    const usersId = users.map(userData => ({ ...userData, _id: userData._id }));
+    const myUsers = users.map(user => {
+      const userData = user._doc;
+      userData.roles = roles;
+      return userData;
+    });
+
+    console.log(myUsers);
+    
 
     const isLoggedIn = req.user ? true : false;
     const isAdmin = req.user && req.user.role === 'admin' ? true : false;
 
     if (role === 'admin') {
-        res.render('switchRoleView', { title: 'Role Switcher', user: user,  role: role, users: usersId, roles: roles, isAdmin, isLoggedIn });
+        res.render('switchRoleView', { title: 'Role Switcher', user: user,  role: role, users: myUsers, roles: roles, isAdmin, isLoggedIn });
     } else {
         res.status(401).json({ 
             error: 'Unauthorized', 

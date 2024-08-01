@@ -122,6 +122,19 @@ class UserDao {
       }
     }
 
+    async getUsersById() { 
+      try {
+        const users = await userModel.find().exec();
+
+        return {
+            status: 'success',
+            payload: users
+        };
+      } catch (error) {
+          throw new Error("Error getting users!");
+      }
+    }
+
     async deleteUsers() {
       try {
         const timeZone = moment().tz('America/Argentina/Buenos_Aires');

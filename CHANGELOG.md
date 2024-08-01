@@ -3,6 +3,7 @@
 ## 01-08-2024
 - Added RoleSwitcher for All Users.
 - Splitted Multer into two File Uploaders.
+- Added New Function to get the IDs of the Users.
 
 ## 31-07-2024
 - Fixed True/False status in entire instance of the App.
