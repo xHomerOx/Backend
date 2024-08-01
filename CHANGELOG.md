@@ -1,5 +1,8 @@
 # Proyecto Final Backend
 
+## 01-08-2024
+- Added RoleSwitcher for All Users.
+
 ## 31-07-2024
 - Fixed True/False status in entire instance of the App.
 - Added GET all Users with Auth Bearer.
