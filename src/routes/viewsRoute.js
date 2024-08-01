@@ -180,7 +180,7 @@ viewsRouter.get('/recover/:token', async (req, res) => {
   
     try {
       const user = await myUser.getUserByToken(token);
-
+      
       if (!user) {
         return res.status(404).render('recoverView', { error: 'Invalid token' });
       }
