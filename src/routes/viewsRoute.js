@@ -18,43 +18,42 @@ const myUser = new UserController(userService);
 
 viewsRouter.get('/', auth, async (req, res) => {
   try {
+      const { user, role, cart } = req.user || {};
+      const cartId = cart ? cart._id : null;
+      const limit = parseInt(req.query.limit) || 10;
+      const page = parseInt(req.query.page) || 1;
+      const userId = req.user._id;
 
-    const { user, role, cart } = req.user || {};
-    const cartId = cart ? cart._id : null;
+      const query = {};
 
-    const limit = parseInt(req.query.limit) || 10;
-    const page = parseInt(req.query.page) || 1;
+      const totalProducts = await productModel.countDocuments(query);
+      const totalPages = Math.ceil(totalProducts / limit);
+      const skip = (page - 1) * limit;
+      const sortOrder = req.query.sort === 'desc' ? -1 : 1;
+      
+      let sortOptions = {};
+      sortOptions = { price: sortOrder };
 
-    const query = {};
+      const products = await productModel.find(query).skip(skip).limit(limit).sort(sortOptions).lean();
 
-    const totalProducts = await productModel.countDocuments(query);
-    const totalPages = Math.ceil(totalProducts / limit);
-    const skip = (page - 1) * limit;
-    const sortOrder = req.query.sort === 'desc' ? -1 : 1;
-    
-    let sortOptions = {};
-    sortOptions = { price: sortOrder };
+      products.forEach(product => {
+        product.status = product.status ? "Available" : "Not Available";
+      });
+      
+      const prevPage = page > 1 ? `?page=${page - 1}` : null;
+      const nextPage = page < totalPages ? `?page=${page + 1}` : null;
 
-    const products = await productModel.find(query).skip(skip).limit(limit).sort(sortOptions).lean();
+      const isLoggedIn = req.user ? true : false;
+      const isPremium = req.user && req.user.role === 'premium' ? true : false;
+      const isAdmin = req.user && req.user.role === 'admin' ? true : false;
 
-    products.forEach(product => {
-      product.status = product.status ? "Available" : "Not Available";
-    });
-    
-    const prevPage = page > 1 ? `?page=${page - 1}` : null;
-    const nextPage = page < totalPages ? `?page=${page + 1}` : null;
-
-    const isLoggedIn = req.user ? true : false;
-    const isPremium = req.user && req.user.role === 'premium' ? true : false;
-    const isAdmin = req.user && req.user.role === 'admin' ? true : false;
-
-    res.render('homeView', { products, page, prevPage, nextPage, cartId, isLoggedIn, isAdmin, isPremium, user, role });
-  } catch (error) {
-    res.status(400).send({
-          status: 'error',
-          message: error.message
-    });
-  }
+      res.render('homeView', { products, page, prevPage, nextPage, cartId, userId, isLoggedIn, isAdmin, isPremium, user, role });
+    } catch (error) {
+      res.status(400).send({
+            status: 'error',
+            message: error.message
+      });
+    }
 });
 
 viewsRouter.get('/carts/:cid', async (req, res) => {

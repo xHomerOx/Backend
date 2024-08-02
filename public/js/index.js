@@ -1,6 +1,7 @@
 document.addEventListener("DOMContentLoaded", () => {
     const productList = document.getElementById("product-list");
     const cartId = productList.dataset.cartId;
+    const role = document.querySelector('small[data-user-role]').dataset.userRole;
 
     const addToCartButtons = document.querySelectorAll(".add-to-cart-btn");
     addToCartButtons.forEach(button => {
@@ -55,7 +56,7 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     });
 
-    if (user.role === 'admin') {
+    if (role === 'admin' || role === 'premium') {
         const addThumbnailBtn = document.getElementById('addThumbnailBtn');
         const thumbnailsContainer = document.getElementById('thumbnailsContainer');
         let thumbnailCount = 1;
