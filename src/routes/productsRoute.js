@@ -3,6 +3,7 @@ import { uploader } from "../utils/multerUtil.js";
 import ProductController from "../controllers/productController.js";
 import { productService } from "../repositories/index.js";
 import { isAdminOrPremium } from "../middlewares/guard.js";
+import { transport } from "../utils/mailerUtil.js";
 
 const productsRouter = Router();
 const myProduct = new ProductController(productService);
@@ -98,6 +99,7 @@ productsRouter.put("/:pid", uploader.array('thumbnail', 3), isAdminOrPremium, as
     try {
         const pid = req.params.pid;
         const product = await myProduct.getProductById(pid);
+        const { user, email, role } = req.user;
 
         if (!product) {
                 res.status(404).send({ message: "Product not found" });
@@ -105,6 +107,26 @@ productsRouter.put("/:pid", uploader.array('thumbnail', 3), isAdminOrPremium, as
         }
     
         await myProduct.deleteProduct(pid);
+        
+        if (email) {
+            if (role !== 'admin') {
+                const mailOptions = {
+                    from: 'Node Products <homero.tw@gmail.com>',
+                    to: email,
+                    subject: 'Product Deleted',
+                    text: `Product with ${pid} has been deleted by ${user}`
+                };
+
+                transport.sendMail(mailOptions, (error) => {
+                    if (error) {
+                        console.log(error);
+                        return res.status(500).json({ error: 'Error sending email' });
+                    }
+
+                    res.json({ success: 'Product Deleted!' });
+                });
+            }
+        }
         
         return res.status(200).send({ message: "Product deleted successfully" });
     } catch (error) {
