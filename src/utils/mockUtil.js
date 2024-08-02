@@ -14,6 +14,7 @@ export const generateProducts =() => {
     status: status,
     stock: stock,
     category: fakerES_MX.commerce.productAdjective(),
-    thumbnail: fakerES_MX.image.urlLoremFlickr({ category: 'abstract' }) 
+    thumbnail: fakerES_MX.image.urlLoremFlickr({ category: 'abstract' }),
+    owner: 'admin'
   };
 }

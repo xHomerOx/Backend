@@ -12,6 +12,7 @@ import jwt from 'jsonwebtoken';
 import { transport } from '../utils/mailerUtil.js';
 import { createHash, isValidPassword } from '../utils/cryptoUtil.js';
 import { uploader } from "../utils/documentsUtil.js";
+import roleHelper from '../helpers/roleHelper.js';
 
 const viewsRouter = Router();
 const myUser = new UserController(userService);
@@ -45,9 +46,10 @@ viewsRouter.get('/', auth, async (req, res) => {
     const nextPage = page < totalPages ? `?page=${page + 1}` : null;
 
     const isLoggedIn = req.user ? true : false;
+    const isPremium = roleHelper.isPremium(user);
     const isAdmin = req.user && req.user.role === 'admin' ? true : false;
 
-    res.render('homeView', { products, page, prevPage, nextPage, cartId, isLoggedIn, isAdmin, user, role });
+    res.render('homeView', { products, page, prevPage, nextPage, cartId, isLoggedIn, isAdmin, isPremium, user, role });
   } catch (error) {
     res.status(400).send({
           status: 'error',
