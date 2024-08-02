@@ -127,7 +127,7 @@ productsRouter.put("/:pid", uploader.array('thumbnail', 3), isAdminOrPremium, as
                 });
             }
         }
-        
+
         return res.status(200).send({ message: "Product deleted successfully" });
     } catch (error) {
         req.logger.warning("Cannot delete Product");
@@ -137,7 +137,7 @@ productsRouter.put("/:pid", uploader.array('thumbnail', 3), isAdminOrPremium, as
           cause: error.cause,
           code: error.code
         });
-      } 
+    } 
 });
 
 export default productsRouter;
