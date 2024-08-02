@@ -4,7 +4,9 @@
 - Fixed Handlebars not getting Premium Users.
 - Removed Admin from Users Switcher List.
 - Added DELETE operation for Role Switcher.
-- Check if email is not set to use the username.
+- If email is not set to use the username.
+- Fixed Admin Middleware in ProductsRouter.
+- Added Premium permissions for CRUD on Products.
 
 ## 01-08-2024
 - Added RoleSwitcher for All Users.
