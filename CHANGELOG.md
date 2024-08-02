@@ -1,5 +1,9 @@
 # Proyecto Final Backend
 
+## 02-08-2024
+- Fixed Handlebars not getting Premium Users.
+- Must Work on Delete User from Switcher and If not email take user.
+
 ## 01-08-2024
 - Added RoleSwitcher for All Users.
 - Splitted Multer into two File Uploaders.

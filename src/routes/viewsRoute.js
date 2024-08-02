@@ -22,11 +22,8 @@ viewsRouter.get('/', auth, async (req, res) => {
       const cartId = cart ? cart._id : null;
       const limit = parseInt(req.query.limit) || 10;
       const page = parseInt(req.query.page) || 1;
-      const myUser = { ...req.user };
-      console.log(myUser);
-
+      const myUser = req.user ? JSON.parse(JSON.stringify(req.user)) : null;
       const query = {};
-
       const totalProducts = await productModel.countDocuments(query);
       const totalPages = Math.ceil(totalProducts / limit);
       const skip = (page - 1) * limit;
