@@ -39,15 +39,15 @@ class ProductRepository {
 
     async addProducts(product, user) {
         try {
-          const result = await this.dao.addProducts(product, user);
-          return new ProductDto(result);
+            const result = await this.dao.addProducts(product, user);
+            return new ProductDto(result);
         } catch (error) {
-          throw CustomError.createError({
-            name: 'Product creation error.',
-            cause: generateProductsErrorInfo(product),
-            message: "Couldn't add Product",
-            code: EErrors.DATABASE_ERROR,
-          });
+            throw CustomError.createError({
+                name: 'Product creation error.',
+                cause: generateProductsErrorInfo(product),
+                message: "Couldn't add Product",
+                code: EErrors.DATABASE_ERROR,
+            });
         }
     }
 

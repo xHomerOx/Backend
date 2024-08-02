@@ -2,7 +2,7 @@ import { Router } from "express";
 import { uploader } from "../utils/multerUtil.js";
 import ProductController from "../controllers/productController.js";
 import { productService } from "../repositories/index.js";
-import { isAdmin } from "../middlewares/guard.js";
+import { isAdminOrPremium } from "../middlewares/guard.js";
 
 const productsRouter = Router();
 const myProduct = new ProductController(productService);
@@ -25,7 +25,7 @@ productsRouter.get('/:pid', async (req, res) => {
     }
 });
 
-productsRouter.post("/", uploader.array('thumbnail', 3), isAdmin, async (req, res) => {
+productsRouter.post("/", uploader.array('thumbnail', 3), isAdminOrPremium, async (req, res) => {
     if (req.files) {
         const thumbnails = req.files.map((file) => {
             const url = `/public/uploads/products/${file.filename}`;
@@ -49,7 +49,7 @@ productsRouter.post("/", uploader.array('thumbnail', 3), isAdmin, async (req, re
     }
 });
 
-productsRouter.put("/:pid", uploader.array('thumbnail', 3), isAdmin, async (req, res) => {
+productsRouter.put("/:pid", uploader.array('thumbnail', 3), isAdminOrPremium, async (req, res) => {
     try {
         const pid = req.params.pid;
 
@@ -94,7 +94,7 @@ productsRouter.put("/:pid", uploader.array('thumbnail', 3), isAdmin, async (req,
     }
 });
 
- productsRouter.delete("/:pid", isAdmin, async (req, res) => {
+ productsRouter.delete("/:pid", isAdminOrPremium, async (req, res) => {
     try {
         const pid = req.params.pid;
         const product = await myProduct.getProductById(pid);

@@ -115,7 +115,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 } else {
                     Swal.fire({
                         title: 'Error',
-                        text: 'There was an error adding the product',
+                        text: 'Code cannot be the same as an existent one!',
                         icon: 'error',
                         confirmButtonText: 'OK'
                     });
