@@ -137,6 +137,26 @@ cartsRouter.delete('/:cid', async (req, res) => {
     }
 })
 
+cartsRouter.get('/:cid/checkout', async (req, res) => {
+    try {
+        const cartId = req.params.cid;
+        const cart = await myCart.getProductsFromCart(req.params.cid);
+
+        let amount = 0;
+        for (const cartProduct of cart.products) {
+            amount += cartProduct.product.price * cartProduct.quantity;
+        }
+
+        res.render('checkoutView', { title: 'Checkout', cart: cart, amount: amount, cartId: cartId });
+    } catch (error) {
+        req.logger.warning("Cannot retrieve checkout information");
+        res.status(400).send({
+            status: 'error',
+            message: error.message
+        });
+    }
+});
+
 cartsRouter.post('/:cid/purchase', async (req, res) => {
     try {
         const results = req.params.cid;
@@ -166,7 +186,7 @@ cartsRouter.get('/:cid/purchase', async (req, res) => {
         
         const ticket = await myTicket.createTicket(purchaser, amount, cart.id);
         const notProcessed = await myCart.getStockfromProducts(req.params.cid);
-
+        
         req.params.cid = ticket;
 
         res.render('ticketView', { title: 'Ticket', ticket: ticket, notProcessed: notProcessed });

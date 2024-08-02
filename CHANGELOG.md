@@ -7,6 +7,7 @@
 - If email is not set to use the username.
 - Fixed Admin Middleware in ProductsRouter.
 - Added Premium permissions for CRUD on Products.
+- Added Checkout before Ticket submit.
 
 ## 01-08-2024
 - Added RoleSwitcher for All Users.

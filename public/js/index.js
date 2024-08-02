@@ -1,14 +1,14 @@
 document.addEventListener("DOMContentLoaded", () => {
     const productList = document.getElementById("product-list");
-    const cartId = productList.dataset.cartId;
-    const role = document.querySelector('small[data-user-role]').dataset.userRole;
-
+    const cartId = productList?.dataset.cartId;
+    const role = document.querySelector('small[data-user-role]')?.dataset.userRole;
     const addToCartButtons = document.querySelectorAll(".add-to-cart-btn");
+
     addToCartButtons.forEach(button => {
         button.addEventListener("click", async (event) => {
             event.preventDefault();
             const productId = button.dataset.productId;
-
+    
             try {
                 const response = await fetch(`/api/carts/${cartId}/products/${productId}`, {
                     method: "POST",
@@ -17,7 +17,6 @@ document.addEventListener("DOMContentLoaded", () => {
                     },
                     body: JSON.stringify({ productId, cartId })
                 });
-
                 if (response.ok) {
                     Swal.fire({
                         title: 'Product Added',
@@ -27,16 +26,22 @@ document.addEventListener("DOMContentLoaded", () => {
                     });
                 }
             } catch (error) {
-                throw new error;
+                console.error(error);
             }
         });
     });
-
+    
     const finishPurchaseButtons = document.querySelectorAll('.finishPurchase');
-
+    
     finishPurchaseButtons.forEach(button => {
-        button.addEventListener('click', async () => {
-        const cartId = button.dataset.cartId;
+        button.addEventListener('click', () => {
+            const cartId = button.dataset.cartId;
+            window.location.href = `/api/carts/${cartId}/checkout`;
+        });
+    });
+    
+    document.getElementById('confirm-purchase')?.addEventListener('click', async () => {
+        const cartId = document.getElementById('confirm-purchase').dataset.cartId;
         try {
             const response = await fetch(`/api/carts/${cartId}/purchase`, {
                 method: 'POST',
@@ -44,17 +49,16 @@ document.addEventListener("DOMContentLoaded", () => {
                     'Content-Type': 'application/json'
                 }
             });
-
             if (response.ok) {
                 window.location.href = `/api/carts/${cartId}/purchase`;
             } else {
                 throw new Error('Error occurred while completing purchase');
             }
         } catch (error) {
-            throw new Error('Error occurred while completing purchase:', error);
+            console.error(error);
         }
-        });
     });
+    
 
     if (role === 'admin' || role === 'premium') {
         const addThumbnailBtn = document.getElementById('addThumbnailBtn');
