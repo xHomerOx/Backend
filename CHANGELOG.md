@@ -7,6 +7,8 @@
 - Fixed Users updating all instead of selected ones.
 - Added DELETE endpoint for deleting Single User.
 - Added Switcher Button to Admin only.
+- Fixed Switcher rolling back preventing selectbox to keep canceled state.
+- Images will not upload to repository on Github.
 
 ## 31-07-2024
 - Fixed True/False status in entire instance of the App.

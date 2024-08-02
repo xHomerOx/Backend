@@ -9,6 +9,8 @@ document.addEventListener('DOMContentLoaded', () => {
       const userId = select.dataset.userId;
       const newRole = select.value;
 
+      sessionStorage.setItem('roleChangeSignal', 'true');
+      
       try {
         const response = await fetch(`/switcher/${userId}`, {
           method: 'PUT',
@@ -50,4 +52,13 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
   });
+});
+
+document.addEventListener('DOMContentLoaded', () => {
+  const hasSignal = sessionStorage.getItem('roleChangeSignal');
+
+  if (hasSignal) {
+    sessionStorage.removeItem('roleChangeSignal');
+    location.reload();
+  }
 });

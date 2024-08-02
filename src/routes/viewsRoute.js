@@ -334,8 +334,8 @@ viewsRouter.get('/:uid/documents', isAdmin, async (req, res) => {
 viewsRouter.post('/:uid/documents', uploader, async (req, res) => {
   const userId = req.params.uid;
 
-  if (!req.files) {
-      return res.status(400).json({ error: 'Bad Request', message: 'No documents were uploaded.' });
+  if (!req.files || !req.files.idDocument || !req.files.addressDocument || !req.files.statementDocument) {
+      return res.status(400).json({ error: 'Bad Request', message: 'Not all required documents were uploaded.' });
   }
 
   try {

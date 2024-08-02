@@ -3,5 +3,5 @@ node_modules
 prod.env
 errors.log
 
-src/uploads/documents/*
-src/uploads/profiles/*
+public/uploads/documents/*
+public/uploads/profiles/*
