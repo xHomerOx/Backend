@@ -150,7 +150,7 @@ cartsRouter.get('/:cid/checkout', isLoggedIn, async (req, res) => {
 
         const products = cart.products.map(product => ({
             title: product.product.title,
-            price: product.product.status ? product.product.price : 0,
+            price: product.product.price,
             quantity: product.quantity
         }));
 
