@@ -22,6 +22,8 @@ viewsRouter.get('/', auth, async (req, res) => {
       const cartId = cart ? cart._id : null;
       const limit = parseInt(req.query.limit) || 10;
       const page = parseInt(req.query.page) || 1;
+      const myUser = { ...req.user };
+      console.log(myUser);
 
       const query = {};
 
@@ -46,20 +48,18 @@ viewsRouter.get('/', auth, async (req, res) => {
       const isPremium = req.user && req.user.role === 'premium' ? true : false;
       const isAdmin = req.user && req.user.role === 'admin' ? true : false;
 
-      res.render('homeView', { products, page, prevPage, nextPage, cartId, isLoggedIn, isAdmin, isPremium, user, role });
-    } catch (error) {
-      res.status(400).send({
-            status: 'error',
-            message: error.message
-      });
-    }
+      res.render('homeView', { products, page, prevPage, nextPage, cartId, isLoggedIn, isAdmin, isPremium, user, role, myUser });
+  } catch (error) {
+    res.status(400).send({
+      status: 'error',
+      message: error.message
+    });
+  }
 });
 
 viewsRouter.get('/carts/:cid', async (req, res) => {
   try {
-
     const cartId = req.params.cid;
-
     const myCart = await cartModel.findById(cartId).lean().populate('products.product');
 
     if (!myCart) {
@@ -70,8 +70,8 @@ viewsRouter.get('/carts/:cid', async (req, res) => {
 
   } catch (error) {
     res.status(400).send({
-          status: 'error',
-          message: error.message
+      status: 'error',
+      message: error.message
     });
   }
 });
