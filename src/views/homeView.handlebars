@@ -124,7 +124,7 @@
                             <p class="card-text">Status: {{this.status}}</p>
                             <p class="card-text">Category: {{this.category}}</p>
                             <p class="card-text">Owner: {{this.owner}}</p>
-                            {{#if (or ../isAdmin ../isLoggedIn (and (not ../isPremium) (eq this.owner../user.email)))}}
+                            {{#if (or ../isAdmin ../isLoggedIn (eq this.owner ../user.email))}}
                                 <button type="button" class="btn btn-primary me-2 mb-2 add-to-cart-btn" data-product-id="{{this._id}}" data-cart-id="{{cartId}}">Add to Cart</button>
                                 {{#if ../isAdmin}}
                                     <button type="button" class="btn btn-danger me-2 mb-2 deleteButton" data-product-id="{{this._id}}">Delete Product</button>

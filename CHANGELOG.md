@@ -9,6 +9,7 @@
 - Added Switcher Button to Admin only.
 - Fixed Switcher rolling back preventing selectbox to keep canceled state.
 - Images will not upload to repository on Github.
+- Fixed DAO User preventing adding products.
 
 ## 31-07-2024
 - Fixed True/False status in entire instance of the App.

@@ -36,7 +36,7 @@ productsRouter.post("/", uploader.array('thumbnail', 3), isAdmin, async (req, re
     }
   
     try {
-        const products = await myProduct.addProducts(req.body);
+        const products = await myProduct.addProducts(req.body, req.user);
         res.send({ status: 'success', payload: products });
     } catch (error) {
         req.logger.warning("Cannot add Product");
