@@ -19,7 +19,7 @@ class CartDao {
     async getProductsFromCart(cartId) {
         const cart = await cartModel.findById(cartId).populate({
           path: 'products.product',
-          select: 'price stock title'
+          select: 'price stock title status'
         });
         
         if (!cart) {
@@ -150,6 +150,7 @@ class CartDao {
             
             if (product.stock === 0) {
               product.status = false;
+              product.price = 0;
             }
           }else{
             notProcessed.push(product);

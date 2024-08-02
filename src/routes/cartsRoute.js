@@ -29,7 +29,7 @@ cartsRouter.get('/:cid', async (req, res) => {
     }
 });
 
-cartsRouter.post('/', async (_req, res) => {
+cartsRouter.post('/', async (req, res) => {
     try {
         const results = await myCart.addCart();
         
@@ -150,11 +150,9 @@ cartsRouter.get('/:cid/checkout', isLoggedIn, async (req, res) => {
 
         const products = cart.products.map(product => ({
             title: product.product.title,
-            price: product.product.price,
+            price: product.product.status ? product.product.price : 0,
             quantity: product.quantity
         }));
-
-        console.log(products);
 
         res.render('checkoutView', { title: 'Checkout', cart: cart, amount: amount, cartId: cartId, products });
     } catch (error) {
@@ -195,12 +193,10 @@ cartsRouter.get('/:cid/purchase', isLoggedIn, async (req, res) => {
 
         const ticket = await myTicket.createTicket(purchaser, amount, cart.id);
         const notProcessed = await myCart.getStockfromProducts(req.params.cid);
-        console.log(notProcessed);
-
         const myNotProcessed = notProcessed.map(product => ({
-            title: product.title
+            title: product.title,
+            price: product.status ? product.price : 0
         }));
-
 
         req.params.cid = ticket;
 
