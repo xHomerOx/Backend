@@ -30,7 +30,7 @@ export const isLoggedIn = (req, res, next) => {
   } else {
     res.status(401).send({
       status: 'error',
-      message: 'unauthorized to chat without logging in'
+      message: 'Unauthorized'
     });
   }
 };

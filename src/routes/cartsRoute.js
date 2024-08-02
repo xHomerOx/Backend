@@ -2,6 +2,7 @@ import { Router } from "express";
 import CartController from "../controllers/cartController.js";
 import { cartService, ticketService } from "../repositories/index.js";
 import TicketController from "../controllers/ticketController.js";
+import { isLoggedIn } from "../middlewares/guard.js";
 
 const cartsRouter = Router();
 const myCart = new CartController(cartService);
@@ -137,7 +138,7 @@ cartsRouter.delete('/:cid', async (req, res) => {
     }
 })
 
-cartsRouter.get('/:cid/checkout', async (req, res) => {
+cartsRouter.get('/:cid/checkout', isLoggedIn, async (req, res) => {
     try {
         const cartId = req.params.cid;
         const cart = await myCart.getProductsFromCart(req.params.cid);
@@ -174,7 +175,7 @@ cartsRouter.post('/:cid/purchase', async (req, res) => {
     }
 });
 
-cartsRouter.get('/:cid/purchase', async (req, res) => {
+cartsRouter.get('/:cid/purchase', isLoggedIn, async (req, res) => {
     try {
         const purchaser = req.user.email || req.user.user;
         const cart = await myCart.getProductsFromCart(req.params.cid);
