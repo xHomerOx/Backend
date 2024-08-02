@@ -19,7 +19,7 @@ class CartDao {
     async getProductsFromCart(cartId) {
         const cart = await cartModel.findById(cartId).populate({
           path: 'products.product',
-          select: 'price stock'
+          select: 'price stock title'
         });
         
         if (!cart) {
@@ -125,7 +125,11 @@ class CartDao {
     }
 
     async getStockfromProducts(cartId) {
-      const cart = await cartModel.findById(cartId);
+      const cart = await cartModel.findById(cartId).populate({
+        path: 'products.product',
+        select: 'title'
+      });
+
       const notProcessed = [];
 
       if (!cart) {
@@ -148,7 +152,7 @@ class CartDao {
               product.status = false;
             }
           }else{
-            notProcessed.push(product.id + ', ');
+            notProcessed.push(product);
             removedProducts.push(cartProduct);
           }
 
@@ -158,7 +162,7 @@ class CartDao {
       cart.products = cart.products.filter(product => removedProducts.includes(product));
       await cart.save();
 
-      return { notProcessed };
+      return notProcessed;
     }
 }
 

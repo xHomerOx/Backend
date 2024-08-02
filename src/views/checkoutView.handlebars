@@ -31,11 +31,11 @@
                     <h3 class="mb-4">Order Summary</h3>
 
                     <ul id="product-list" class="list-group mb-4" data-cart-id="{{cartId}}">
-                        {{#each cart.products}}
+                        {{#each products}}
                             <li class="list-group-item">
-                                <strong>{{this.name}}</strong> - 
-                                Quantity: {{this.quantity}}, 
-                                Price: ${{this.price}} each
+                                <strong>{{title}}</strong> - 
+                                Quantity: {{quantity}}, 
+                                Price: ${{price}} each
                             </li>
                         {{/each}}
                     </ul>

@@ -148,7 +148,15 @@ cartsRouter.get('/:cid/checkout', isLoggedIn, async (req, res) => {
             amount += cartProduct.product.price * cartProduct.quantity;
         }
 
-        res.render('checkoutView', { title: 'Checkout', cart: cart, amount: amount, cartId: cartId });
+        const products = cart.products.map(product => ({
+            title: product.product.title,
+            price: product.product.price,
+            quantity: product.quantity
+        }));
+
+        console.log(products);
+
+        res.render('checkoutView', { title: 'Checkout', cart: cart, amount: amount, cartId: cartId, products });
     } catch (error) {
         req.logger.warning("Cannot retrieve checkout information");
         res.status(400).send({
@@ -184,13 +192,19 @@ cartsRouter.get('/:cid/purchase', isLoggedIn, async (req, res) => {
         for (const cartProduct of cart.products) {
             amount += cartProduct.product.price * cartProduct.quantity;
         }
-        
+
         const ticket = await myTicket.createTicket(purchaser, amount, cart.id);
         const notProcessed = await myCart.getStockfromProducts(req.params.cid);
-        
+        console.log(notProcessed);
+
+        const myNotProcessed = notProcessed.map(product => ({
+            title: product.title
+        }));
+
+
         req.params.cid = ticket;
 
-        res.render('ticketView', { title: 'Ticket', ticket: ticket, notProcessed: notProcessed });
+        res.render('ticketView', { title: 'Ticket', ticket: ticket, notProcessed: myNotProcessed });
     } catch (error) {
         req.logger.warning("Cannot generate Ticket");
         res.status(400).send({

@@ -28,7 +28,7 @@
                 <div class="card-body">
 
                     <p><strong>Purchaser:</strong> {{ticket.purchaser}}</p>
-                    <p><strong>Amount:</strong> {{ticket.amount}}</p>
+                    <p><strong>Amount:</strong> {{ticket.amount}} (Not processed products won't be charged)</p>
                     <p><strong>Purchase Date:</strong> {{ticket.purchase_datetime}}</p>
                     <p><strong>Ticket Code:</strong> {{ticket.code}}</p>
 
@@ -36,7 +36,7 @@
                         <h3 class="mt-4">Not processed products:</h3>
                         <ul class="list-group mt-2">
                             {{#each notProcessed}}
-                                <li class="list-group-item">{{this}}</li>
+                                <li class="list-group-item">{{title}}</li>
                             {{/each}}
                         </ul>
                     {{/if}}
