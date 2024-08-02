@@ -6,3 +6,7 @@ errors.log
 public/uploads/documents/*
 public/uploads/profiles/*
 public/uploads/products/*
+
+!public/uploads/documents/.gitkeep
+!public/uploads/profiles/.gitkeep
+!public/uploads/products/.gitkeep
