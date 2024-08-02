@@ -12,7 +12,6 @@ import jwt from 'jsonwebtoken';
 import { transport } from '../utils/mailerUtil.js';
 import { createHash, isValidPassword } from '../utils/cryptoUtil.js';
 import { uploader } from "../utils/documentsUtil.js";
-import roleHelper from '../helpers/roleHelper.js';
 
 const viewsRouter = Router();
 const myUser = new UserController(userService);
@@ -46,7 +45,7 @@ viewsRouter.get('/', auth, async (req, res) => {
     const nextPage = page < totalPages ? `?page=${page + 1}` : null;
 
     const isLoggedIn = req.user ? true : false;
-    const isPremium = roleHelper.isPremium(user);
+    const isPremium = req.user && req.user.role === 'premium' ? true : false;
     const isAdmin = req.user && req.user.role === 'admin' ? true : false;
 
     res.render('homeView', { products, page, prevPage, nextPage, cartId, isLoggedIn, isAdmin, isPremium, user, role });
@@ -154,7 +153,11 @@ viewsRouter.get('/chatbox', isLoggedIn, async (req, res) => {
   }
 });
 
-viewsRouter.get("/mockingproducts", isAdmin, async (_req, res) => {
+viewsRouter.get("/mockingproducts", isAdmin, async (req, res) => {
+  const { user, role } = req.user;
+  const isLoggedIn = req.user ? true : false;
+  const isAdmin = req.user && req.user.role === 'admin' ? true : false;
+
   let products = [];
 
   for (let i = 0; i < 30; i++) {
@@ -163,7 +166,7 @@ viewsRouter.get("/mockingproducts", isAdmin, async (_req, res) => {
 
   await productModel.insertMany(products);
   
-  res.render('mockingView', { title: 'Mocking Products', products });
+  res.render('mockingView', { title: 'Mocking Products', products, isLoggedIn, isAdmin, user, role });
 });
 
 viewsRouter.get("/loggerTest", (req, res) => {
