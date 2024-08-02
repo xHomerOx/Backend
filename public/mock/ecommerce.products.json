@@ -1,0 +1,733 @@
+[
+  {
+    "_id": {
+      "$oid": "66ace4425cc733eec0507827"
+    },
+    "title": "iPhone 14 Pro",
+    "description": "The latest iPhone with A16 Bionic chip, ProMotion technology, and enhanced camera system.",
+    "code": "9AGQrj",
+    "price": 302,
+    "status": true,
+    "stock": 11,
+    "category": "Smartphone",
+    "thumbnail": [
+      "https://loremflickr.com/640/480/abstract?lock=1042745898565632"
+    ],
+    "owner": "admin",
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "66ace4425cc733eec050782a"
+    },
+    "title": "Samsung Galaxy S23",
+    "description": "Samsung's flagship phone with a dynamic AMOLED display and advanced camera features.",
+    "code": "fkeHzZ",
+    "price": 657,
+    "status": true,
+    "stock": 16,
+    "category": "Smartphone",
+    "thumbnail": [
+      "https://loremflickr.com/640/480/abstract?lock=3998009952043008"
+    ],
+    "owner": "admin",
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "66ace4425cc733eec050782e"
+    },
+    "title": "Sony WH-1000XM4",
+    "description": "Noise-cancelling wireless headphones with high-resolution audio and long battery life.",
+    "code": "it2LrP",
+    "price": 292,
+    "status": true,
+    "stock": 0,
+    "category": "Headphones",
+    "thumbnail": [
+      "https://loremflickr.com/640/480/abstract?lock=8802051907649536"
+    ],
+    "owner": "admin",
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "66ac3465313ed69841968a12"
+    },
+    "title": "LG OLED55CXPUA",
+    "description": "55-inch 4K OLED TV with self-lighting OLED technology for vivid colors and deep blacks.",
+    "code": "zTuAcs",
+    "price": 515,
+    "status": true,
+    "stock": 7,
+    "category": "Television",
+    "thumbnail": [
+      "https://loremflickr.com/640/480/abstract?lock=4423216495853568"
+    ],
+    "owner": "admin",
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "66ace4425cc733eec050782f"
+    },
+    "title": "Apple Watch Series 8",
+    "description": "Smartwatch with advanced health monitoring, GPS, and always-on display.",
+    "code": "MfjPpK",
+    "price": 399,
+    "status": true,
+    "stock": 10,
+    "category": "Smartwatch",
+    "thumbnail": [
+      "https://loremflickr.com/640/480/abstract?lock=2331251546917888"
+    ],
+    "owner": "admin",
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "66ace4425cc733eec0507830"
+    },
+    "title": "Dell XPS 13",
+    "description": "Compact ultrabook with 13.4-inch FHD+ display, Intel Core i7 processor, and 16GB RAM.",
+    "code": "o2UuRj",
+    "price": 1249,
+    "status": true,
+    "stock": 5,
+    "category": "Laptop",
+    "thumbnail": [
+      "https://loremflickr.com/640/480/abstract?lock=4358492805955584"
+    ],
+    "owner": "admin",
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "66ace4425cc733eec0507831"
+    },
+    "title": "Nintendo Switch OLED",
+    "description": "Hybrid gaming console with a vibrant 7-inch OLED display and improved audio.",
+    "code": "a1BvNr",
+    "price": 349,
+    "status": true,
+    "stock": 25,
+    "category": "Gaming Console",
+    "thumbnail": [
+      "https://loremflickr.com/640/480/abstract?lock=4317959390231552"
+    ],
+    "owner": "admin",
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "66ace4425cc733eec0507832"
+    },
+    "title": "GoPro HERO10 Black",
+    "description": "Action camera with 5.3K video recording, HyperSmooth 4.0 stabilization, and rugged design.",
+    "code": "Vm8RkQ",
+    "price": 499,
+    "status": true,
+    "stock": 8,
+    "category": "Action Camera",
+    "thumbnail": [
+      "https://loremflickr.com/640/480/abstract?lock=7023405416142848"
+    ],
+    "owner": "admin",
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "66ace4425cc733eec0507833"
+    },
+    "title": "Bose SoundLink Revolve+",
+    "description": "Portable Bluetooth speaker with 360-degree sound and up to 16 hours of battery life.",
+    "code": "Li7WbT",
+    "price": 299,
+    "status": true,
+    "stock": 20,
+    "category": "Speaker",
+    "thumbnail": [
+      "https://loremflickr.com/640/480/abstract?lock=6417796822526976"
+    ],
+    "owner": "admin",
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "66ace4425cc733eec0507834"
+    },
+    "title": "Microsoft Surface Pro 9",
+    "description": "2-in-1 laptop with detachable keyboard, 13-inch PixelSense touchscreen, and Windows 11.",
+    "code": "e7XsHk",
+    "price": 1099,
+    "status": true,
+    "stock": 6,
+    "category": "Tablet",
+    "thumbnail": [
+      "https://loremflickr.com/640/480/abstract?lock=7011293372374016"
+    ],
+    "owner": "admin",
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "66ace4425cc733eec0507835"
+    },
+    "title": "Sony A7 IV",
+    "description": "Full-frame mirrorless camera with 33MP sensor, 4K video, and advanced autofocus.",
+    "code": "e1PtFg",
+    "price": 2499,
+    "status": true,
+    "stock": 3,
+    "category": "Camera",
+    "thumbnail": [
+      "https://loremflickr.com/640/480/abstract?lock=4735306141086720"
+    ],
+    "owner": "admin",
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "66ace4425cc733eec0507836"
+    },
+    "title": "Apple AirPods Pro 2",
+    "description": "Wireless earbuds with active noise cancellation, spatial audio, and improved fit.",
+    "code": "O9RqzT",
+    "price": 249,
+    "status": true,
+    "stock": 30,
+    "category": "Earphones",
+    "thumbnail": [
+      "https://loremflickr.com/640/480/abstract?lock=3177516905821184"
+    ],
+    "owner": "admin",
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "66ace4425cc733eec0507837"
+    },
+    "title": "ASUS ROG Strix Scar 15",
+    "description": "Gaming laptop with Intel Core i9, NVIDIA GeForce RTX 3080, and a 15.6-inch display.",
+    "code": "r4XvHp",
+    "price": 2499,
+    "status": true,
+    "stock": 4,
+    "category": "Gaming Laptop",
+    "thumbnail": [
+      "https://loremflickr.com/640/480/abstract?lock=8704813756736512"
+    ],
+    "owner": "admin",
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "66ace4425cc733eec0507838"
+    },
+    "title": "Canon EOS R6",
+    "description": "Full-frame mirrorless camera with 20MP resolution, 4K video, and dual pixel autofocus.",
+    "code": "l8FnVu",
+    "price": 2499,
+    "status": true,
+    "stock": 5,
+    "category": "Camera",
+    "thumbnail": [
+      "https://loremflickr.com/640/480/abstract?lock=7947222376070656"
+    ],
+    "owner": "admin",
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "66ace4425cc733eec0507839"
+    },
+    "title": "Apple iPad Pro 12.9",
+    "description": "12.9-inch iPad with M2 chip, Liquid Retina XDR display, and support for Apple Pencil.",
+    "code": "H2LrUk",
+    "price": 1199,
+    "status": true,
+    "stock": 8,
+    "category": "Tablet",
+    "thumbnail": [
+      "https://loremflickr.com/640/480/abstract?lock=6042204067481600"
+    ],
+    "owner": "admin",
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "66ace4425cc733eec050783a"
+    },
+    "title": "Harman Kardon Onyx Studio 7",
+    "description": "Bluetooth speaker with premium sound quality, sleek design, and 8-hour battery life.",
+    "code": "v3RkQd",
+    "price": 450,
+    "status": true,
+    "stock": 12,
+    "category": "Speaker",
+    "thumbnail": [
+      "https://loremflickr.com/640/480/abstract?lock=2823056327405568"
+    ],
+    "owner": "admin",
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "66ace4425cc733eec050783b"
+    },
+    "title": "Razer BlackWidow V3",
+    "description": "Mechanical gaming keyboard with customizable RGB backlighting and durable switches.",
+    "code": "q5YwEr",
+    "price": 139,
+    "status": true,
+    "stock": 15,
+    "category": "Keyboard",
+    "thumbnail": [
+      "https://loremflickr.com/640/480/abstract?lock=3833732366920704"
+    ],
+    "owner": "admin",
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "66ace4425cc733eec050783c"
+    },
+    "title": "Logitech MX Master 3",
+    "description": "Wireless mouse with ergonomic design, customizable buttons, and precision tracking.",
+    "code": "j7DkBr",
+    "price": 99,
+    "status": true,
+    "stock": 22,
+    "category": "Mouse",
+    "thumbnail": [
+      "https://loremflickr.com/640/480/abstract?lock=5182122380972032"
+    ],
+    "owner": "admin",
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "66ace4425cc733eec050783d"
+    },
+    "title": "Amazon Echo Studio",
+    "description": "Smart speaker with immersive sound, built-in Alexa, and support for high-definition audio.",
+    "code": "s4JuFx",
+    "price": 199,
+    "status": true,
+    "stock": 18,
+    "category": "Smart Speaker",
+    "thumbnail": [
+      "https://loremflickr.com/640/480/abstract?lock=3486828287731712"
+    ],
+    "owner": "admin",
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "66ace4425cc733eec050783e"
+    },
+    "title": "Philips Hue Lightstrip",
+    "description": "Flexible LED lightstrip with color-changing capabilities, compatible with smart home systems.",
+    "code": "t2TzXs",
+    "price": 89,
+    "status": true,
+    "stock": 20,
+    "category": "Smart Lighting",
+    "thumbnail": [
+      "https://loremflickr.com/640/480/abstract?lock=4998349056365568"
+    ],
+    "owner": "admin",
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "66ace4425cc733eec050783f"
+    },
+    "title": "Google Nest Hub Max",
+    "description": "Smart display with Google Assistant, 10-inch screen, and built-in camera for video calls.",
+    "code": "e9KxRp",
+    "price": 229,
+    "status": true,
+    "stock": 14,
+    "category": "Smart Display",
+    "thumbnail": [
+      "https://loremflickr.com/640/480/abstract?lock=3246073844383744"
+    ],
+    "owner": "admin",
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "66ace4425cc733eec0507840"
+    },
+    "title": "Jabra Elite 85t",
+    "description": "True wireless earbuds with adjustable noise cancellation and superior sound quality.",
+    "code": "k6MzNx",
+    "price": 229,
+    "status": true,
+    "stock": 17,
+    "category": "Earphones",
+    "thumbnail": [
+      "https://loremflickr.com/640/480/abstract?lock=6088509728566784"
+    ],
+    "owner": "admin",
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "66ace4425cc733eec0507841"
+    },
+    "title": "HP Envy 17",
+    "description": "17-inch laptop with Intel Core i7, 16GB RAM, and a 1TB SSD for high performance.",
+    "code": "b5WrPc",
+    "price": 1349,
+    "status": true,
+    "stock": 6,
+    "category": "Laptop",
+    "thumbnail": [
+      "https://loremflickr.com/640/480/abstract?lock=1635126957107200"
+    ],
+    "owner": "admin",
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "66ace4425cc733eec0507842"
+    },
+    "title": "Acer Predator X34",
+    "description": "34-inch ultrawide monitor with NVIDIA G-SYNC, curved display, and 3440x1440 resolution.",
+    "code": "z7XyLg",
+    "price": 899,
+    "status": true,
+    "stock": 7,
+    "category": "Monitor",
+    "thumbnail": [
+      "https://loremflickr.com/640/480/abstract?lock=8101611942720512"
+    ],
+    "owner": "admin",
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "66ace4425cc733eec0507843"
+    },
+    "title": "Samsung QN90A",
+    "description": "Neo QLED 4K TV with Quantum Matrix technology, Quantum HDR, and anti-reflective screen.",
+    "code": "w2FzKp",
+    "price": 1599,
+    "status": true,
+    "stock": 9,
+    "category": "Television",
+    "thumbnail": [
+      "https://loremflickr.com/640/480/abstract?lock=6832112797062144"
+    ],
+    "owner": "admin",
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "66ace4425cc733eec0507844"
+    },
+    "title": "Ecovacs Deebot X1 Omni",
+    "description": "Robotic vacuum and mop with AI mapping, voice control, and self-cleaning base.",
+    "code": "u4TrPo",
+    "price": 799,
+    "status": true,
+    "stock": 11,
+    "category": "Robot Vacuum",
+    "thumbnail": [
+      "https://loremflickr.com/640/480/abstract?lock=1174944089456640"
+    ],
+    "owner": "admin",
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "66ace4425cc733eec0507845"
+    },
+    "title": "Oculus Quest 2",
+    "description": "Standalone VR headset with 6DOF tracking, high-resolution display, and a library of games.",
+    "code": "v1PdWm",
+    "price": 299,
+    "status": true,
+    "stock": 13,
+    "category": "VR Headset",
+    "thumbnail": [
+      "https://loremflickr.com/640/480/abstract?lock=8149587585467392"
+    ],
+    "owner": "admin",
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "66ace4425cc733eec0507846"
+    },
+    "title": "Fitbit Charge 5",
+    "description": "Fitness tracker with built-in GPS, heart rate monitoring, and up to 7 days of battery life.",
+    "code": "e5NuTx",
+    "price": 149,
+    "status": true,
+    "stock": 28,
+    "category": "Fitness Tracker",
+    "thumbnail": [
+      "https://loremflickr.com/640/480/abstract?lock=8034116643580928"
+    ],
+    "owner": "admin",
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "66ace4425cc733eec0507847"
+    },
+    "title": "Roku Streaming Stick+",
+    "description": "4K streaming device with HDR support and a voice remote for easy navigation.",
+    "code": "k3ZvLr",
+    "price": 49,
+    "status": true,
+    "stock": 35,
+    "category": "Streaming Device",
+    "thumbnail": [
+      "https://loremflickr.com/640/480/abstract?lock=2236748294676480"
+    ],
+    "owner": "admin",
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "66ace4425cc733eec0507848"
+    },
+    "title": "Nvidia GeForce RTX 4090",
+    "description": "High-performance graphics card with 24GB GDDR6X memory and real-time ray tracing.",
+    "code": "p9WdQz",
+    "price": 1599,
+    "status": true,
+    "stock": 5,
+    "category": "Graphics Card",
+    "thumbnail": [
+      "https://loremflickr.com/640/480/abstract?lock=8925876938715648"
+    ],
+    "owner": "admin",
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "66ace4425cc733eec0507849"
+    },
+    "title": "TCL 6-Series",
+    "description": "4K QLED TV with Dolby Vision, HDR10+, and advanced gaming features.",
+    "code": "s5RgKn",
+    "price": 799,
+    "status": true,
+    "stock": 8,
+    "category": "Television",
+    "thumbnail": [
+      "https://loremflickr.com/640/480/abstract?lock=4168044813830656"
+    ],
+    "owner": "admin",
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "66ace4425cc733eec050784a"
+    },
+    "title": "Apple MacBook Air M2",
+    "description": "Ultra-thin laptop with M2 chip, 13.6-inch Retina display, and improved performance.",
+    "code": "r6JpWi",
+    "price": 1199,
+    "status": true,
+    "stock": 12,
+    "category": "Laptop",
+    "thumbnail": [
+      "https://loremflickr.com/640/480/abstract?lock=8363451926107136"
+    ],
+    "owner": "admin",
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "66ace4425cc733eec050784b"
+    },
+    "title": "Beats Fit Pro",
+    "description": "In-ear wireless headphones with secure fit, active noise cancellation, and spatial audio.",
+    "code": "p3JrLx",
+    "price": 199,
+    "status": true,
+    "stock": 21,
+    "category": "Earphones",
+    "thumbnail": [
+      "https://loremflickr.com/640/480/abstract?lock=4339019146977280"
+    ],
+    "owner": "admin",
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "66ace4425cc733eec050784c"
+    },
+    "title": "Philips Sonicare DiamondClean",
+    "description": "Electric toothbrush with smart sensor guidance, multiple brushing modes, and long battery life.",
+    "code": "q8NvKj",
+    "price": 229,
+    "status": true,
+    "stock": 14,
+    "category": "Health Gadget",
+    "thumbnail": [
+      "https://loremflickr.com/640/480/abstract?lock=7957221646787584"
+    ],
+    "owner": "admin",
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "66ace4425cc733eec050784d"
+    },
+    "title": "Nokia 9 PureView",
+    "description": "Smartphone with a unique 5-camera array for advanced photography and PureDisplay technology.",
+    "code": "d8QsJn",
+    "price": 699,
+    "status": true,
+    "stock": 9,
+    "category": "Smartphone",
+    "thumbnail": [
+      "https://loremflickr.com/640/480/abstract?lock=2484591655324672"
+    ],
+    "owner": "admin",
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "66ace4425cc733eec050784e"
+    },
+    "title": "Razer Kishi",
+    "description": "Mobile gaming controller with adjustable grip, compatible with Android and iOS devices.",
+    "code": "s6TgLp",
+    "price": 99,
+    "status": true,
+    "stock": 23,
+    "category": "Gaming Accessory",
+    "thumbnail": [
+      "https://loremflickr.com/640/480/abstract?lock=8066970263478272"
+    ],
+    "owner": "admin",
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "66ace4425cc733eec050784f"
+    },
+    "title": "BenQ SW321C",
+    "description": "32-inch 4K monitor with color accuracy, HDR10 support, and wide color gamut for professional use.",
+    "code": "u5ZwNr",
+    "price": 1299,
+    "status": true,
+    "stock": 4,
+    "category": "Monitor",
+    "thumbnail": [
+      "https://loremflickr.com/640/480/abstract?lock=4235121589048320"
+    ],
+    "owner": "admin",
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "66ace4425cc733eec0507850"
+    },
+    "title": "JBL PartyBox 310",
+    "description": "Portable Bluetooth speaker with powerful sound, party lights, and long battery life.",
+    "code": "f4TlRg",
+    "price": 449,
+    "status": true,
+    "stock": 6,
+    "category": "Speaker",
+    "thumbnail": [
+      "https://loremflickr.com/640/480/abstract?lock=2042329780158464"
+    ],
+    "owner": "admin",
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "66ace4425cc733eec0507851"
+    },
+    "title": "Google Pixel 7",
+    "description": "Smartphone with Google Tensor chip, advanced camera system, and pure Android experience.",
+    "code": "r1SxYk",
+    "price": 599,
+    "status": true,
+    "stock": 11,
+    "category": "Smartphone",
+    "thumbnail": [
+      "https://loremflickr.com/640/480/abstract?lock=4165407080434688"
+    ],
+    "owner": "admin",
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "66ace4425cc733eec0507852"
+    },
+    "title": "Sony PlayStation 5",
+    "description": "Next-gen gaming console with 4K resolution, ray tracing, and a vast library of games.",
+    "code": "w7XtNr",
+    "price": 499,
+    "status": true,
+    "stock": 3,
+    "category": "Gaming Console",
+    "thumbnail": [
+      "https://loremflickr.com/640/480/abstract?lock=7069874597309440"
+    ],
+    "owner": "admin",
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "66ace4425cc733eec0507853"
+    },
+    "title": "Dell Alienware AW2521H",
+    "description": "25-inch gaming monitor with 360Hz refresh rate, NVIDIA G-SYNC, and 1ms response time.",
+    "code": "z2XyKj",
+    "price": 749,
+    "status": true,
+    "stock": 5,
+    "category": "Monitor",
+    "thumbnail": [
+      "https://loremflickr.com/640/480/abstract?lock=3942376219580928"
+    ],
+    "owner": "admin",
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "66ace4425cc733eec0507854"
+    },
+    "title": "Samsung Galaxy Buds2 Pro",
+    "description": "Premium wireless earbuds with active noise cancellation, high-quality sound, and comfortable fit.",
+    "code": "t9KwLq",
+    "price": 229,
+    "status": true,
+    "stock": 20,
+    "category": "Earphones",
+    "thumbnail": [
+      "https://loremflickr.com/640/480/abstract?lock=2687800138158080"
+    ],
+    "owner": "admin",
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "66ace4425cc733eec0507855"
+    },
+    "title": "Canon EOS R5",
+    "description": "Full-frame mirrorless camera with 45MP resolution, 8K video recording, and advanced autofocus.",
+    "code": "m5LtNq",
+    "price": 3899,
+    "status": true,
+    "stock": 2,
+    "category": "Camera",
+    "thumbnail": [
+      "https://loremflickr.com/640/480/abstract?lock=6862354234577920"
+    ],
+    "owner": "admin",
+    "__v": 0
+  }
+]
