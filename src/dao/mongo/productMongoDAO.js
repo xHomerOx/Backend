@@ -37,7 +37,7 @@ class ProductDao {
         const status = stock > 0;
 
         try {
-            const result = await productModel.create({title, description, code, price, stock, status, category, thumbnail: thumbnail ?? [], owner: user.email || 'admin'});
+            const result = await productModel.create({title, description, code, price, stock, status, category, thumbnail: thumbnail ?? [], owner: user.email || user.user || 'admin'});
 
             return result;
         } catch (error) {

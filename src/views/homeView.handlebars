@@ -125,10 +125,10 @@
                             <p class="card-text">Owner: {{this.owner}}</p>
 
                             {{#if ../isLoggedIn}}
-                                {{#if (and (not (eq this.owner ../myUser.email)) (not (isPremium)))}}
+                                {{#if (or ../isAdmin (and (not (or (eq this.owner ../myUser.email) (eq this.owner ../myUser.user))) (not (isPremium))))}}
                                     <button type="button" class="btn btn-primary me-2 mb-2 add-to-cart-btn" data-product-id="{{this._id}}" data-cart-id="{{cartId}}">Add to Cart</button>
                                 {{/if}}
-                                {{#if (or ../isAdmin (and ../isPremium (eq this.owner ../myUser.email)))}}
+                                {{#if (or ../isAdmin (and ../isPremium (or (eq this.owner ../myUser.email) (eq this.owner ../myUser.user))))}}
                                     <button type="button" class="btn btn-danger me-2 mb-2 deleteButton" data-product-id="{{this._id}}">Delete Product</button>
                                     <button type="button" class="btn btn-warning me-2 mb-2 updateButton" data-product-id="{{this._id}}">Update Product</button>
                                 {{/if}}

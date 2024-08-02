@@ -2,7 +2,9 @@
 
 ## 02-08-2024
 - Fixed Handlebars not getting Premium Users.
-- Must Work on Delete User from Switcher and If not email take user.
+- Removed Admin from Users Switcher List.
+- Added DELETE operation for Role Switcher.
+- Check if email is not set to use the username.
 
 ## 01-08-2024
 - Added RoleSwitcher for All Users.

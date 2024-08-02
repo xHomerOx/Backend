@@ -258,11 +258,13 @@ viewsRouter.get('/switcher', isAdmin, async (req, res) => {
     const result = await myUser.getUsersById();
     const users = result.payload;
 
-    const myUsers = users.map(user => {
-      const userData = user._doc;
-      userData.roles = roles;
-      return userData;
-    }); 
+    const filteredUsers = users.filter(user => user.role !== 'admin');
+
+    const myUsers = filteredUsers.map(user => {
+        const userData = user._doc;
+        userData.roles = roles;
+        return userData;
+    });
 
     const isLoggedIn = req.user ? true : false;
     const isAdmin = req.user && req.user.role === 'admin' ? true : false;
@@ -297,7 +299,6 @@ viewsRouter.put('/switcher/:uid', isAdmin, async (req, res) => {
           return res.json({ message: 'Role updated successfully' });
       }
     } catch (error) {
-        console.error(error);
         return res.status(500).json({ error: 'Internal Server Error' });
     }
 });
@@ -355,7 +356,6 @@ viewsRouter.post('/:uid/documents', uploader, async (req, res) => {
 
         return res.redirect('/login');
     } catch (error) {
-        console.error(error);
         return res.status(500).json({ error: 'Internal Server Error', message: 'Failed to update role.' });
     }
 });
