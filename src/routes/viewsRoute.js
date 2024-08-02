@@ -22,7 +22,6 @@ viewsRouter.get('/', auth, async (req, res) => {
       const cartId = cart ? cart._id : null;
       const limit = parseInt(req.query.limit) || 10;
       const page = parseInt(req.query.page) || 1;
-      const userId = req.user._id;
 
       const query = {};
 
@@ -47,7 +46,7 @@ viewsRouter.get('/', auth, async (req, res) => {
       const isPremium = req.user && req.user.role === 'premium' ? true : false;
       const isAdmin = req.user && req.user.role === 'admin' ? true : false;
 
-      res.render('homeView', { products, page, prevPage, nextPage, cartId, userId, isLoggedIn, isAdmin, isPremium, user, role });
+      res.render('homeView', { products, page, prevPage, nextPage, cartId, isLoggedIn, isAdmin, isPremium, user, role });
     } catch (error) {
       res.status(400).send({
             status: 'error',
@@ -153,31 +152,31 @@ viewsRouter.get('/chatbox', isLoggedIn, async (req, res) => {
 });
 
 viewsRouter.get("/mockingproducts", isAdmin, async (req, res) => {
-  const { user, role } = req.user;
-  const isLoggedIn = req.user ? true : false;
-  const isAdmin = req.user && req.user.role === 'admin' ? true : false;
+    const { user, role } = req.user;
+    const isLoggedIn = req.user ? true : false;
+    const isAdmin = req.user && req.user.role === 'admin' ? true : false;
 
-  let products = [];
+    let products = [];
 
-  for (let i = 0; i < 30; i++) {
-    products.push(generateProducts());
-  }
+    for (let i = 0; i < 30; i++) {
+      products.push(generateProducts());
+    }
 
-  await productModel.insertMany(products);
-  
-  res.render('mockingView', { title: 'Mocking Products', products, isLoggedIn, isAdmin, user, role });
+    await productModel.insertMany(products);
+    
+    res.render('mockingView', { title: 'Mocking Products', products, isLoggedIn, isAdmin, user, role });
 });
 
 viewsRouter.get("/loggerTest", (req, res) => {
-  req.logger.fatal("Logger test fatal message");
-  req.logger.error("Logger test error message");
-  req.logger.warning("Logger test warning message");
-  req.logger.info("Logger test info message");
-  req.logger.http("Logger test http message");
-  req.logger.debug("Logger test debug message");
+    req.logger.fatal("Logger test fatal message");
+    req.logger.error("Logger test error message");
+    req.logger.warning("Logger test warning message");
+    req.logger.info("Logger test info message");
+    req.logger.http("Logger test http message");
+    req.logger.debug("Logger test debug message");
 
-  res.send("Logger test completed!"); 
-});
+    res.send("Logger test completed!"); 
+  });
 
 viewsRouter.get('/recover', (_req, res) => {
     res.render('recoverView', { title: 'Recover Password' });
