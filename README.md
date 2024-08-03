@@ -37,6 +37,12 @@ This is the backend for an ecommerce application. This project provides an API f
 
    The server will be available at `http://localhost:3000`.
 
+4. **Admin Panel**:
+
+   ```user: admin
+   password: admin
+   ```
+
 ## API Routes
 
 ### Products
