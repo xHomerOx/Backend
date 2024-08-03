@@ -41,11 +41,17 @@ viewsRouter.get('/', auth, async (req, res) => {
       const prevPage = page > 1 ? `?page=${page - 1}` : null;
       const nextPage = page < totalPages ? `?page=${page + 1}` : null;
 
+      const pageNumbers = [];
+
+      for (let i = 1; i <= totalPages; i++) {
+        pageNumbers.push(i);
+      }
+
       const isLoggedIn = req.user ? true : false;
       const isPremium = req.user && req.user.role === 'premium' ? true : false;
       const isAdmin = req.user && req.user.role === 'admin' ? true : false;
 
-      res.render('homeView', { products, page, prevPage, nextPage, cartId, isLoggedIn, isAdmin, isPremium, user, role, myUser });
+      res.render('homeView', { products, page, prevPage, nextPage, pageNumbers, cartId, isLoggedIn, isAdmin, isPremium, user, role, myUser });
   } catch (error) {
     res.status(400).send({
       status: 'error',

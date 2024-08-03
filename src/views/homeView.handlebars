@@ -40,18 +40,18 @@
         </div>
     </header>
 
-    <div id="carouselExampleCaptions" class="carousel slide">
+    <div id="carouselExampleCaptions" class="carousel slide" data-bs-ride="carousel">
         <div class="carousel-inner">
             <div class="carousel-item active">
                 <img src="/img/background.jpg" class="d-block w-100" alt="Products">
-                <div class="carousel-caption d-flex flex-column justify-content-center align-items-center text-dark" style="bottom: 0; top: 0;">
+                <div class="carousel-caption d-flex flex-column justify-content-center align-items-center text-white" style="bottom: 0; top: 0;">
                     <h5 class="display-4">PRODUCTS</h5>
                     <p class="lead">Your Products are great.</p>
                 </div>
             </div>
             <div class="carousel-item">
                 <img src="/img/background.jpg" class="d-block w-100" alt="Technology">
-                <div class="carousel-caption d-flex flex-column justify-content-center align-items-center text-dark" style="bottom: 0; top: 0;">
+                <div class="carousel-caption d-flex flex-column justify-content-center align-items-center text-white" style="bottom: 0; top: 0;">
                     <h5 class="display-4">TECHNOLOGY</h5>
                     <p class="lead">Technology hack you won't get.</p>
                 </div>
@@ -110,48 +110,61 @@
     <main class="container my-4">
         <h2 class="text-center">Page {{page}}</h2>
         <div id="product-list" data-cart-id="{{cartId}}" class="row">
-            {{#each products}}
-                <div class="col-md-4 mb-4">
-                    <div class="card">
-                        <img src="{{this.thumbnail}}" class="card-img-top" alt="Thumbnail">
-                        <div class="card-body">
-                            <h5 class="card-title">{{this.title}}</h5>
-                            <p class="card-text">Description: {{this.description}}</p>
-                            <p class="card-text">Price: ${{this.price}}</p>
-                            <p class="card-text">Product Code: {{this.code}}</p>
-                            <p class="card-text">Stock: {{this.stock}}</p>
-                            <p class="card-text">Status: {{this.status}}</p>
-                            <p class="card-text">Category: {{this.category}}</p>
-                            <p class="card-text">Owner: {{this.owner}}</p>
 
-                            {{#if ../isLoggedIn}}
-                                {{#if (or ../isAdmin (and (not (or (eq this.owner ../myUser.email) (eq this.owner ../myUser.user))) (not (isPremium))))}}
-                                    <button type="button" class="btn btn-primary me-2 mb-2 add-to-cart-btn" data-product-id="{{this._id}}" data-cart-id="{{cartId}}">Add to Cart</button>
-                                {{/if}}
-                                {{#if (or ../isAdmin (and ../isPremium (or (eq this.owner ../myUser.email) (eq this.owner ../myUser.user))))}}
-                                    <button type="button" class="btn btn-danger me-2 mb-2 deleteButton" data-product-id="{{this._id}}">Delete Product</button>
-                                    <button type="button" class="btn btn-warning me-2 mb-2 updateButton" data-product-id="{{this._id}}">Update Product</button>
-                                {{/if}}
+        {{#each products}}
+            <div class="col-md-4 mb-4">
+                <div class="card">
+                    <div class="img-container" style="height: 250px; overflow: hidden;">
+                        <img src="{{this.thumbnail}}" class="card-img-top img-fluid" alt="Thumbnail" style="object-fit: cover; width: 100%; height: 100%;">
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title">{{this.title}}</h5>
+                        <p class="card-text">Description: {{this.description}}</p>
+                        <p class="card-text">Price: ${{this.price}}</p>
+                        <p class="card-text">Product Code: {{this.code}}</p>
+                        <p class="card-text">Stock: {{this.stock}}</p>
+                        <p class="card-text">Status: {{this.status}}</p>
+                        <p class="card-text">Category: {{this.category}}</p>
+                        <p class="card-text">Owner: {{this.owner}}</p>
+
+                        {{#if ../isLoggedIn}}
+                            {{#if (or ../isAdmin (and (not (or (eq this.owner ../myUser.email) (eq this.owner ../myUser.user))) (not (isPremium))))}}
+                                <button type="button" class="btn btn-primary me-2 mb-2 add-to-cart-btn" data-product-id="{{this._id}}" data-cart-id="{{cartId}}">Add to Cart</button>
                             {{/if}}
+                            {{#if (or ../isAdmin (and ../isPremium (or (eq this.owner ../myUser.email) (eq this.owner ../myUser.user))))}}
+                                <button type="button" class="btn btn-danger me-2 mb-2 deleteButton" data-product-id="{{this._id}}">Delete Product</button>
+                                <button type="button" class="btn btn-warning me-2 mb-2 updateButton" data-product-id="{{this._id}}">Update Product</button>
+                            {{/if}}
+                        {{/if}}
 
-                        </div>
                     </div>
                 </div>
-            {{/each}}
-            {{#if isLoggedIn}}
-                <div class="d-flex justify-content-center my-4">
-                    <button type="button" class="btn btn-success finishPurchase" data-product-id="{{productId}}" data-cart-id="{{cartId}}">View Cart</button>
-                </div>
-            {{/if}}
-            <div class="d-flex justify-content-center">
-                {{#if prevPage}}
-                    <a href="{{prevPage}}" class="btn btn-primary me-2">Previous</a>
-                {{/if}}
-                {{#if nextPage}}
-                    <a href="{{nextPage}}" class="btn btn-primary">Next</a>
-                {{/if}}
             </div>
-        </div>
+        {{/each}}
+
+       {{#if isLoggedIn}}
+            <div class="d-flex justify-content-center my-4">
+                <button type="button" class="btn btn-success finishPurchase" data-product-id="{{productId}}" data-cart-id="{{cartId}}">View Cart</button>
+            </div>
+        {{/if}}
+
+        <div class="d-flex justify-content-center my-4">
+            <ul class="pagination">
+                {{#if prevPage}}
+                    <li class="page-item"><a class="page-link" href="{{prevPage}}">Previous</a></li>
+                {{/if}}
+
+                {{#each pageNumbers}}
+                    <li class="page-item {{#if (eq ../page this)}}active{{/if}}">
+                        <a class="page-link" href="?page={{this}}">{{this}}</a>
+                    </li>
+                {{/each}}
+
+                {{#if nextPage}}
+                    <li class="page-item"><a class="page-link" href="{{nextPage}}">Next</a></li>
+                {{/if}}
+            </ul>
+        </div>     
     </main>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
