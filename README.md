@@ -102,7 +102,3 @@ Contributions are welcome. If you would like to contribute to the project, pleas
 ## License
 
 This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
-
----
-
-This README.md provides an overview of the project, installation instructions, information on API routes, and steps to deploy the application on Railway.app. You can adjust and expand this template according to the specific needs of your project.
