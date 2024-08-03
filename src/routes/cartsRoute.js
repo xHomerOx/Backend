@@ -141,16 +141,18 @@ cartsRouter.delete('/:cid', async (req, res) => {
 cartsRouter.get('/:cid/checkout', isLoggedIn, async (req, res) => {
     try {
         const cartId = req.params.cid;
-        const cart = await myCart.getProductsFromCart(req.params.cid);
+        const cart = await myCart.getProductsFromCart(cartId);
 
         let amount = 0;
         for (const cartProduct of cart.products) {
-            amount += cartProduct.product.price * cartProduct.quantity;
+            if (cartProduct.product.stock > 0) {
+                amount += cartProduct.product.price * cartProduct.quantity;
+            }
         }
 
         const products = cart.products.map(product => ({
             title: product.product.title,
-            price: product.product.price,
+            price: product.product.stock > 0 ? product.product.price : 0,
             quantity: product.quantity
         }));
 
@@ -188,20 +190,23 @@ cartsRouter.get('/:cid/purchase', isLoggedIn, async (req, res) => {
         
         let amount = 0;
         for (const cartProduct of cart.products) {
-            amount += cartProduct.product.price * cartProduct.quantity;
+            if (cartProduct.product.stock > 0) {
+                amount += cartProduct.product.price * cartProduct.quantity;
+            }
         }
-
+        
         const ticket = await myTicket.createTicket(purchaser, amount, cart.id);
         const notProcessed = await myCart.getStockfromProducts(req.params.cid);
         const myNotProcessed = notProcessed.map(product => ({
             title: product.title,
-            price: product.status ? product.price : 0
+            price: product.stock > 0 ? product.price : 0
         }));
 
         req.params.cid = ticket;
 
         res.render('ticketView', { title: 'Ticket', ticket: ticket, notProcessed: myNotProcessed });
     } catch (error) {
+        console.log(error);
         req.logger.warning("Cannot generate Ticket");
         res.status(400).send({
             status: 'error',

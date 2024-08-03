@@ -1,5 +1,9 @@
 # Proyecto Final Backend
 
+## 03-08-2024
+- Stylized BS5 HomePage.
+- Added Not Available Product Logic.
+
 ## 02-08-2024
 - Fixed Handlebars not getting Premium Users.
 - Removed Admin from Users Switcher List.

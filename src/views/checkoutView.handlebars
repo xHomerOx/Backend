@@ -36,6 +36,11 @@
                                 <strong>{{title}}</strong> - 
                                 Quantity: {{quantity}}, 
                                 Price: ${{price}} each
+                                {{#if (eq price 0)}}
+                                    <strong>Product not available</strong>
+                                {{else}}
+                                    Price: ${{price}} each
+                                {{/if}}
                             </li>
                         {{/each}}
                     </ul>
