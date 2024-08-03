@@ -20,6 +20,7 @@ import { addLogger, startLogger } from './utils/loggerUtil.js';
 import swaggerJsdoc from 'swagger-jsdoc';
 import swaggerUiExpress from 'swagger-ui-express';
 import roleHelper from './helpers/roleHelper.js';
+import { isAdmin } from './middlewares/guard.js';
 
 dotenv.config();
 
@@ -77,7 +78,7 @@ app.use('/api/carts/', cartsRouter);
 app.use('/api/products/', productsRouter);
 app.use('/api/users/', usersRouter);
 
-app.use('/apidocs', swaggerUiExpress.serve, swaggerUiExpress.setup(specs));
+app.use('/apidocs', isAdmin, swaggerUiExpress.serve, swaggerUiExpress.setup(specs));
 
 const PORT = 8080;
 

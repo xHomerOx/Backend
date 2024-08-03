@@ -1,49 +1,18 @@
 openapi: 3.0.0
 info:
-  title: Cart API
-  description: API for managing carts and cart-related operations
+  title: Carts API
+  description: API documentation for cart management.
   version: 1.0.0
-
+servers:
+  - url: http://localhost:3000/api
+    description: Local server
 paths:
-  /api/carts:
+  /carts:
     get:
       summary: Get all carts
-      description: Retrieves a list of all carts.
       responses:
         '200':
-          description: A list of carts.
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Cart'
-    
-    post:
-      summary: Create a new cart
-      description: Creates a new cart.
-      responses:
-        '200':
-          description: Cart created successfully.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Cart'
-
-  /api/carts/{cid}:
-    get:
-      summary: Get products from a specific cart
-      description: Retrieves products from a specific cart by its ID.
-      parameters:
-        - in: path
-          name: cid
-          required: true
-          schema:
-            type: string
-          description: The ID of the cart to retrieve products from.
-      responses:
-        '200':
-          description: Products retrieved successfully.
+          description: List of all carts
           content:
             application/json:
               schema:
@@ -51,23 +20,119 @@ paths:
                 properties:
                   status:
                     type: string
+                    description: Status of the request
                   payload:
                     type: array
+                    items:
+                      type: object
+                      properties:
+                        _id:
+                          type: string
+                          description: Cart ID
+                        products:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              product:
+                                type: object
+                                properties:
+                                  _id:
+                                    type: string
+                                    description: Product ID
+                                  title:
+                                    type: string
+                                    description: Product title
+                                  price:
+                                    type: number
+                                    format: float
+                                    description: Product price
+                              quantity:
+                                type: integer
+                                description: Quantity of the product
+    post:
+      summary: Add a new cart
+      responses:
+        '200':
+          description: Cart added successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: Status of the request
+                  payload:
+                    type: object
+                    properties:
+                      _id:
+                        type: string
+                        description: Cart ID
 
-    
+  /carts/{cid}:
+    get:
+      summary: Get a cart by ID
+      parameters:
+        - name: cid
+          in: path
+          required: true
+          description: Cart ID
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Cart details
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: Status of the request
+                  payload:
+                    type: object
+                    properties:
+                      _id:
+                        type: string
+                        description: Cart ID
+                      products:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            product:
+                              type: object
+                              properties:
+                                _id:
+                                  type: string
+                                  description: Product ID
+                                title:
+                                  type: string
+                                  description: Product title
+                                price:
+                                  type: number
+                                  format: float
+                                  description: Product price
+                            quantity:
+                              type: integer
+                              description: Quantity of the product
+        '400':
+          description: Error retrieving cart
+
     delete:
-      summary: Delete all products from a cart
-      description: Deletes all products from a specific cart.
+      summary: Delete a cart by ID
       parameters:
-        - in: path
-          name: cid
+        - name: cid
+          in: path
           required: true
+          description: Cart ID
           schema:
             type: string
-          description: The ID of the cart to delete all products from.
       responses:
         '200':
-          description: All products deleted from cart successfully.
+          description: Cart deleted successfully
           content:
             application/json:
               schema:
@@ -75,79 +140,32 @@ paths:
                 properties:
                   status:
                     type: string
-                  payload:
-                    type: object
-                    properties:
-                      cartId:
-                        type: string
-
-    put:
-      summary: Update product quantity in a cart
-      description: Updates the quantity of a product in a specific cart.
-      parameters:
-        - in: path
-          name: cid
-          required: true
-          schema:
-            type: string
-          description: The ID of the cart to update the product quantity in.
-        - in: path
-          name: pid
-          required: true
-          schema:
-            type: string
-          description: The ID of the product to update in the cart.
-        - in: body
-          name: body
-          required: true
-          description: Object containing the new quantity of the product.
-          schema:
-            type: object
-            properties:
-              quantity:
-                type: integer
-                minimum: 1
-                description: The new quantity of the product in the cart.
-      responses:
-        '200':
-          description: Product quantity updated in cart successfully.
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  status:
+                    description: Status of the request
+                  message:
                     type: string
-                  payload:
-                    type: object
-                    properties:
-                      cartId:
-                        type: string
-                      productId:
-                        type: string
-                      quantity:
-                        type: integer
+                    description: Success message
+        '400':
+          description: Error deleting cart
 
-  /api/carts/{cid}/products/{pid}:
+  /carts/{cid}/products/{pid}:
     post:
       summary: Add a product to a cart
-      description: Adds a product to a specific cart.
       parameters:
-        - in: path
-          name: cid
+        - name: cid
+          in: path
           required: true
+          description: Cart ID
           schema:
             type: string
-          description: The ID of the cart to add the product to.
-        - in: path
-          name: pid
+        - name: pid
+          in: path
           required: true
+          description: Product ID
           schema:
             type: string
-          description: The ID of the product to add to the cart.
       responses:
         '200':
-          description: Product added to cart successfully.
+          description: Product added to cart
           content:
             application/json:
               schema:
@@ -155,33 +173,55 @@ paths:
                 properties:
                   status:
                     type: string
+                    description: Status of the request
                   payload:
                     type: object
                     properties:
-                      cartId:
+                      _id:
                         type: string
-                      productId:
-                        type: string
-    
+                        description: Cart ID
+                      products:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            product:
+                              type: object
+                              properties:
+                                _id:
+                                  type: string
+                                  description: Product ID
+                                title:
+                                  type: string
+                                  description: Product title
+                                price:
+                                  type: number
+                                  format: float
+                                  description: Product price
+                            quantity:
+                              type: integer
+                              description: Quantity of the product
+        '400':
+          description: Error adding product to cart
+
     delete:
-      summary: Delete a product from a cart
-      description: Deletes a product from a specific cart.
+      summary: Remove a product from a cart
       parameters:
-        - in: path
-          name: cid
+        - name: cid
+          in: path
           required: true
+          description: Cart ID
           schema:
             type: string
-          description: The ID of the cart to delete the product from.
-        - in: path
-          name: pid
+        - name: pid
+          in: path
           required: true
+          description: Product ID
           schema:
             type: string
-          description: The ID of the product to delete from the cart.
       responses:
         '200':
-          description: Product deleted from cart successfully.
+          description: Product removed from cart
           content:
             application/json:
               schema:
@@ -189,63 +229,103 @@ paths:
                 properties:
                   status:
                     type: string
-                  payload:
+                    description: Status of the request
+                  message:
+                    type: string
+                    description: Success message
+        '400':
+          description: Error removing product from cart
+
+  /carts/{cid}/checkout:
+    get:
+      summary: Checkout the cart
+      parameters:
+        - name: cid
+          in: path
+          required: true
+          description: Cart ID
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Cart checkout details
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  title:
+                    type: string
+                    description: Title of the view
+                  cart:
                     type: object
                     properties:
-                      cartId:
+                      _id:
                         type: string
+                        description: Cart ID
+                      products:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            product:
+                              type: object
+                              properties:
+                                _id:
+                                  type: string
+                                  description: Product ID
+                                title:
+                                  type: string
+                                  description: Product title
+                                price:
+                                  type: number
+                                  format: float
+                                  description: Product price
+                            quantity:
+                              type: integer
+                              description: Quantity of the product
+                  amount:
+                    type: number
+                    format: float
+                    description: Total amount of the cart
+        '400':
+          description: Error retrieving checkout information
 
-  /api/carts/{cid}/purchase:
-    post:
-      summary: Purchase a cart
-      description: Initiates the purchase process for a specific cart.
+  /carts/{cid}/purchase:
+    get:
+      summary: Purchase items in the cart
       parameters:
-        - in: path
-          name: cid
+        - name: cid
+          in: path
           required: true
+          description: Cart ID
           schema:
             type: string
-          description: The ID of the cart to purchase.
       responses:
         '200':
-          description: Cart purchase initiated successfully.
+          description: Ticket and not processed items
           content:
             application/json:
               schema:
                 type: object
                 properties:
-                  status:
+                  title:
                     type: string
-                  payload:
+                    description: Title of the view
+                  ticket:
                     type: string
-                    description: The ID of the ticket generated for the purchase.
-
-    get:
-      summary: Generate ticket for a cart purchase
-      description: Generates a ticket for a specific cart purchase.
-      parameters:
-        - in: path
-          name: cid
-          required: true
-          schema:
-            type: string
-          description: The ID of the cart to generate a ticket for.
-      responses:
-        '200':
-          description: Ticket generated successfully.
-          content:
-            text/html:
-              schema:
-                type: string
-                example: HTML content of the ticket view.
-
-components:
-  schemas:
-    Cart:
-      type: object
-      properties:
-        _id:
-          type: string
-          description: The unique identifier of the cart.
-        products:
-          type: array
+                    description: Ticket ID
+                  notProcessed:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        title:
+                          type: string
+                          description: Product title
+                        price:
+                          type: number
+                          format: float
+                          description: Product price
+        '400':
+          description: Error generating ticket

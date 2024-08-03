@@ -3,6 +3,7 @@
 ## 03-08-2024
 - Stylized BS5 HomePage.
 - Added Not Available Product Logic.
+- Updated Swagger Documents.
 
 ## 02-08-2024
 - Fixed Handlebars not getting Premium Users.
