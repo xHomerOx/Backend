@@ -72,7 +72,7 @@ This is the backend for an ecommerce application. This project provides an API f
 
 ### Documentation
 
-- **Swagger UI**: API documentation is available at `http://localhost:3000/apidocs`.
+- **Swagger UI**: API documentation is available at `http://localhost:8080/apidocs`.
 
 ## Deployment on Railway
 
@@ -87,7 +87,7 @@ To deploy this project on Railway.app:
 
 3. **Configure environment variables** on Railway:
 
-   - In the "Environment Variables" tab of your Railway project, add the environment variables defined in your `.env` file.
+   - In the "Environment Variables" tab of your Railway project, add the environment variables defined in your `.env` and `prod.env` files.
 
 4. **Deploy the project**:
 
