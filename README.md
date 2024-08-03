@@ -39,7 +39,8 @@ This is the backend for an ecommerce application. This project provides an API f
 
 4. **Admin Panel**:
 
-   ```user: admin
+   ```bash
+   user: admin
    password: admin
    ```
 
