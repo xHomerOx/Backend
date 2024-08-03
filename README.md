@@ -35,7 +35,7 @@ This is the backend for an ecommerce application. This project provides an API f
    npm start
    ```
 
-   The server will be available at `http://localhost:3000`.
+   The server will be available at `http://localhost:8080`.
 
 4. **Admin Panel**:
 
