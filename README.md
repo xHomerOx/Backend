@@ -65,7 +65,7 @@ This is the backend for an ecommerce application. This project provides an API f
 
 ### Documentation
 
-- **Swagger UI**: API documentation is available at `http://localhost:3000/api-docs`.
+- **Swagger UI**: API documentation is available at `http://localhost:3000/apidocs`.
 
 ## Deployment on Railway
 
