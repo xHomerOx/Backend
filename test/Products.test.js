@@ -66,11 +66,16 @@ describe('Testing products routes', () => {
         expect(response.statusCode).to.be.eql(200);
     });
 
+    let productId;
+
     it('POST Operation for Products Endpoint', async() => {
         const newProduct = generateProducts();
-        const response = await requester.post('/api/products').send(newProduct).set('Accept', 'application/json').set('Authorization', `Bearer ${authToken}`);
 
+        const response = await requester.post('/api/products').send(newProduct).set('Accept', 'application/json').set('Authorization', `Bearer ${authToken}`);
+        console.log(response);
         expect(response.statusCode).to.be.eql(200);
+        productId = response.body.payload.id;
+
     });
 
     it('PUT Operation for Products Endpoint', async () => {

@@ -1,5 +1,8 @@
 # Proyecto Final Backend
 
+## 04-08-2024
+- Unit and Integration Testing with Carts, Products and Users.
+
 ## 03-08-2024
 - Stylized BS5 HomePage.
 - Added Not Available Product Logic.

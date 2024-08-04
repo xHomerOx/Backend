@@ -37,20 +37,25 @@ describe('Testing carts routes', () => {
         expect(response.statusCode).to.be.eql(200);
     });
 
-    it('POST Operation for Carts Endpoint', async() => {
+    let cartId;
+
+    it('POST Operation for Carts Endpoint', async () => {
         const response = await requester.post('/api/carts').send(isAdmin).set('Accept', 'application/json');
         
         expect(response.statusCode).to.be.eql(200);
+
+        cartId = response.body.payload.id;
     });
 
-    it('PUT Operation for Carts Endpoint', async() => {
-        const response = await requester.put('/api/carts/66919d2eeef71e51df84d2b2').send(isAdmin).set('Accept', 'application/json');;
+    it('PUT Operation for Carts Endpoint', async () => {
+        const response = await requester.put(`/api/carts/${cartId}`).send(isAdmin).set('Accept', 'application/json');
         
         expect(response.statusCode).to.be.eql(200);
     });
 
+
     it('DELETE Operation for Carts Endpoint', async() => {
-        const response = await requester.delete('/api/carts/66919d2eeef71e51df84d2b2').send(isAdmin).set('Accept', 'application/json');
+        const response = await requester.delete(`/api/carts/${cartId}`).send(isAdmin).set('Accept', 'application/json');
         
         expect(response.statusCode).to.be.eql(200);
     });
