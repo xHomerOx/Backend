@@ -49,7 +49,7 @@ productsRouter.put("/:pid", uploader.array('thumbnail', 3), isAdmin, async (req,
     try {
         const pid = req.params.pid;
     
-        if (req.files) {
+        if (req.files) {s
             const thumbnails = req.files.map((file) => file.filename);
             req.body.thumbnail = thumbnails;
         }
