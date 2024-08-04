@@ -41,7 +41,6 @@ class ProductDao {
 
             return result;
         } catch (error) {
-            console.log(error);
             throw new Error('Product could not be added!');
         }
     }
