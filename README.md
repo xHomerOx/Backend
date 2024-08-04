@@ -34,7 +34,7 @@ This is the backend for an ecommerce application. This project provides an API f
    ```bash
    npm start
    npm run start:prod
-   npm test
+   npm run test
    ```
 
    The server will be available at `http://localhost:8080`.
