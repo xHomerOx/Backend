@@ -63,7 +63,7 @@ productsRouter.put("/:pid", uploader.array('thumbnail', 3), isAdminOrPremium, as
         let updatedProduct = { ...existingProduct };
 
         if (req.files && req.files.length > 0) {
-            const thumbnails = req.files.map((file) => `/img/${file.filename}`);
+            const thumbnails = req.files.map((file) => `/uploads/products/${file.filename}`);
             updatedProduct.thumbnail = thumbnails[0];
         }
 
@@ -119,7 +119,6 @@ productsRouter.put("/:pid", uploader.array('thumbnail', 3), isAdminOrPremium, as
 
                 transport.sendMail(mailOptions, (error) => {
                     if (error) {
-                        console.log(error);
                         return res.status(500).json({ error: 'Error sending email' });
                     }
 

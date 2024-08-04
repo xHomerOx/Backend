@@ -142,6 +142,8 @@ cartsRouter.get('/:cid/checkout', isLoggedIn, async (req, res) => {
     try {
         const cartId = req.params.cid;
         const cart = await myCart.getProductsFromCart(cartId);
+        const { user, role } = req.user;
+        const isLoggedIn = req.user ? true : false;
 
         let amount = 0;
         for (const cartProduct of cart.products) {
@@ -156,7 +158,7 @@ cartsRouter.get('/:cid/checkout', isLoggedIn, async (req, res) => {
             quantity: product.quantity
         }));
 
-        res.render('checkoutView', { title: 'Checkout', cart: cart, amount: amount, cartId: cartId, products });
+        res.render('checkoutView', { title: 'Checkout', cart: cart, amount: amount, cartId: cartId, products, isLoggedIn, user, role });
     } catch (error) {
         req.logger.warning("Cannot retrieve checkout information");
         res.status(400).send({
@@ -187,7 +189,9 @@ cartsRouter.get('/:cid/purchase', isLoggedIn, async (req, res) => {
     try {
         const purchaser = req.user.email || req.user.user;
         const cart = await myCart.getProductsFromCart(req.params.cid);
-        
+        const { user, role } = req.user;
+        const isLoggedIn = req.user ? true : false;
+
         let amount = 0;
         for (const cartProduct of cart.products) {
             if (cartProduct.product.stock > 0) {
@@ -204,9 +208,8 @@ cartsRouter.get('/:cid/purchase', isLoggedIn, async (req, res) => {
 
         req.params.cid = ticket;
 
-        res.render('ticketView', { title: 'Ticket', ticket: ticket, notProcessed: myNotProcessed });
+        res.render('ticketView', { title: 'Ticket', ticket: ticket, notProcessed: myNotProcessed, isLoggedIn: isLoggedIn, user, role });
     } catch (error) {
-        console.log(error);
         req.logger.warning("Cannot generate Ticket");
         res.status(400).send({
             status: 'error',

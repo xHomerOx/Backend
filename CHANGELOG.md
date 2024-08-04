@@ -4,6 +4,7 @@
 - Stylized BS5 HomePage.
 - Added Not Available Product Logic.
 - Updated Swagger Documents.
+- Fixed User and Roles not showing on Ticket Info.
 
 ## 02-08-2024
 - Fixed Handlebars not getting Premium Users.

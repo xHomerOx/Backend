@@ -104,6 +104,10 @@ const initializePassport = () => {
                     
                     done(null, result);
                 } else {
+                    if (myUser.cart) {
+                        await cartModel.findByIdAndUpdate(myUser.cart, { products: [] });
+                    }
+
                     done(null, myUser);
                 }
             } catch (error) {
