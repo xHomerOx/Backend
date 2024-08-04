@@ -5,6 +5,7 @@
 - Added Not Available Product Logic.
 - Updated Swagger Documents.
 - Fixed User and Roles not showing on Ticket Info.
+- Fixed userData in ChatBox.
 
 ## 02-08-2024
 - Fixed Handlebars not getting Premium Users.
