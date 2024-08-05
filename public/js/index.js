@@ -5,6 +5,54 @@ document.addEventListener("DOMContentLoaded", () => {
     const addToCartButtons = document.querySelectorAll(".add-to-cart-btn");
     const removeFromCartButtons = document.querySelectorAll(".remove-from-cart-btn");
 
+    restoreCartState();
+
+    async function restoreCartState() {
+        const storedCart = localStorage.getItem('cart');
+        if (storedCart) {
+            const productsInCart = JSON.parse(storedCart);
+    
+            document.querySelectorAll('.item-count').forEach(span => {
+                const productId = span.dataset.productId;
+                const count = productsInCart[productId] || 0;
+                span.textContent = count;
+            });
+
+            updateRemoveButtonVisibility(productsInCart);
+        }
+    }
+    
+    async function updateItemCount() {
+        try {
+            const response = await fetch(`/api/carts/${cartId}`);
+    
+            if (response.ok) {
+                const cartData = await response.json();
+    
+                if (cartData && cartData.payload && Array.isArray(cartData.payload.products)) {
+                    const productsInCart = cartData.payload.products.reduce((map, product) => {
+                        map[product.product._id] = product.quantity;
+                        return map;
+                    }, {});
+
+                    localStorage.setItem('cart', JSON.stringify(productsInCart));
+ 
+                    document.querySelectorAll('.item-count').forEach(span => {
+                        const productId = span.dataset.productId;
+                        const count = productsInCart[productId] || 0;
+                        span.textContent = count;
+                    });
+                } else {
+                    console.error('Cart data does not have expected structure:', cartData);
+                }
+            } else {
+                console.error("Failed to fetch cart data:", response.statusText);
+            }
+        } catch (error) {
+            console.error("Error fetching cart data:", error);
+        }
+    }
+
     async function updateRemoveButtonVisibility() {
         try {
             const response = await fetch(`/api/carts/${cartId}`);
@@ -55,6 +103,7 @@ document.addEventListener("DOMContentLoaded", () => {
                         icon: 'success',
                         confirmButtonText: 'OK'
                     });
+                    await updateItemCount();
                     await updateRemoveButtonVisibility();
                 }
             } catch (error) {
@@ -83,6 +132,7 @@ document.addEventListener("DOMContentLoaded", () => {
                         icon: 'success',
                         confirmButtonText: 'OK'
                     });
+                    await updateItemCount();
                     await updateRemoveButtonVisibility();
                 }
             } catch (error) {

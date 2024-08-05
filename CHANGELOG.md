@@ -4,6 +4,7 @@
 - Added Ticket per Session.
 - Removed function to prevent Admin to Add and View Products in Cart.
 - Fixed Remove from Cart not displaying with a Product in Cart.
+- Added Counter to Update State of the Product in the Cart.
 
 ## 04-08-2024
 - Unit and Integration Testing with Carts, Products and Users.
