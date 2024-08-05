@@ -1,14 +1,15 @@
 document.addEventListener("DOMContentLoaded", () => {
     const productList = document.getElementById("product-list");
     const cartId = productList?.dataset.cartId;
-    const role = document.querySelector('small[data-user-role]')?.dataset.userRole;
+
     const addToCartButtons = document.querySelectorAll(".add-to-cart-btn");
+    const removeFromCartButtons = document.querySelectorAll(".remove-from-cart-btn");
 
     addToCartButtons.forEach(button => {
         button.addEventListener("click", async (event) => {
             event.preventDefault();
             const productId = button.dataset.productId;
-    
+
             try {
                 const response = await fetch(`/api/carts/${cartId}/products/${productId}`, {
                     method: "POST",
@@ -24,9 +25,82 @@ document.addEventListener("DOMContentLoaded", () => {
                         icon: 'success',
                         confirmButtonText: 'OK'
                     });
+                } else {
+                    const result = await response.json();
+                    Swal.fire({
+                        title: 'Error',
+                        text: result.message || 'Failed to add the product to your cart',
+                        icon: 'error',
+                        confirmButtonText: 'OK'
+                    });
                 }
             } catch (error) {
-                console.error(error);
+                console.error('Error adding product to cart:', error);
+                Swal.fire({
+                    title: 'Error',
+                    text: 'An error occurred while adding the product to the cart',
+                    icon: 'error',
+                    confirmButtonText: 'OK'
+                });
+            }
+        });
+    });
+
+    removeFromCartButtons.forEach(async button => {
+        const productId = button.dataset.productId;
+
+        try {
+            const response = await fetch(`/api/carts/${cartId}`);
+            if (!response.ok) throw new Error('Failed to fetch cart data');
+            
+            const cartData = await response.json();
+            const isProductInCart = cartData.products.some(product => product.product.toString() === productId);
+
+            button.disabled = !isProductInCart;
+            button.style.display = isProductInCart ? 'inline-block' : 'none';
+        } catch (error) {
+            console.error('Error checking product in cart:', error);
+            button.disabled = true;
+            button.style.display = 'none';
+        }
+    });
+
+    removeFromCartButtons.forEach(button => {
+        button.addEventListener("click", async (event) => {
+            event.preventDefault();
+            const productId = button.dataset.productId;
+
+            try {
+                const response = await fetch(`/api/carts/${cartId}/products/${productId}`, {
+                    method: "DELETE",
+                    headers: {
+                        "Content-Type": "application/json"
+                    }
+                });
+                if (response.ok) {
+                    Swal.fire({
+                        title: 'Product Removed',
+                        text: 'The product has been removed from your cart',
+                        icon: 'success',
+                        confirmButtonText: 'OK'
+                    });
+                } else {
+                    const result = await response.json();
+                    Swal.fire({
+                        title: 'Error',
+                        text: result.message || 'Failed to remove the product from your cart',
+                        icon: 'error',
+                        confirmButtonText: 'OK'
+                    });
+                }
+            } catch (error) {
+                console.error('Error removing product from cart:', error);
+                Swal.fire({
+                    title: 'Error',
+                    text: 'An error occurred while removing the product from the cart',
+                    icon: 'error',
+                    confirmButtonText: 'OK'
+                });
             }
         });
     });

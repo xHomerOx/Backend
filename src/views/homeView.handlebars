@@ -131,6 +131,7 @@
                             {{#if (not ../isAdmin)}}
                                 {{#if (and (not (or (eq this.owner ../myUser.email) (eq this.owner ../myUser.user))) (not (isPremium)))}}
                                     <button type="button" class="btn btn-primary me-2 mb-2 add-to-cart-btn" data-product-id="{{this._id}}" data-cart-id="{{cartId}}">Add to Cart</button>
+                                    <button type="button" class="btn btn-danger me-2 mb-2 remove-from-cart-btn" data-product-id="{{this._id}}" data-cart-id="{{cartId}}">Remove from Cart</button>
                                 {{/if}}
                             {{/if}}
                             {{#if (or ../isAdmin (and ../isPremium (or (eq this.owner ../myUser.email) (eq this.owner ../myUser.user))))}}

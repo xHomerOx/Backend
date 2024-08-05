@@ -70,17 +70,25 @@ class CartDao {
     }
 
     async deleteProduct(cartId, productId) {
-        const cart = await cartModel.findById(cartId);
-        const deleteProduct = cart.products.findIndex(product => product.product.toString() === productId);
-        
-        if (deleteProduct >= 0) {
-          cart.products.splice(deleteProduct, 1);
+      const cart = await cartModel.findById(cartId);
+      
+      const deleteProduct = cart.products.findIndex(product => product.product.toString() === productId);
+      
+      if (deleteProduct >= 0) {
+          const productInCart = cart.products[deleteProduct];
+          
+          if (productInCart.quantity > 1) {
+              productInCart.quantity -= 1;
+          } else {
+              cart.products.splice(deleteProduct, 1);
+          }
+
           await cart.save();
           return `Product with ${productId} deleted.`;
-        } else {
+      } else {
           return `Product with ${productId} does not exist.`;
-        }   
-    }
+      }   
+  }  
 
     async deleteAllProducts(cartId) {
         const cart = await cartModel.findById(cartId);
