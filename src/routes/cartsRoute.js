@@ -188,9 +188,21 @@ cartsRouter.post('/:cid/purchase', async (req, res) => {
 cartsRouter.get('/:cid/purchase', isLoggedIn, async (req, res) => {
     try {
         const purchaser = req.user.email || req.user.user;
-        const cart = await myCart.getProductsFromCart(req.params.cid);
+        const cartId = req.params.cid;
+        const cart = await myCart.getProductsFromCart(cartId);
         const { user, role } = req.user;
         const isLoggedIn = req.user ? true : false;
+
+        if (req.session.ticket && req.session.cartId === cartId) {
+            const existingTicket = await myTicket.getTicketByCode(req.session.ticket);
+            const notProcessed = await myCart.getStockfromProducts(cartId);
+            const myNotProcessed = notProcessed.map(product => ({
+                title: product.title,
+                price: product.stock > 0 ? product.price : 0
+            }));
+
+            return res.render('ticketView', { title: 'Ticket', ticket: existingTicket, notProcessed: myNotProcessed, isLoggedIn: isLoggedIn, user, role });
+        }
 
         let amount = 0;
         for (const cartProduct of cart.products) {
@@ -198,15 +210,17 @@ cartsRouter.get('/:cid/purchase', isLoggedIn, async (req, res) => {
                 amount += cartProduct.product.price * cartProduct.quantity;
             }
         }
-        
-        const ticket = await myTicket.createTicket(purchaser, amount, cart.id);
-        const notProcessed = await myCart.getStockfromProducts(req.params.cid);
+
+        const ticket = await myTicket.createTicket(purchaser, amount, cartId);
+
+        req.session.ticket = ticket.code;
+        req.session.cartId = cartId;
+
+        const notProcessed = await myCart.getStockfromProducts(cartId);
         const myNotProcessed = notProcessed.map(product => ({
             title: product.title,
             price: product.stock > 0 ? product.price : 0
         }));
-
-        req.params.cid = ticket;
 
         res.render('ticketView', { title: 'Ticket', ticket: ticket, notProcessed: myNotProcessed, isLoggedIn: isLoggedIn, user, role });
     } catch (error) {
@@ -217,5 +231,6 @@ cartsRouter.get('/:cid/purchase', isLoggedIn, async (req, res) => {
         });
     }
 });
+
 
 export default cartsRouter;

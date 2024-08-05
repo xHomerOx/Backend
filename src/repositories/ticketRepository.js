@@ -13,6 +13,15 @@ class TicketRepository {
             throw new Error(`Could not get Ticket`);
         }
     }
+
+    async getTicketByCode(ticket) {
+        try {
+            const myTicket = await this.dao.getTicketByCode(ticket);        
+            return new TicketDto(myTicket);
+        } catch (error) {
+            throw new Error(`Could not get Ticket`);
+        } 
+    }
 }
 
 export default TicketRepository;

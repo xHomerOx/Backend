@@ -1,5 +1,8 @@
 # Proyecto Final Backend
 
+## 05-08-2024
+- Added Ticket per Session.
+
 ## 04-08-2024
 - Unit and Integration Testing with Carts, Products and Users.
 - Fixed inconsitences between Passport and Users.

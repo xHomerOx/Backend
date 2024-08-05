@@ -34,6 +34,10 @@ class TicketDao {
 
         return ticket;
     }
+
+    async getTicketByCode(code) {
+        return await ticketModel.findOne({ code: code });
+    }
 }
 
 export default TicketDao;
