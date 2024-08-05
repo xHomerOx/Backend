@@ -87,7 +87,7 @@ usersRouter.get('/', passport.authenticate('jwt', {session: false}), isAdmin, as
     }
 });
 
-usersRouter.delete('/', async (req, res) => { 
+usersRouter.delete('/', passport.authenticate('jwt', {session: false}), isAdmin, async (req, res) => { 
     try {
         const result = await myUser.deleteUsers();
 
