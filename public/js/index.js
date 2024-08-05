@@ -5,6 +5,36 @@ document.addEventListener("DOMContentLoaded", () => {
     const addToCartButtons = document.querySelectorAll(".add-to-cart-btn");
     const removeFromCartButtons = document.querySelectorAll(".remove-from-cart-btn");
 
+    async function updateRemoveButtonVisibility() {
+        try {
+            const response = await fetch(`/api/carts/${cartId}`);
+
+            if (response.ok) {
+                const cartData = await response.json();
+
+                if (cartData && cartData.payload && Array.isArray(cartData.payload.products)) {
+                    const productsInCart = cartData.payload.products.map(product => product.product._id);
+    
+                    removeFromCartButtons.forEach(button => {
+                        const productId = button.dataset.productId;
+    
+                        if (productsInCart.includes(productId)) {
+                            button.classList.remove('d-none');
+                        } else {
+                            button.classList.add('d-none');
+                        }
+                    });
+                } else {
+                    console.error('Cart data does not have expected structure:', cartData);
+                }
+            } else {
+                console.error("Failed to fetch cart data:", response.statusText);
+            }
+        } catch (error) {
+            console.error("Error fetching cart data:", error);
+        }
+    }
+    
     addToCartButtons.forEach(button => {
         button.addEventListener("click", async (event) => {
             event.preventDefault();
@@ -25,6 +55,7 @@ document.addEventListener("DOMContentLoaded", () => {
                         icon: 'success',
                         confirmButtonText: 'OK'
                     });
+                    await updateRemoveButtonVisibility();
                 }
             } catch (error) {
                 console.error(error);
@@ -52,6 +83,7 @@ document.addEventListener("DOMContentLoaded", () => {
                         icon: 'success',
                         confirmButtonText: 'OK'
                     });
+                    await updateRemoveButtonVisibility();
                 }
             } catch (error) {
                 console.error(error);
