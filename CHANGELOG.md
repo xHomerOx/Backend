@@ -2,6 +2,7 @@
 
 ## 04-08-2024
 - Unit and Integration Testing with Carts, Products and Users.
+- Fixed inconsitences between Pasport and Users.
 
 ## 03-08-2024
 - Stylized BS5 HomePage.
