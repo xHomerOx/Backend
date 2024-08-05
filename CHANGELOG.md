@@ -2,6 +2,7 @@
 
 ## 05-08-2024
 - Added Ticket per Session.
+- Removed function to prevent Admin to Add and View Products in Cart.
 
 ## 04-08-2024
 - Unit and Integration Testing with Carts, Products and Users.
