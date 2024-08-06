@@ -30,7 +30,7 @@
                             <a href="/switcher" class="btn btn-secondary btn-sm me-2">Switcher</a>
                         {{/if}}
                         {{#if isLoggedIn}}
-                            <a href="/logout" class="btn btn-outline-danger btn-sm">Logout</a>
+                            <a href="/logout" id="logout-button" class="btn btn-outline-danger btn-sm">Logout</a>
                         {{else}}
                             <a href="/login" class="btn btn-outline-primary btn-sm">Login</a>
                         {{/if}}
@@ -127,14 +127,15 @@
                         <p class="card-text">Category: {{this.category}}</p>
                         <p class="card-text">Owner: {{this.owner}}</p>
 
-                         <div class="position-absolute bottom-2 end-0 me-2">
-                            <div class="bg-secondary text-white rounded-pill py-1 px-2 d-inline-flex align-items-center">
-                                <span class="item-count bg-secondary text-white rounded-circle py-1 px-2 fs-6" data-product-id="{{this._id}}">0</span>
-                            </div>
-                        </div>
-
                         {{#if ../isLoggedIn}}
                             {{#if (not ../isAdmin)}}
+
+                                <div class="position-absolute bottom-2 end-0 me-2">
+                                    <div class="bg-secondary text-white rounded-pill py-1 px-2 d-inline-flex align-items-center">
+                                        <span class="item-count bg-secondary text-white rounded-circle py-1 px-2 fs-6" data-product-id="{{this._id}}">0</span>
+                                    </div>
+                                </div>    
+                                
                                 {{#if (and (not (or (eq this.owner ../myUser.email) (eq this.owner ../myUser.user))) (not (isPremium)))}}
                                     <button type="button" class="btn btn-primary me-2 mb-2 add-to-cart-btn" data-product-id="{{this._id}}" data-cart-id="{{cartId}}">Add to Cart</button>
                                     <button type="button" class="btn btn-danger me-2 mb-2 remove-from-cart-btn d-none" data-product-id="{{this._id}}" data-cart-id="{{cartId}}">Remove from Cart</button>

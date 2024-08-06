@@ -4,23 +4,42 @@ document.addEventListener("DOMContentLoaded", () => {
     const role = document.querySelector('small[data-user-role]')?.dataset.userRole;
     const addToCartButtons = document.querySelectorAll(".add-to-cart-btn");
     const removeFromCartButtons = document.querySelectorAll(".remove-from-cart-btn");
+    const logoutButton = document.getElementById("logout-button");
+
+    if (logoutButton) {
+        logoutButton.addEventListener("click", function() {
+            localStorage.setItem('userLoggedOut', 'true');
+        });
+    }
 
     restoreCartState();
+    updateItemCount();
 
     async function restoreCartState() {
-        const storedCart = localStorage.getItem('cart');
-        if (storedCart) {
-            const productsInCart = JSON.parse(storedCart);
+        const logoutFlag = localStorage.getItem('userLoggedOut');
+        if (logoutFlag === 'true') {
+            localStorage.removeItem('userLoggedOut');
     
             document.querySelectorAll('.item-count').forEach(span => {
-                const productId = span.dataset.productId;
-                const count = productsInCart[productId] || 0;
-                span.textContent = count;
+                span.textContent = "0";
             });
-
-            updateRemoveButtonVisibility(productsInCart);
+    
+            updateRemoveButtonVisibility({});
+        } else {
+            const storedCart = localStorage.getItem('cart');
+            if (storedCart) {
+                const productsInCart = JSON.parse(storedCart);
+        
+                document.querySelectorAll('.item-count').forEach(span => {
+                    const productId = span.dataset.productId;
+                    const count = productsInCart[productId] || 0;
+                    span.textContent = count;
+                });
+    
+                updateRemoveButtonVisibility(productsInCart);
+            }
         }
-    }
+    }    
     
     async function updateItemCount() {
         try {
