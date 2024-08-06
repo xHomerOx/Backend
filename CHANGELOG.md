@@ -1,5 +1,8 @@
 # Proyecto Final Backend
 
+## 06-08-2024
+- Fixed State of Cart in Front-end when logging out.
+
 ## 05-08-2024
 - Added Ticket per Session.
 - Removed function to prevent Admin to Add and View Products in Cart.
