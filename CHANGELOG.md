@@ -1,7 +1,7 @@
 # Proyecto Final Backend
 
 ## 06-08-2024
-- Fixed State of Cart in Front-end when logging out.
+- Fixed State of Cart in Front-end when logged out.
 
 ## 05-08-2024
 - Added Ticket per Session.
