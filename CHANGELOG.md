@@ -73,7 +73,7 @@
 ## 02-06-2024
 - Added Ticket Model with Mongoose.
 - Redo email field in passportConfig and homeView.
-- Added Ticket Logic in cartDAO.s
+- Added Ticket Logic in cartDAO.
 - Removed Middleware from login to make POSTMAN test return a JSON.
 - Added Logic in index.js to check if is admin or user.
 - Fixed missing Cart Ref in User Schema.
