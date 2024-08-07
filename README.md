@@ -1,6 +1,10 @@
 # Proyecto Final Backend
 
-This is the backend for an ecommerce application. This project provides an API for managing products, shopping carts, and purchase tickets in an ecommerce environment. It uses Express.js as the server framework and MongoDB as the database.
+This is the backend for an ecommerce application. This project provides an API for managing products, shopping carts, and purchase tickets in an ecommerce environment. It uses Express.js as the server framework and MongoDB as the database. 
+
+## DEMO
+
+[LIVE DEMO](backend-production-61c2.up.railway.app).
 
 ## Features
 
