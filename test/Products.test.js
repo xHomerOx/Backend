@@ -34,6 +34,22 @@ export const generateProducts =() => {
   };
 }
 
+describe('generateProducts function', () => {
+    it('Generate Products with this Attributes', () => {
+        const product = generateProducts();
+
+        expect(product).to.have.property('id');
+        expect(product).to.have.property('title');
+        expect(product).to.have.property('description');
+        expect(product).to.have.property('code');
+        expect(product).to.have.property('price');
+        expect(product).to.have.property('status');
+        expect(product).to.have.property('stock');
+        expect(product).to.have.property('category');
+        expect(product).to.have.property('thumbnail');
+    });
+});
+
 let authToken;
 
 before(async function () {
