@@ -111,7 +111,6 @@ const initializePassport = () => {
                     done(null, myUser);
                 }
             } catch (error) {
-                console.error('Error during authentication:', error);
                 return done(error);
             }
         }
