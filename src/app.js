@@ -61,7 +61,13 @@ const swaggerOptions = {
             title: 'Ecommerce',
             version: '1.0.0',
             description: 'API for ecommerce'
-        } 
+        },
+        servers: [
+            {
+                url: 'https://backend-production-61c2.up.railway.app/api',
+                description: 'Local server'
+            }
+        ]
     },
     apis: [`${__dirname}/../docs/**/*.yaml`]
 }
