@@ -4,7 +4,7 @@ info:
   description: API documentation for cart management.
   version: 1.0.0
 servers:
-  - url: http://localhost:8080/apidocs/
+  - url: https://backend-production-61c2.up.railway.app/apidocs/
     description: Local server
 paths:
   /carts:
