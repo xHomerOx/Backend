@@ -4,7 +4,7 @@ info:
   description: API documentation for product management.
   version: 1.0.0
 servers:
-  - url: https://backend-production-61c2.up.railway.app/apidocs/
+  - url: https://localhost:8080/apidocs/
     description: Local serverz
 paths:
   /products:

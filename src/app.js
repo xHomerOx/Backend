@@ -64,7 +64,7 @@ const swaggerOptions = {
         },
         servers: [
             {
-                url: 'https://backend-production-61c2.up.railway.app/api',
+                url: 'https://localhost:8080/api',
                 description: 'Local server'
             }
         ]

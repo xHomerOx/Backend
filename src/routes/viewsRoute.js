@@ -212,7 +212,7 @@ viewsRouter.post('/recover', async (req, res) => {
       }
       
       const token = jwt.sign(user, "secretKey", { expiresIn: "1h" });
-      const link = `https://backend-production-61c2.up.railway.app/recover/${token}`;
+      const link = `https://localhost:8080/recover/${token}`;
       
       const mailOptions = {
         from: 'Node Products <homero.tw@gmail.com>',
